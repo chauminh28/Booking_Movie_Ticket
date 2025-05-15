@@ -8,6 +8,7 @@ export default {
       },
       backgroundImage: {
         logo: "url('/not-available.jpg')",
+        login: "url('./assets/public/images/Picture.png')",
       },
     },
   },
