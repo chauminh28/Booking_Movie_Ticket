@@ -3,7 +3,7 @@ import Phim from "../../assets/public/images/phim-1.png";
 import Phim_2 from "../../assets/public/images/phim-2.png";
 function MovieSchedule() {
   return (
-    <div className="mt-12 container mx-auto">
+    <div className="my-12 container mx-auto">
       <div>
         <div>
           <p className="text-[#031327] text-2xl font-bold">
