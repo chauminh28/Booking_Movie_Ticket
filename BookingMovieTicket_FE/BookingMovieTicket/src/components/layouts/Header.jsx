@@ -1,7 +1,12 @@
 import React from "react";
 import { IoPersonCircle } from "react-icons/io5";
 import NotAvailable from "/not-available.jpg";
+import { Link } from "react-router-dom";
+import { initFlowbite } from "flowbite";
 function Header() {
+  React.useEffect(() => {
+    initFlowbite();
+  }, []);
   return (
     <>
       <div className="bg-[#f3f3f3] h-24 flex justify-center items-center mb-12">
@@ -16,7 +21,7 @@ function Header() {
           <div className="h-full flex items-center justify-center w-[500px]">
             <ul className="flex space-x-[15] w-full justify-around h-full">
               <li className="text-[24px] cursor-pointer hover:border-b-2 hover:border-black h-full w-30 items-center flex justify-center">
-                Trang Chủ
+                <Link to="/">Trang chủ</Link>
               </li>
               <li className="text-[24px] cursor-pointer hover:border-b-2 hover:border-black h-full w-30 items-center flex justify-center">
                 Phim
@@ -47,20 +52,20 @@ function Header() {
               aria-labelledby="dropdownDefaultButton"
             >
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/profile"
                   className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   Thông tin tài khoản
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/profile/changePassword"
                   className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   Đổi mặt khẩu
-                </a>
+                </Link>
               </li>
               <li>
                 <a

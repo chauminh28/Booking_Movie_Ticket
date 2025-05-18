@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Banner_1 from "../../assets/public/images/Banner-1.png";
 import Banner_2 from "../../assets/public/images/Banner-2.png";
 import Banner_3 from "../../assets/public/images/Banner-3.png";
+import { initFlowbite } from "flowbite";
 function Banner() {
+  useEffect(() => {
+    initFlowbite();
+  }, []);
   return (
     <div className="mb-12">
       <div
