@@ -1,19 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { IoPieChart } from "react-icons/io5";
 import { FaCirclePlay } from "react-icons/fa6";
 import { IoIosTime } from "react-icons/io";
 import { BsFileEarmarkPlayFill } from "react-icons/bs";
 import { FaCalendarAlt } from "react-icons/fa";
-import { TbArmchair2 } from "react-icons/tb";
 import { BiCategory } from "react-icons/bi";
 import { FaPersonChalkboard } from "react-icons/fa6";
 import { FaPersonRays } from "react-icons/fa6";
 import { FaUserGroup } from "react-icons/fa6";
-import { RiLoginBoxFill } from "react-icons/ri";
 import { IoIosArrowDown } from "react-icons/io";
 import Logo from '/not-available.jpg'
+import { initFlowbite } from 'flowbite'
 
 export default function NavbarAdmin() {
+    useEffect(() => {
+        initFlowbite();
+    }, [])
+
     return (
         <>
             <div className=' h-[100vh] bg-[#031327] flex gap-y-3 flex-col'>
@@ -62,10 +65,6 @@ export default function NavbarAdmin() {
                     <a href='#' className='text-white font-medium'>Phim</a>
                 </div>
                 <div className='flex items-center'>
-                    <TbArmchair2 className='text-white mx-3' />
-                    <a href='#' className='text-white font-medium'>Ghế</a>
-                </div>
-                <div className='flex items-center'>
                     <BiCategory className='text-white mx-3' />
                     <a href='#' className='text-white font-medium'>Loại ghế</a>
                 </div>
@@ -80,10 +79,6 @@ export default function NavbarAdmin() {
                 <div className='flex items-center'>
                     <FaUserGroup className='text-white mx-3' />
                     <a href='#' className='text-white font-medium'>Người dùng</a>
-                </div>
-                <div className='flex items-center'>
-                    <RiLoginBoxFill className='text-white mx-3' />
-                    <a href='#' className='text-white font-medium'>Đăng nhập</a>
                 </div>
             </div>
         </>

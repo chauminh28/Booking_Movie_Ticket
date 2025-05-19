@@ -7,6 +7,8 @@ import RoomManger from "./components/features/RoomManager/RoomManger";
 import HomePage from "./pages/public/HomePage";
 import Profile from "./pages/public/Profile";
 import ProfileChangePassword from "./pages/public/ProfileChangePassword";
+import AddRoom from "./components/features/RoomManager/AddRoom";
+import EditRoom from "./components/features/RoomManager/EditRoom";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
         />
         {/* Page Admin */}
         <Route path="/roomManager" element={<RoomManger />} />
+        <Route path="/roomManager/addRoom" element={<AddRoom />} />
+        <Route path="/roomManager/editRoom" element={<EditRoom />} />
       </Routes>
     </Router>
   );
