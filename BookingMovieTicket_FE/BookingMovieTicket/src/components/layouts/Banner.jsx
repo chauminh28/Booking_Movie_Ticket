@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Banner_1 from "../../assets/public/images/Banner-1.png";
 import Banner_2 from "../../assets/public/images/Banner-2.png";
 import Banner_3 from "../../assets/public/images/Banner-3.png";
+import { initFlowbite } from "flowbite";
 function Banner() {
+  useEffect(() => {
+    initFlowbite();
+  }, []);
   return (
     <div className="mb-12">
       <div
         id="default-carousel"
-        className="relative w-full h-[500px]"
+        className="relative w-full h-[700px]"
         data-carousel="slide"
       >
-        <div className="relative h-[500px] overflow-hidden rounded-lg md:h-[500px]">
+        <div className="relative h-[700px] overflow-hidden rounded-lg md:h-[700px]">
           <div className="hidden duration-700 ease-in-out" data-carousel-item>
             <img
               src={Banner_1}
@@ -61,7 +65,7 @@ function Banner() {
           className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
           data-carousel-prev
         >
-          <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-black/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+          <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-black/30 dark:bg-gray-800/30 group-hover:bg-green-300 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
             <svg
               className="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
               aria-hidden="true"
@@ -85,7 +89,7 @@ function Banner() {
           className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
           data-carousel-next
         >
-          <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-black/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+          <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-black/30 dark:bg-gray-800/30 group-hover:bg-green-300 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
             <svg
               className="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
               aria-hidden="true"
