@@ -10,31 +10,24 @@ import { FaPersonChalkboard } from "react-icons/fa6";
 import { FaPersonRays } from "react-icons/fa6";
 import { FaUserGroup } from "react-icons/fa6";
 import { RiLoginBoxFill } from "react-icons/ri";
+import { IoIosArrowDown } from "react-icons/io";
+import Logo from '/not-available.jpg'
 
 export default function NavbarAdmin() {
     return (
         <>
-            {/* 
-            Báo cáo
-            Phòng chiếu
-            Phim
-            Lịch chiếu
-            Ghế
-            Loại ghế
-            Người dùng
-            Đạo diễn
-            Diễn viên
-            Đặt vé
-            Đăng nhập
-        */}
-            <div className='w-[280px] h-full bg-[#031327] flex gap-y-3 flex-col'>
+            <div className=' h-[100vh] bg-[#031327] flex gap-y-3 flex-col'>
+                <img src={Logo} />
                 <div className='flex justify-start items-start mt-2'>
                     <IoPieChart className='text-white mx-3 flex items-center justify-center mt-1' />
 
                     <div className='flex-col flex justify-start items-start'>
-                        <button data-collapse-toggle="collapseExample" type="button" class="text-white font-medium items-start">
-                            Báo cáo
-                        </button>
+                        <div className='flex'>
+                            <button data-collapse-toggle="collapseExample" type="button" class="text-white font-medium items-start cursor-pointer">
+                                Báo cáo
+                            </button>
+                            <IoIosArrowDown className='text-white ml-1 mt-1' />
+                        </div>
 
                         <div id="collapseExample" className="hidden">
                             <div className='font-medium text-white dark:text-gray-200'>
@@ -92,7 +85,6 @@ export default function NavbarAdmin() {
                     <RiLoginBoxFill className='text-white mx-3' />
                     <a href='#' className='text-white font-medium'>Đăng nhập</a>
                 </div>
-
             </div>
         </>
     )

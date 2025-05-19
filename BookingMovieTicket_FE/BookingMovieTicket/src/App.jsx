@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/features/Login";
 import Register from "./components/features/Register";
 import ForgetPassword from "./components/features/ForgetPassword";
-import NavbarAdmin from "./components/layouts/NavbarAdmin";
+import RoomManger from "./components/features/RoomManager/RoomManger";
 import HomePage from "./pages/public/HomePage";
 import Profile from "./pages/public/Profile";
 import ProfileChangePassword from "./pages/public/ProfileChangePassword";
@@ -23,7 +23,7 @@ function App() {
           element={<ProfileChangePassword />}
         />
         {/* Page Admin */}
-        <Route path="/navbar" element={<NavbarAdmin />} />
+        <Route path="/roomManager" element={<RoomManger />} />
       </Routes>
     </Router>
   );
