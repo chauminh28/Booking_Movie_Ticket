@@ -1,6 +1,6 @@
 import React from "react";
 import { IoPersonCircle } from "react-icons/io5";
-import NotAvailable from "/not-available.jpg";
+import Logo from "/logo.png";
 import { Link } from "react-router-dom";
 import { initFlowbite } from "flowbite";
 function Header() {
@@ -11,12 +11,8 @@ function Header() {
     <>
       <div className="bg-[#f3f3f3] h-24 flex justify-center items-center mb-12">
         <div className="h-full items-center flex container justify-around mx-auto">
-          <div className="h-full flex items-center justify-center w-[120px] ">
-            <img
-              src={NotAvailable}
-              alt="Not available"
-              className="w-full h-full"
-            />
+          <div className="h-full flex items-center justify-center w-[150px]">
+            <img src={Logo} alt="Logo" className="w-full h-full object-cover" />
           </div>
           <div className="h-full flex items-center justify-center w-[500px]">
             <ul className="flex space-x-[15] w-full justify-around h-full">
@@ -61,7 +57,7 @@ function Header() {
               </li>
               <li>
                 <Link
-                  to="/profile"
+                  to="/profile/history"
                   className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   Lịch sử giao dịch

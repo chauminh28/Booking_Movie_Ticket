@@ -3,21 +3,21 @@ import { FaFacebook } from "react-icons/fa";
 import { AiFillTikTok } from "react-icons/ai";
 import DownloadCHPLAY from "../../assets/public/images/download_chplay.png";
 import DownloadAPPSTORE from "../../assets/public/images/download_ios.svg";
-import NotAvailable from "/not-available.jpg";
+import Logo from "/logo.png";
 
 function Footer() {
   return (
     <div className="bg-primary h-[307px] py-[54px]">
       <div className="flex h-full space-x-[150px] container mx-auto">
-        <div className="items-center flex justify-center h-full w-[150px]">
+        <div className="items-center flex justify-center h-full w-[200px]">
           <img
-            src={NotAvailable}
-            alt="Not available"
-            className="h-full w-full object-contain cursor-pointer"
+            src={Logo}
+            alt="Logo"
+            className="h-full w-full object-cover cursor-pointer"
           />
         </div>
         <div className="flex flex-col gap-12">
-          <h3 className="font-bold text-2xl">VCINESTAR</h3>
+          <h3 className="font-bold text-2xl uppercase">Trimi Cinema</h3>
           <ul className="flex flex-col gap-4 cursor-pointer text-lg">
             <li className="hover:text-gray-500">Điều khoản bảo mật</li>
             <li className="hover:text-gray-500">Điều khoản chung</li>

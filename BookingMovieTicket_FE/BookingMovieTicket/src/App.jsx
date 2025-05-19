@@ -3,10 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/features/Login";
 import Register from "./components/features/Register";
 import ForgetPassword from "./components/features/ForgetPassword";
-import RoomManger from "./components/features/RoomManager/RoomManger";
+import RoomManger from "./pages/RoomManager/RoomManger";
 import HomePage from "./pages/public/HomePage";
 import Profile from "./pages/public/Profile";
 import ProfileChangePassword from "./pages/public/ProfileChangePassword";
+import ProfileHistory from "./pages/public/ProfileHistory";
+import ProfileHistoryDetail from "./pages/public/ProfileHistoryDetail";
 
 function App() {
   return (
@@ -21,6 +23,11 @@ function App() {
         <Route
           path="/profile/changePassword"
           element={<ProfileChangePassword />}
+        />
+        <Route path="/profile/history" element={<ProfileHistory />} />
+        <Route
+          path="/profile/history/detail"
+          element={<ProfileHistoryDetail />}
         />
         {/* Page Admin */}
         <Route path="/roomManager" element={<RoomManger />} />

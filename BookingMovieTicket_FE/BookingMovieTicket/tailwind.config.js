@@ -7,7 +7,7 @@ export default {
         primary: "#f3f3f3",
       },
       backgroundImage: {
-        logo: "url('/not-available.jpg')",
+        logo: "url('/logo.png')",
         login: "url('./assets/public/images/Picture.png')",
       },
     },
