@@ -61,6 +61,14 @@ function Header() {
               </li>
               <li>
                 <Link
+                  to="/profile"
+                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Lịch sử giao dịch
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/profile/changePassword"
                   className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
