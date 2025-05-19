@@ -38,7 +38,7 @@ function ChangePassword() {
               }}
               aria-label={showCurrent ? "Hiện mật khẩu" : "Ẩn mật khẩu"}
             >
-              {showCurrent ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+              {showCurrent ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
             </button>
           </div>
           <div className="flex gap-4 items-center relative">
@@ -57,7 +57,7 @@ function ChangePassword() {
               }}
               aria-label={showNew ? "Hiện mật khẩu" : "Ẩn mật khẩu"}
             >
-              {showNew ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+              {showNew ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
             </button>
           </div>
           <div className="flex gap-4 items-center relative">
@@ -76,7 +76,7 @@ function ChangePassword() {
               }}
               aria-label={showConfirm ? "Hiện mật khẩu" : "Ẩn mật khẩu"}
             >
-              {showConfirm ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+              {showConfirm ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
             </button>
           </div>
         </div>
