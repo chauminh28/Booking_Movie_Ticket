@@ -1,12 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import NavbarAdmin from '../../layouts/NavbarAdmin'
 import Search from '../../layouts/Search';
 import HeaderAdmin from '../../layouts/HeaderAdmin';
 
 import { FaFilter } from "react-icons/fa6";
 import { IoIosAddCircle } from "react-icons/io";
+import { MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 
 export default function RoomMangaer() {
+    const [roomStatus, setRoomStatus] = useState(true);
+
+    const toggleRoom = () => setRoomStatus(!roomStatus);
+
     return (
         <>
             <div className='grid grid-cols-12'>
@@ -70,9 +76,38 @@ export default function RoomMangaer() {
                                             <td class="px-4 py-2">2D</td>
                                             <td class="px-4 py-2">Digital Projector</td>
                                             <td class="px-4 py-2">Dolby Atmos</td>
+                                            <td className="px-4 py-2">
+                                                <label className="relative inline-flex items-center cursor-pointer">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={roomStatus}
+                                                        onChange={toggleRoom}
+                                                        className="sr-only peer"
+                                                    />
+                                                    <div className="w-11 h-6 bg-gray-300 peer-checked:bg-black rounded-full transition-colors duration-300"></div>
+                                                    <div className="absolute w-5 h-5 bg-white rounded-full shadow left-0.5 top-0.5 peer-checked:translate-x-full transition transform duration-300"></div>
+                                                </label>
+                                            </td>
+                                            <td className="px-4 py-2 flex space-x-4">
+                                                <button className="text-blue-600 hover:text-blue-800 text-[20px]">
+                                                    <MdEdit />
+                                                </button>
+                                                <button className="text-red-600 hover:text-red-800 text-[20px]">
+                                                    <MdDelete />
+                                                </button>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
+                                <div class="flex justify-center mt-4">
+                                    <nav class="inline-flex items-center space-x-1 text-sm">
+                                        <a href="#" class="px-3 py-2 rounded-l-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white"> Prev </a>
+                                        <a href="#" class="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md">1</a>
+                                        <a href="#" class="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md">2</a>
+                                        <a href="#" class="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md">3</a>
+                                        <a href="#" class="px-3 py-2 rounded-r-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white"> Next </a>
+                                    </nav>
+                                </div>
                             </div>
                         </div>
                     </div>

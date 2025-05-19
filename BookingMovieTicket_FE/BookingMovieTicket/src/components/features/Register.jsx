@@ -2,10 +2,14 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import googleIcon from '../../assets/public/icons/google-icon.png'
 import { Link } from 'react-router-dom'
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { initFlowbite } from 'flowbite'
 
 export default function Register() {
+    const [showPassword, setShowPassword] = useState(false);
+
     useEffect(() => {
-        window.dispatchEvent(new Event('load'));
+        initFlowbite();
     }, [])
 
     return (
@@ -92,15 +96,22 @@ export default function Register() {
                                     required
                                 />
                             </div>
-                            <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Mật khẩu</label>
+                            <div className='relative'>
+                                <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mật khẩu</label>
                                 <input
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     id="password"
                                     placeholder="********"
                                     className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                     required
                                 />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute top-[50px] right-3 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+                                >
+                                    {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                                </button>
                             </div>
                             <button className='bg-[#395F18] px-4 py-2 text-white font-bold text-[16px] w-full h-[55px] rounded-lg mt-5 cursor-pointer'>Bắt đầu</button>
                         </form>

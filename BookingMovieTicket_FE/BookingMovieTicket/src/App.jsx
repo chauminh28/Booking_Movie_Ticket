@@ -6,6 +6,7 @@ import ForgetPassword from "./components/features/ForgetPassword";
 import RoomManger from "./components/features/RoomManager/RoomManger";
 import HomePage from "./pages/public/HomePage";
 import NavbarAdmin from "./components/layouts/NavbarAdmin";
+import AddRoom from "./components/features/RoomManager/AddRoom";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/forgetPassword" element={<ForgetPassword />} />
         <Route path="/roomManager" element={<RoomManger />} />
         <Route path="/navbar" element={<NavbarAdmin />} />
+        <Route path="/addRoom" element={<AddRoom />} />
       </Routes>
     </Router>
   );

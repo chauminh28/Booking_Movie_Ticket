@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import googleIcon from '../../assets/public/icons/google-icon.png'
 import { Link } from 'react-router-dom'
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 export default function Login() {
+    const [showPassword, setShowPassword] = useState(false);
+
     return (
         <>
             <div className={`bg-login h-screen w-full bg-cover bg-center bg-no-repeat 
@@ -20,15 +23,22 @@ export default function Login() {
                                 required
                             />
                         </div>
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700">Mật khẩu</label>
+                        <div className='relative'>
+                            <label for="password" class="block text-sm font-medium text-gray-700">Mật khẩu</label>
                             <input
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 id="password"
                                 placeholder="********"
                                 class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                 required
                             />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute top-[50px] right-3 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+                            >
+                                {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                            </button>
                         </div>
                     </form>
                     <Link to={"/forgetPassword"} className='text-[12px] text-[#BDBDBD] flex items-center justify-center my-5'>Quên mật khẩu?</Link>

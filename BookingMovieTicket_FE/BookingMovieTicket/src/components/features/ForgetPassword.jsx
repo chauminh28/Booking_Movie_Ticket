@@ -1,11 +1,13 @@
 import React, { useRef, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { IoIosArrowBack } from "react-icons/io";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 export default function ForgetPassword() {
     const [step, setStep] = useState(1);
     const [email, setEmail] = useState('');
     const [newPassword, setNewPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const inputs = useRef([]);
 
@@ -132,10 +134,10 @@ export default function ForgetPassword() {
                     {step === 3 && (
                         <>
                             <p className='text-[17px]'>Vui lòng nhập mật khẩu mới!</p>
-                            <div className='my-6'>
+                            <div className='my-6 relative'>
                                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">Mật khẩu</label>
                                 <input
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     value={newPassword}
                                     id="password"
                                     placeholder="********"
@@ -143,6 +145,13 @@ export default function ForgetPassword() {
                                     onChange={(e) => { setNewPassword(e.target.value) }}
                                     required
                                 />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute top-[50px] right-3 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+                                >
+                                    {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                                </button>
                             </div>
                             <button
                                 className='bg-[#395F18] px-4 py-2 text-white font-bold text-[16px] w-full h-[55px] rounded-lg mt-6 cursor-pointer'
