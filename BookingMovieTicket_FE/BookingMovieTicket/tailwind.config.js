@@ -1,6 +1,6 @@
 import flowbite from "flowbite/plugin";
 export default {
-  content: ["./src/**/*.{html,js,jsx,ts,tsx}"],
+  content: ["./**/*.{html,js,jsx,ts,tsx}"],
   theme: {
     extend: {
       backgroundColor: {

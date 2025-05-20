@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import NavbarAdmin from '../../layouts/NavbarAdmin'
-import Search from '../../layouts/Search';
-import HeaderAdmin from '../../layouts/HeaderAdmin';
-
+import NavbarAdmin from "../../components/layouts/NavbarAdmin"
+import HeaderAdmin from "../../components/layouts/HeaderAdmin"
+import Search from "../../components/layouts/Search"
 import { FaFilter } from "react-icons/fa6";
 import { IoIosAddCircle } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
