@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import HeaderAdmin from '../../layouts/HeaderAdmin'
-import NavbarAdmin from '../../layouts/NavbarAdmin'
+import NavbarAdmin from "../../components/layouts/NavbarAdmin"
+import HeaderAdmin from "../../components/layouts/HeaderAdmin"
 import { Link } from 'react-router-dom'
 
 export default function AddRoom() {

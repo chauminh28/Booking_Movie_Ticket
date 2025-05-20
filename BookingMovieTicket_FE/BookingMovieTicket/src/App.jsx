@@ -4,11 +4,14 @@ import Login from "./components/features/Login";
 import Register from "./components/features/Register";
 import ForgetPassword from "./components/features/ForgetPassword";
 import RoomManger from "./pages/RoomManager/RoomManger";
+import AddRoom from "./pages/RoomManager/AddRoom";
+import EditRoom from "./pages/RoomManager/EditRoom";
 import HomePage from "./pages/public/HomePage";
 import Profile from "./pages/public/Profile";
 import ProfileChangePassword from "./pages/public/ProfileChangePassword";
 import MoviePage from "./pages/public/MoviePage";
 import MovieDetailPage from "./pages/public/MovieDetailPage"
+import MovieSchedulePage from "./pages/public/MovieSchedulePage";
 
 function App() {
   return (
@@ -20,6 +23,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgetPassword" element={<ForgetPassword />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/schedule" element={<MovieSchedulePage />} />
         <Route
           path="/profile/changePassword"
           element={<ProfileChangePassword />}

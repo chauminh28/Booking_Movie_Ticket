@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+
 import picture from "../../assets/public/images/phim-1.png"
 import combo from "../../assets/public/images/CNS035_COMBO_GAU.png"
 
@@ -12,9 +14,14 @@ function MovieDetail() {
   const [quantity, setQuantity] = useState(0);
   const [countdown, setCountdown] = useState(300);
 
-  const col = 10;
-  const totalSeats = 50;
-  const occupiedSeats = [5, 10, 12, 15];
+
+  const cols = 20;
+  const rows = 10;
+
+  const occupiedSeats = ["A2", "B1", "C3", "B2"];
+  const alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+    "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
+    "U", "V", "W", "X", "Y", "Z"]
 
   const seatPrice = 65000;
   const comboPrice = 119000;
@@ -48,33 +55,37 @@ function MovieDetail() {
     setShowTicket(!showTicket)
   }
 
-  const toggleSeat = (seatNumber) => {
+  const toggleSeat = (seatID) => {
 
-    if (occupiedSeats.includes(seatNumber)) return;
+    if (occupiedSeats.includes(seatID)) return;
 
-    setSelectedSeats((prev) => prev.includes(seatNumber) ? prev.filter((s) => s != seatNumber) : [...prev, seatNumber])
+    setSelectedSeats((prev) => prev.includes(seatID) ? prev.filter((s) => s != seatID) : [...prev, seatID])
   }
 
   const renderSeats = () => {
     const seats = []
-    for (let i = 1; i <= totalSeats; i++) {
-      const isSelected = selectedSeats.includes(i)
-      const isOccupied = occupiedSeats.includes(i)
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        const seatID = `${alphabet[i]}${j + 1}`
 
-      seats.push(
-        <div
-          key={i}
-          className={`
+        const isSelected = selectedSeats.includes(seatID)
+        const isOccupied = occupiedSeats.includes(seatID)
+
+        seats.push(
+          <div
+            key={seatID}
+            className={`
             w-10 h-10 flex items-center justify-center rounded-md text-sm cursor-pointer
             ${isOccupied ? 'bg-gray-500 cursor-not-allowed text-white' : ''}
             ${isSelected ? 'bg-green-500 text-white' : ''}
             ${!isOccupied && !isSelected ? 'bg-gray-200 hover:bg-gray-300' : ''}
           `}
-          onClick={() => toggleSeat(i)}
-        >
-          {i}
-        </div>
-      )
+            onClick={() => toggleSeat(seatID)}
+          >
+            {seatID}
+          </div>
+        )
+      }
     }
 
     return seats
@@ -181,7 +192,7 @@ function MovieDetail() {
               <div className='w-[610px] h-[40px] bg-gray-400 flex items-center justify-center mb-4'>
                 MÀN HÌNH
               </div>
-              <div className={`grid grid-cols-${col} gap-2`}>
+              <div className={"grid gap-2"} style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
                 {renderSeats()}
               </div>
               <div className='flex mt-5 gap-[80px] mb-8'>

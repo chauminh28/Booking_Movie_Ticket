@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import NavbarAdmin from "../../components/layouts/NavbarAdmin"
 import HeaderAdmin from "../../components/layouts/HeaderAdmin"
 import Search from "../../components/layouts/Search"
@@ -29,52 +30,52 @@ export default function RoomMangaer() {
                                 <p className='font-bold text-[28px]'>QUẢN LÝ PHÒNG CHIẾU</p>
                             </div>
                             <div className='flex justify-end items-end w-full gap-x-10 pr-[100px]'>
-                                <button id="lockButton" data-dropdown-toggle="lock" class="font-medium rounded-lg text-sm text-center inline-flex items-center" type="button">
-                                    <a href='#'><FaFilter className='text-[28px]' /></a> <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <button id="lockButton" data-dropdown-toggle="lock" className="font-medium rounded-lg text-sm text-center inline-flex items-center" type="button">
+                                    <a href='#'><FaFilter className='text-[28px]' /></a> <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
                                     </svg>
                                 </button>
 
-                                <div id="lock" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
+                                <div id="lock" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
                                     <ul className="py-2 text-sm text-gray-700 dark:text-gray-200 pl-2" aria-labelledby="dropdownDefaultButton">
                                         <li>
-                                            <input id="default-radio-1" type="radio" value="" name="default-radio" class="w-4 h-4" />
-                                            <label for="default-radio-1" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Khoá</label>
+                                            <input id="default-radio-1" type="radio" value="" name="default-radio" className="w-4 h-4 text-gray-500" />
+                                            <label htmlFor="default-radio-1" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Khoá</label>
 
                                         </li>
                                         <li>
-                                            <input id="default-radio-1" type="radio" value="" name="default-radio" class="w-4 h-4" />
-                                            <label for="default-radio-1" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Mở</label>
+                                            <input id="default-radio-1" type="radio" value="" name="default-radio" className="w-4 h-4 text-gray-500" />
+                                            <label htmlFor="default-radio-1" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Mở</label>
 
                                         </li>
                                     </ul>
                                 </div>
-                                <a href='#'><IoIosAddCircle className='text-[28px]' /></a>
+                                <Link to={"/roomManager/addRoom"}><IoIosAddCircle className='text-[28px]' /></Link>
                             </div>
                         </div>
 
                         <div>
                             <Search />
                             <div className='mt-3'>
-                                <table class="table-auto w-full text-left text-sm">
+                                <table className="table-auto w-full text-left text-sm">
                                     <thead>
                                         <tr className='font-semibold text-[15px] text-[#A2A2A6]'>
-                                            <th class="px-4 py-2">Tên phòng</th>
-                                            <th class="px-4 py-2">Sức chứa</th>
-                                            <th class="px-4 py-2">Loại màn hình</th>
-                                            <th class="px-4 py-2">Máy chiếu</th>
-                                            <th class="px-4 py-2">Hệ thống âm thanh</th>
-                                            <th class="px-4 py-2">Trạng thái</th>
-                                            <th class="px-4 py-2">Hành động</th>
+                                            <th className="px-4 py-2">Tên phòng</th>
+                                            <th className="px-4 py-2">Sức chứa</th>
+                                            <th className="px-4 py-2">Loại màn hình</th>
+                                            <th className="px-4 py-2">Máy chiếu</th>
+                                            <th className="px-4 py-2">Hệ thống âm thanh</th>
+                                            <th className="px-4 py-2">Trạng thái</th>
+                                            <th className="px-4 py-2">Hành động</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="border-t border-[#EEEEEE]">
-                                            <td class="px-4 py-2">Phòng 1</td>
-                                            <td class="px-4 py-2">160</td>
-                                            <td class="px-4 py-2">2D</td>
-                                            <td class="px-4 py-2">Digital Projector</td>
-                                            <td class="px-4 py-2">Dolby Atmos</td>
+                                        <tr className="border-t border-[#EEEEEE]">
+                                            <td className="px-4 py-2">Phòng 1</td>
+                                            <td className="px-4 py-2">160</td>
+                                            <td className="px-4 py-2">2D</td>
+                                            <td className="px-4 py-2">Digital Projector</td>
+                                            <td className="px-4 py-2">Dolby Atmos</td>
                                             <td className="px-4 py-2">
                                                 <label className="relative inline-flex items-center cursor-pointer">
                                                     <input
@@ -100,13 +101,13 @@ export default function RoomMangaer() {
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="flex justify-center mt-4">
-                                    <nav class="inline-flex items-center space-x-1 text-sm">
-                                        <a href="#" class="px-3 py-2 rounded-l-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white"> Prev </a>
-                                        <a href="#" class="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md">1</a>
-                                        <a href="#" class="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md">2</a>
-                                        <a href="#" class="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md">3</a>
-                                        <a href="#" class="px-3 py-2 rounded-r-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white"> Next </a>
+                                <div className="flex justify-center mt-4">
+                                    <nav className="inline-flex items-center space-x-1 text-sm">
+                                        <a href="#" className="px-3 py-2 rounded-l-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white"> Prev </a>
+                                        <a href="#" className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md">1</a>
+                                        <a href="#" className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md">2</a>
+                                        <a href="#" className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md">3</a>
+                                        <a href="#" className="px-3 py-2 rounded-r-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white"> Next </a>
                                     </nav>
                                 </div>
                             </div>

@@ -4,6 +4,7 @@ import Phim_2 from "../../assets/public/images/phim-2.png";
 import Phim_3 from "../../assets/public/images/phim-3.png";
 import Phim_4 from "../../assets/public/images/phim-4.png";
 import PlayButton from "../../assets/public/images/play-button.png";
+import { Link } from "react-router-dom";
 function MovieList() {
   const items = [
     {
@@ -108,13 +109,15 @@ function MovieList() {
                   className="w-full h-full object-contain
                   "
                 />
-                <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out cursor-pointer">
-                  <img
-                    src={PlayButton}
-                    alt="play"
-                    className="w-16 h-16 relative z-20"
-                  />
-                </div>
+                <Link to={"/movie/detail"}>
+                  <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out cursor-pointer">
+                    <img
+                      src={PlayButton}
+                      alt="play"
+                      className="w-16 h-16 relative z-20"
+                    />
+                  </div>
+                </Link>
               </div>
               <div className="flex flex-col justify-center p-4 h-[30%] text-[16px] font-bold">
                 <p className="mb-6 flex items-center justify-center h-[48px] font">

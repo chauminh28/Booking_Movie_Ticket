@@ -24,10 +24,10 @@ function Header() {
                 <Link to="/">Trang chủ</Link>
               </li>
               <li className="text-[24px] cursor-pointer hover:border-b-2 hover:border-black h-full w-30 items-center flex justify-center">
-                Phim
+                <Link to={"/movie"}>Phim</Link>
               </li>
               <li className="text-[24px] cursor-pointer hover:border-b-2 hover:border-black h-full w-30 items-center flex justify-center">
-                Lịch chiếu
+                <Link to={"/schedule"}>Lịch chiếu</Link>
               </li>
             </ul>
           </div>

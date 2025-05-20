@@ -26,10 +26,10 @@ export default function NavbarAdmin() {
 
                     <div className='flex-col flex justify-start items-start'>
                         <div className='flex'>
-                            <button data-collapse-toggle="collapseExample" type="button" class="text-white font-medium items-start cursor-pointer">
+                            <button data-collapse-toggle="collapseExample" type="button" class="text-white font-medium items-start cursor-pointer flex">
                                 Báo cáo
+                                <IoIosArrowDown className='text-white ml-1 mt-1' />
                             </button>
-                            <IoIosArrowDown className='text-white ml-1 mt-1' />
                         </div>
 
                         <div id="collapseExample" className="hidden">
