@@ -28,8 +28,8 @@ export default function AddRoom() {
 
         <div className="col-span-10">
           <div className="bg-white col-span-10 h-[100vh] p-[30px]">
-            <HeaderAdmin     />
-            <p className="font-bold text-[28px]">THÊM PHÒNG CHIẾU</p>
+            <HeaderAdmin />
+            <p className="font-bold text-[28px]">SỬA PHÒNG CHIẾU</p>
             <div className="mt-[30px] pl-[30px]">
               <form>
                 <div className="grid grid-cols-12 gap-5 ">
@@ -37,7 +37,7 @@ export default function AddRoom() {
                     <div>
                       <label
                         for="date"
-                        className="block text-sm font-bold text-gray-700"
+                        class="block text-sm font-bold text-gray-700"
                       >
                         Ngày tạo phòng
                       </label>
@@ -45,13 +45,13 @@ export default function AddRoom() {
                         type="date"
                         id="date"
                         placeholder="dd/MM/yyyy"
-                        className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                        class="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                       />
                     </div>
                     <div>
                       <label
                         for="name"
-                        className="block text-sm font-medium text-gray-700"
+                        class="block text-sm font-medium text-gray-700"
                       >
                         Tên phòng chiếu <span className="text-red-600">*</span>{" "}
                       </label>
@@ -59,14 +59,14 @@ export default function AddRoom() {
                         type="text"
                         id="name"
                         placeholder="Tên phòng chiếu"
-                        className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                        class="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                         required
                       />
                     </div>
                     <div>
                       <label
                         for="total"
-                        className="block text-sm font-medium text-gray-700"
+                        class="block text-sm font-medium text-gray-700"
                       >
                         Sức chứa
                       </label>
@@ -75,19 +75,19 @@ export default function AddRoom() {
                         id="total"
                         value={total}
                         placeholder="Sức chứa"
-                        className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                        class="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                         readOnly
                       />
                     </div>
                     <div className=" w-[404px]">
-                      <label className="block text-sm font-medium text-gray-700 mb-4">
+                      <label class="block text-sm font-medium text-gray-700 mb-4">
                         Sơ đồ ghế <span className="text-red-600">*</span>{" "}
                       </label>
                       <div className="flex justify-around">
                         <div className="col-span-1">
                           <label
                             for="row"
-                            className="block text-sm font-medium text-gray-700"
+                            class="block text-sm font-medium text-gray-700"
                           >
                             Số hàng <span className="text-red-600">*</span>{" "}
                           </label>
@@ -97,14 +97,14 @@ export default function AddRoom() {
                             id="row"
                             placeholder="Hàng"
                             onChange={(e) => setRow(e.target.value)}
-                            className="bg-[#F9F9F9] mt-1 block w-[125px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                            class="bg-[#F9F9F9] mt-1 block w-[125px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                             required
                           />
                         </div>
                         <div className="col-span-1">
                           <label
                             for="column"
-                            className="block text-sm font-medium text-gray-700"
+                            class="block text-sm font-medium text-gray-700"
                           >
                             Số cột <span className="text-red-600">*</span>{" "}
                           </label>
@@ -114,7 +114,7 @@ export default function AddRoom() {
                             id="column"
                             placeholder="Cột"
                             onChange={(e) => setCol(e.target.value)}
-                            className="bg-[#F9F9F9] mt-1 block w-[125px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                            class="bg-[#F9F9F9] mt-1 block w-[125px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                             required
                           />
                         </div>
@@ -125,7 +125,7 @@ export default function AddRoom() {
                     <div>
                       <label
                         for="monitor"
-                        className="block text-sm font-medium text-gray-700"
+                        class="block text-sm font-medium text-gray-700"
                       >
                         Loại màn hình <span className="text-red-600">*</span>{" "}
                       </label>
@@ -133,7 +133,7 @@ export default function AddRoom() {
                         type="text"
                         id="monitor"
                         placeholder="your@email.com"
-                        className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                        class="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                         required
                       >
                         <option>-- Chọn màn hình --</option>
@@ -145,7 +145,7 @@ export default function AddRoom() {
                     <div>
                       <label
                         for="sound"
-                        className="block text-sm font-medium text-gray-700"
+                        class="block text-sm font-medium text-gray-700"
                       >
                         Hệ thống âm thanh{" "}
                         <span className="text-red-600">*</span>{" "}
@@ -154,7 +154,7 @@ export default function AddRoom() {
                         type="text"
                         id="sound"
                         placeholder="your@email.com"
-                        className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                        class="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                         required
                       >
                         <option>-- Chọn hệ thống âm thanh --</option>
@@ -166,7 +166,7 @@ export default function AddRoom() {
                     <div>
                       <label
                         for="projector"
-                        className="block text-sm font-medium text-gray-700"
+                        class="block text-sm font-medium text-gray-700"
                       >
                         Máy chiếu <span className="text-red-600">*</span>{" "}
                       </label>
@@ -174,7 +174,7 @@ export default function AddRoom() {
                         type="text"
                         id="projector"
                         placeholder="your@email.com"
-                        className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                        class="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                         required
                       >
                         <option>-- Chọn máy chiếu --</option>
@@ -192,7 +192,7 @@ export default function AddRoom() {
                     </button>
                   </Link>
                   <button className="bg-black px-4 py-2 text-white font-bold text-[16px] w-[120px] h-[55px] rounded-[90px] ml-6 cursor-pointer">
-                    Tạo
+                    Lưu
                   </button>
                 </div>
               </form>

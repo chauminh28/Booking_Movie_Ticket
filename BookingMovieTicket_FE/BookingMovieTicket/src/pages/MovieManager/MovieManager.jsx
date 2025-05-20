@@ -1,21 +1,15 @@
-import React, { useState } from "react";
-import NavbarAdmin from "../../components/layouts/NavbarAdmin";
-import Search from "../../components/layouts/Search";
+import React from "react";
 import HeaderAdmin from "../../components/layouts/HeaderAdmin";
-
+import NavbarAdmin from "../../components/layouts/NavbarAdmin";
 import { FaFilter } from "react-icons/fa6";
 import { IoIosAddCircle } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
-
-export default function RoomMangaer() {
-  const [roomStatus, setRoomStatus] = useState(true);
-
-  const toggleRoom = () => setRoomStatus(!roomStatus);
-
+import Search from "../../components/layouts/Search";
+function MovieManager() {
   return (
-    <>
+    <div>
       <div className="grid grid-cols-12">
         <div className="col-span-2">
           <NavbarAdmin />
@@ -28,7 +22,7 @@ export default function RoomMangaer() {
 
             <div className="flex mt-6 w-full mb-6">
               <div className="w-full">
-                <p className="font-bold text-[28px]">QUẢN LÝ PHÒNG CHIẾU</p>
+                <p className="font-bold text-[28px]">QUẢN LÝ PHIM</p>
               </div>
               <div className="flex justify-end items-end w-full gap-x-10 pr-[100px]">
                 <button
@@ -71,7 +65,7 @@ export default function RoomMangaer() {
                         type="radio"
                         value=""
                         name="default-radio"
-                        className="w-4 h-4"
+                        className="w-4 h-4 text-gray-500"
                       />
                       <label
                         htmlFor="default-radio-1"
@@ -86,7 +80,7 @@ export default function RoomMangaer() {
                         type="radio"
                         value=""
                         name="default-radio"
-                        className="w-4 h-4"
+                        className="w-4 h-4 text-gray-500"
                       />
                       <label
                         htmlFor="default-radio-1"
@@ -97,9 +91,9 @@ export default function RoomMangaer() {
                     </li>
                   </ul>
                 </div>
-                <a href="#">
+                <Link to="/movieManager/addMovie">
                   <IoIosAddCircle className="text-[28px]" />
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -109,43 +103,33 @@ export default function RoomMangaer() {
                 <table className="table-auto w-full text-left text-sm">
                   <thead>
                     <tr className="font-semibold text-[15px] text-[#A2A2A6]">
-                      <th className="px-4 py-2">Tên phòng</th>
-                      <th className="px-4 py-2">Sức chứa</th>
-                      <th className="px-4 py-2">Loại màn hình</th>
-                      <th className="px-4 py-2">Máy chiếu</th>
-                      <th className="px-4 py-2">Hệ thống âm thanh</th>
+                      <th className="px-4 py-2">Tên phim</th>
+                      <th className="px-4 py-2">Ngày khởi chiếu</th>
+                      <th className="px-4 py-2">Thời lượng</th>
+                      <th className="px-4 py-2">Độ tuổi giới hạn</th>
                       <th className="px-4 py-2">Trạng thái</th>
                       <th className="px-4 py-2">Hành động</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr className="border-t border-[#EEEEEE]">
-                      <td className="px-4 py-2">Phòng 1</td>
-                      <td className="px-4 py-2">160</td>
-                      <td className="px-4 py-2">2D</td>
-                      <td className="px-4 py-2">Digital Projector</td>
-                      <td className="px-4 py-2">Dolby Atmos</td>
-                      <td className="px-4 py-2">
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={roomStatus}
-                            onChange={toggleRoom}
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-gray-300 peer-checked:bg-black rounded-full transition-colors duration-300"></div>
-                          <div className="absolute w-5 h-5 bg-white rounded-full shadow left-0.5 top-0.5 peer-checked:translate-x-full transition transhtmlForm duration-300"></div>
-                        </label>
-                      </td>
+                      <td className="px-4 py-2">Biệt đội sấm sét</td>
+                      <td className="px-4 py-2">30/04/2025</td>
+                      <td className="px-4 py-2">126 phút</td>
+                      <td className="px-4 py-2">T13</td>
+                      <td className="px-4 py-2">Đang chiếu</td>
+
                       <td className="px-4 py-2 flex space-x-4">
-                        <Link to="/roomManager/editRoom">
+                        <Link to="/movieManager/editMovie">
                           <button className="text-blue-600 hover:text-blue-800 text-[20px] cursor-pointer">
                             <MdEdit />
                           </button>
                         </Link>
-                        <button className="text-red-600 hover:text-red-800 text-[20px] cursor-pointer">
-                          <MdDelete />
-                        </button>
+                        <Link to={"/movieManager/deleteMovie"}>
+                          <button className="text-red-600 hover:text-red-800 text-[20px] cursor-pointer">
+                            <MdDelete />
+                          </button>
+                        </Link>
                       </td>
                     </tr>
                   </tbody>
@@ -190,6 +174,8 @@ export default function RoomMangaer() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
+
+export default MovieManager;
