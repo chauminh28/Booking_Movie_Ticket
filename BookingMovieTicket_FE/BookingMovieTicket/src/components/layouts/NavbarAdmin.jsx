@@ -83,15 +83,15 @@ export default function NavbarAdmin() {
         </div>
         <div className="flex items-center">
           <FaPersonChalkboard className="text-white mx-3" />
-          <a href="#" className="text-white font-medium">
+          <Link to={"/directorManager"} className="text-white font-medium">
             Đạo diễn
-          </a>
+          </Link>
         </div>
         <div className="flex items-center">
           <FaPersonRays className="text-white mx-3" />
-          <a href="#" className="text-white font-medium">
+          <Link to={"/actorManager"} className="text-white font-medium">
             Diễn viên
-          </a>
+          </Link>
         </div>
         <div className="flex items-center">
           <FaUserGroup className="text-white mx-3" />

@@ -15,10 +15,14 @@ import MovieManager from "./pages/MovieManager/MovieManager";
 import AddMovie from "./pages/MovieManager/AddMovie";
 import EditMovie from "./pages/MovieManager/EditMovie";
 import DeleteMovie from "./pages/MovieManager/DeleteMovie";
-import AddDirector from "./pages/MovieManager/AddDirector";
-import EditDirector from "./pages/MovieManager/editDirector";
-import AddActor from "./pages/MovieManager/AddActor";
-import EditActor from "./pages/MovieManager/EditActor";
+import AddDirector from "./pages/DirectorManager/AddDirector";
+import EditDirector from "./pages/DirectorManager/EditDirector";
+import AddActor from "./pages/ActorManager/AddActor";
+import EditActor from "./pages/ActorManager/EditActor";
+import DirectorManager from "./pages/DirectorManager/DirectorManager";
+import DeleteDirector from "./pages/DirectorManager/DeleteDirector";
+import ActorManager from "./pages/ActorManager/ActorManager";
+import DeleteActor from "./pages/ActorManager/DeleteActor";
 
 function App() {
   return (
@@ -48,19 +52,22 @@ function App() {
         <Route path="/movieManager/addMovie" element={<AddMovie />} />
         <Route path="/movieManager/editMovie" element={<EditMovie />} />
         <Route path="/movieManager/deleteMovie" element={<DeleteMovie />} />
+        {/* Director Manager */}
+        <Route path="/directorManager" element={<DirectorManager />} />
+        <Route path="/directorManager/addDirector" element={<AddDirector />} />
         <Route
-          path="/movieManager/editMovie/addDirector"
-          element={<AddDirector />}
-        />
-        <Route
-          path="/movieManager/editMovie/editDirector"
+          path="/directorManager/editDirector"
           element={<EditDirector />}
         />
-        <Route path="/movieManager/editMovie/addActor" element={<AddActor />} />
         <Route
-          path="/movieManager/editMovie/editActor"
-          element={<EditActor />}
+          path="/directorManager/deleteDirector"
+          element={<DeleteDirector />}
         />
+        {/* Actor Manager */}
+        <Route path="/actorManager" element={<ActorManager />} />
+        <Route path="/actorManager/addActor" element={<AddActor />} />
+        <Route path="/actorManager/editActor" element={<EditActor />} />
+        <Route path="/actorManager/deleteActor" element={<DeleteActor />} />
       </Routes>
     </Router>
   );
