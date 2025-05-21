@@ -3,10 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import NavbarAdmin from "../../components/layouts/NavbarAdmin";
 import HeaderAdmin from "../../components/layouts/HeaderAdmin";
-import React, { useEffect, useState } from 'react'
-import NavbarAdmin from "../../components/layouts/NavbarAdmin"
-import HeaderAdmin from "../../components/layouts/HeaderAdmin"
-import { Link } from 'react-router-dom'
+
 
 export default function AddRoom() {
   const [row, setRow] = useState(0);

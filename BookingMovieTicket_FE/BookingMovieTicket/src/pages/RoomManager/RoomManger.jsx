@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import NavbarAdmin from "../../components/layouts/NavbarAdmin";
 import Search from "../../components/layouts/Search";
 import HeaderAdmin from "../../components/layouts/HeaderAdmin";
+import AddRoom from "./AddRoom";
 
 import { FaFilter } from "react-icons/fa6";
 import { IoIosAddCircle } from "react-icons/io";
@@ -97,9 +98,9 @@ export default function RoomMangaer() {
                     </li>
                   </ul>
                 </div>
-                <a href="#">
+                <Link to={"/roomManager/addRoom"}>
                   <IoIosAddCircle className="text-[28px]" />
-                </a>
+                </Link>
               </div>
             </div>
 

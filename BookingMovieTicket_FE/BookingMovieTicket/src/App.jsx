@@ -11,8 +11,7 @@ import Profile from "./pages/public/Profile";
 import ProfileChangePassword from "./pages/public/ProfileChangePassword";
 import MoviePage from "./pages/public/MoviePage";
 import MovieDetailPage from "./pages/public/MovieDetailPage";
-import AddRoom from "./pages/RoomManager/AddRoom";
-import EditRoom from "./pages/RoomManager/EditRoom";
+
 import MovieManager from "./pages/MovieManager/MovieManager";
 import AddMovie from "./pages/MovieManager/AddMovie";
 import EditMovie from "./pages/MovieManager/EditMovie";
@@ -25,7 +24,6 @@ import DirectorManager from "./pages/DirectorManager/DirectorManager";
 import DeleteDirector from "./pages/DirectorManager/DeleteDirector";
 import ActorManager from "./pages/ActorManager/ActorManager";
 import DeleteActor from "./pages/ActorManager/DeleteActor";
-import MovieDetailPage from "./pages/public/MovieDetailPage"
 import MovieSchedulePage from "./pages/public/MovieSchedulePage";
 import UserManager from "./pages/UserManager/UserManager";
 import EditUser from "./pages/UserManager/EditUser"
