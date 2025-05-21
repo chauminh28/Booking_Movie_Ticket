@@ -11,20 +11,32 @@ function Header() {
     <>
       <div className="bg-[#f3f3f3] h-24 flex justify-center items-center mb-12">
         <div className="h-full items-center flex container justify-around mx-auto">
-          <div className="h-full flex items-center justify-center w-[150px]">
-            <img src={Logo} alt="Logo" className="w-full h-full object-cover" />
-          </div>
+          <Link to={"/"}>
+            <div className="h-full flex items-center justify-center w-[150px]">
+              <img
+                src={Logo}
+                alt="Logo"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </Link>
           <div className="h-full flex items-center justify-center w-[500px]">
             <ul className="flex space-x-[15] w-full justify-around h-full">
-              <li className="text-[24px] cursor-pointer hover:border-b-2 hover:border-black h-full w-30 items-center flex justify-center">
-                <Link to="/">Trang chủ</Link>
-              </li>
-              <li className="text-[24px] cursor-pointer hover:border-b-2 hover:border-black h-full w-30 items-center flex justify-center">
-                <Link to={"/movie"}>Phim</Link>
-              </li>
-              <li className="text-[24px] cursor-pointer hover:border-b-2 hover:border-black h-full w-30 items-center flex justify-center">
-                <Link to={"/schedule"}>Lịch chiếu</Link>
-              </li>
+              <Link to={"/"}>
+                <li className="text-[24px] cursor-pointer hover:border-b-2 hover:border-black h-full w-30 items-center flex justify-center">
+                  Trang chủ
+                </li>
+              </Link>
+              <Link to={"/movie"}>
+                <li className="text-[24px] cursor-pointer hover:border-b-2 hover:border-black h-full w-30 items-center flex justify-center">
+                  Phim
+                </li>
+              </Link>
+              <Link to={"/schedule"}>
+                <li className="text-[24px] cursor-pointer hover:border-b-2 hover:border-black h-full w-30 items-center flex justify-center">
+                  Lịch chiếu
+                </li>
+              </Link>
             </ul>
           </div>
           <button
