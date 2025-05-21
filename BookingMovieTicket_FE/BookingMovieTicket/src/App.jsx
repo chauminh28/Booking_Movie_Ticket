@@ -11,7 +11,6 @@ import Profile from "./pages/public/Profile";
 import ProfileChangePassword from "./pages/public/ProfileChangePassword";
 import MoviePage from "./pages/public/MoviePage";
 import MovieDetailPage from "./pages/public/MovieDetailPage";
-
 import MovieManager from "./pages/MovieManager/MovieManager";
 import AddMovie from "./pages/MovieManager/AddMovie";
 import EditMovie from "./pages/MovieManager/EditMovie";
@@ -27,6 +26,12 @@ import DeleteActor from "./pages/ActorManager/DeleteActor";
 import MovieSchedulePage from "./pages/public/MovieSchedulePage";
 import UserManager from "./pages/UserManager/UserManager";
 import EditUser from "./pages/UserManager/EditUser"
+import AddUser from "./pages/UserManager/AddUser"
+import DeleteUser from "./pages/UserManager/DeleteUser";
+import ServiceManager from "./pages/ServiceManager/ServiceManager";
+import AddService from "./pages/ServiceManager/AddService";
+import EditService from "./pages/ServiceManager/EditService";
+import DeleteService from "./pages/ServiceManager/DeleteService";
 
 function App() {
   return (
@@ -73,8 +78,18 @@ function App() {
         <Route path="/actorManager/addActor" element={<AddActor />} />
         <Route path="/actorManager/editActor" element={<EditActor />} />
         <Route path="/actorManager/deleteActor" element={<DeleteActor />} />
+
+        {/* User Manager */}
         <Route path="/userManager" element={<UserManager />} />
         <Route path="/userManager/editUser" element={<EditUser />} />
+        <Route path="/userManager/addUser" element={<AddUser />} />
+        <Route path="/userManager/deleteUser" element={<DeleteUser />} />
+
+        {/* Service Manager */}
+        <Route path="/serviceManager" element={<ServiceManager />} />
+        <Route path="/serviceManager/editService" element={<EditService />} />
+        <Route path="/serviceManager/addService" element={<AddService />} />
+        <Route path="/serviceManager/deleteService" element={<DeleteService />} />
       </Routes>
     </Router>
   );

@@ -9,6 +9,7 @@ import { FaPersonChalkboard } from "react-icons/fa6";
 import { FaPersonRays } from "react-icons/fa6";
 import { FaUserGroup } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
+import { GiPopcorn } from "react-icons/gi";
 import Logo from "/logo.png";
 import { initFlowbite } from "flowbite";
 import { Link } from "react-router-dom";
@@ -94,10 +95,16 @@ export default function NavbarAdmin() {
           </Link>
         </div>
         <div className="flex items-center">
+          <GiPopcorn className="text-white mx-3" />
+          <Link to={"/serviceManager"} className="text-white font-medium">
+            Dịch vụ
+          </Link>
+        </div>
+        <div className="flex items-center">
           <FaUserGroup className="text-white mx-3" />
-          <a href="#" className="text-white font-medium">
+          <Link to={"/userManager"} className="text-white font-medium">
             Người dùng
-          </a>
+          </Link>
         </div>
       </div>
     </>

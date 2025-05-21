@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import NavbarAdmin from '../../components/layouts/NavbarAdmin'
 import HeaderAdmin from '../../components/layouts/HeaderAdmin'
-import Search from '../../components/layouts/Search'
 import { Link } from 'react-router-dom'
 
 import { FaFilter } from "react-icons/fa6";
 import { IoIosAddCircle } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
+import { CiSearch } from "react-icons/ci";
 
 function UserManager() {
     const [userStatus, setUserStatus] = useState(true);
@@ -51,12 +51,18 @@ function UserManager() {
                                         </li>
                                     </ul>
                                 </div>
-                                <Link to={"/roomManager/addRoom"}><IoIosAddCircle className='text-[28px]' /></Link>
+                                <Link to={"/userManager/addUser"}><IoIosAddCircle className='text-[28px]' /></Link>
                             </div>
                         </div>
 
                         <div>
-                            <Search />
+                            <div className='relative w-[576px]'>
+                                <input
+                                    className='w-[576px] h-[50px] outline-none rounded-xl border-[#BDC5D4] border-[2px] px-3 py-2'
+                                    placeholder='Tìm kiếm người dùng'
+                                />
+                                <CiSearch className='absolute top-[16px] right-[20px]' />
+                            </div>
                             <div className='mt-3'>
                                 <table className="table-auto w-full text-left text-sm">
                                     <thead>
@@ -65,6 +71,7 @@ function UserManager() {
                                             <th className="px-4 py-2">Họ tên</th>
                                             <th className="px-4 py-2">Email</th>
                                             <th className="px-4 py-2">Ngày sinh</th>
+                                            <th className="px-4 py-2">Giới tính</th>
                                             <th className="px-4 py-2">Số điện thoại</th>
                                             <th className="px-4 py-2">Role</th>
                                             <th className="px-4 py-2">Trạng thái</th>
@@ -77,6 +84,7 @@ function UserManager() {
                                             <td className="px-4 py-2">Huỳnh Ngọc Trình</td>
                                             <td className="px-4 py-2">trinhza1@gmail.com</td>
                                             <td className="px-4 py-2">12/12/2002</td>
+                                            <td className="px-4 py-2">Nam</td>
                                             <td className="px-4 py-2">0123456789</td>
                                             <td className="px-4 py-2">Admin</td>
                                             <td className="px-4 py-2">
@@ -97,9 +105,11 @@ function UserManager() {
                                                         <MdEdit />
                                                     </button>
                                                 </Link>
-                                                <button className="text-red-600 hover:text-red-800 text-[20px] cursor-pointer">
-                                                    <MdDelete />
-                                                </button>
+                                                <Link to={"/userManager/deleteUser"}>
+                                                    <button className="text-red-600 hover:text-red-800 text-[20px] cursor-pointer">
+                                                        <MdDelete />
+                                                    </button>
+                                                </Link>
                                             </td>
                                         </tr>
                                     </tbody>
