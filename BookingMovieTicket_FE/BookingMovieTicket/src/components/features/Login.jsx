@@ -12,24 +12,24 @@ export default function Login() {
                 flex items-center justify-center`}>
                 <div className='w-[460px] h-[570px] bg-white flex items-star justify-star rounded-3xl p-8 flex-col'>
                     <p className='font-bold text-2xl mb-6'>Đăng nhập ngay!</p>
-                    <form class="space-y-6">
+                    <form className="space-y-6">
                         <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
                             <input
                                 type="email"
                                 id="email"
                                 placeholder="your@email.com"
-                                class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                 required
                             />
                         </div>
                         <div className='relative'>
-                            <label for="password" class="block text-sm font-medium text-gray-700">Mật khẩu</label>
+                            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mật khẩu</label>
                             <input
                                 type={showPassword ? "text" : "password"}
                                 id="password"
                                 placeholder="********"
-                                class="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                 required
                             />
                             <button

@@ -26,7 +26,7 @@ export default function NavbarAdmin() {
 
                     <div className='flex-col flex justify-start items-start'>
                         <div className='flex'>
-                            <button data-collapse-toggle="collapseExample" type="button" class="text-white font-medium items-start cursor-pointer flex">
+                            <button data-collapse-toggle="collapseExample" type="button" className="text-white font-medium items-start cursor-pointer flex">
                                 Báo cáo
                                 <IoIosArrowDown className='text-white ml-1 mt-1' />
                             </button>
@@ -36,7 +36,7 @@ export default function NavbarAdmin() {
                             <div className='font-medium text-white dark:text-gray-200'>
                                 <div className='flex items-center w-full ml-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'>
                                     <IoIosTime className='text-white' />
-                                    <a href="#" class="block px-4 py-1">
+                                    <a href="#" className="block px-4 py-1">
                                         Theo thời gian
                                     </a>
                                 </div>
@@ -44,7 +44,7 @@ export default function NavbarAdmin() {
                             <div className='font-medium text-white dark:text-gray-200'>
                                 <div className='flex items-center ml-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white'>
                                     <FaCirclePlay className='text-white' />
-                                    <a href="#" class="block px-4 py-1 ">
+                                    <a href="#" className="block px-4 py-1 ">
                                         Theo phim
                                     </a>
                                 </div>

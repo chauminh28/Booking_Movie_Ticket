@@ -57,7 +57,7 @@ function ProfileInfo() {
               className="border-0 bg-gray-100 text-gray-500 p-2 h-full w-[70%]"
               placeholder="Nguyen Van Anh"
               value="Nam Ky Khoi Nghia,Phuong Hoa Hai, Quan Ngu Hanh Son, Da Nang"
-              onChange={() => {}}
+              onChange={() => { }}
             />
           </div>
           <div className="flex gap-4 items-center">

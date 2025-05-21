@@ -34,59 +34,59 @@ export default function AddRoom() {
                                 <div className='grid grid-cols-12 gap-5 '>
                                     <div className='col-span-6 gap-y-4 flex flex-col'>
                                         <div>
-                                            <label for="date" class="block text-sm font-bold text-gray-700">Ngày tạo phòng</label>
+                                            <label htmlFor="date" className="block text-sm font-bold text-gray-700">Ngày tạo phòng</label>
                                             <input
                                                 type="date"
                                                 id="date"
                                                 placeholder="dd/MM/yyyy"
-                                                class="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                                className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                             />
                                         </div>
                                         <div>
-                                            <label for="name" class="block text-sm font-medium text-gray-700">Tên phòng chiếu <span className='text-red-600'>*</span> </label>
+                                            <label htmlFor="name" className="block text-sm font-medium text-gray-700">Tên phòng chiếu <span className='text-red-600'>*</span> </label>
                                             <input
                                                 type="text"
                                                 id="name"
                                                 placeholder="Tên phòng chiếu"
-                                                class="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                                className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                                 required
                                             />
                                         </div>
                                         <div>
-                                            <label for="total" class="block text-sm font-medium text-gray-700">Sức chứa</label>
+                                            <label htmlFor="total" className="block text-sm font-medium text-gray-700">Sức chứa</label>
                                             <input
                                                 type="text"
                                                 id="total"
                                                 value={total}
                                                 placeholder="Sức chứa"
-                                                class="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                                className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                                 readOnly
                                             />
                                         </div>
                                         <div className=' w-[404px]'>
-                                            <label class="block text-sm font-medium text-gray-700 mb-4">Sơ đồ ghế <span className='text-red-600'>*</span> </label>
+                                            <label className="block text-sm font-medium text-gray-700 mb-4">Sơ đồ ghế <span className='text-red-600'>*</span> </label>
                                             <div className='flex justify-around'>
                                                 <div className='col-span-1'>
-                                                    <label for="row" class="block text-sm font-medium text-gray-700">Số hàng <span className='text-red-600'>*</span> </label>
+                                                    <label htmlFor="row" className="block text-sm font-medium text-gray-700">Số hàng <span className='text-red-600'>*</span> </label>
                                                     <input
                                                         type="text"
                                                         value={row}
                                                         id="row"
                                                         placeholder="Hàng"
                                                         onChange={(e) => setRow(e.target.value)}
-                                                        class="bg-[#F9F9F9] mt-1 block w-[125px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                                        className="bg-[#F9F9F9] mt-1 block w-[125px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                                         required
                                                     />
                                                 </div>
                                                 <div className='col-span-1'>
-                                                    <label for="column" class="block text-sm font-medium text-gray-700">Số cột <span className='text-red-600'>*</span> </label>
+                                                    <label htmlFor="column" className="block text-sm font-medium text-gray-700">Số cột <span className='text-red-600'>*</span> </label>
                                                     <input
                                                         type="text"
                                                         value={col}
                                                         id="column"
                                                         placeholder="Cột"
                                                         onChange={(e) => setCol(e.target.value)}
-                                                        class="bg-[#F9F9F9] mt-1 block w-[125px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                                        className="bg-[#F9F9F9] mt-1 block w-[125px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                                         required
                                                     />
                                                 </div>
@@ -95,12 +95,12 @@ export default function AddRoom() {
                                     </div>
                                     <div className='col-span-6 flex flex-col gap-4'>
                                         <div>
-                                            <label for="monitor" class="block text-sm font-medium text-gray-700">Loại màn hình  <span className='text-red-600'>*</span> </label>
+                                            <label htmlFor="monitor" className="block text-sm font-medium text-gray-700">Loại màn hình  <span className='text-red-600'>*</span> </label>
                                             <select
                                                 type="text"
                                                 id="monitor"
                                                 placeholder="your@email.com"
-                                                class="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                                className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                                 required
                                             >
                                                 <option>-- Chọn màn hình --</option>
@@ -110,12 +110,12 @@ export default function AddRoom() {
                                             </select>
                                         </div>
                                         <div>
-                                            <label for="sound" class="block text-sm font-medium text-gray-700">Hệ thống âm thanh  <span className='text-red-600'>*</span> </label>
+                                            <label htmlFor="sound" className="block text-sm font-medium text-gray-700">Hệ thống âm thanh  <span className='text-red-600'>*</span> </label>
                                             <select
                                                 type="text"
                                                 id="sound"
                                                 placeholder="your@email.com"
-                                                class="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                                className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                                 required
                                             >
                                                 <option>-- Chọn hệ thống âm thanh --</option>
@@ -125,12 +125,12 @@ export default function AddRoom() {
                                             </select>
                                         </div>
                                         <div>
-                                            <label for="projector" class="block text-sm font-medium text-gray-700">Máy chiếu <span className='text-red-600'>*</span> </label>
+                                            <label htmlFor="projector" className="block text-sm font-medium text-gray-700">Máy chiếu <span className='text-red-600'>*</span> </label>
                                             <select
                                                 type="text"
                                                 id="projector"
                                                 placeholder="your@email.com"
-                                                class="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                                className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                                 required
                                             >
                                                 <option>-- Chọn máy chiếu --</option>
