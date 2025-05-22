@@ -24,7 +24,6 @@ import DeleteDirector from "./pages/DirectorManager/DeleteDirector";
 import ActorManager from "./pages/ActorManager/ActorManager";
 import DeleteActor from "./pages/ActorManager/DeleteActor";
 import MovieSchedulePage from "./pages/public/MovieSchedulePage";
-
 import EditUser from "./pages/UserManager/EditUser";
 import AddUser from "./pages/UserManager/AddUser";
 import DeleteUser from "./pages/UserManager/DeleteUser";
@@ -41,6 +40,8 @@ import AddSchedule from "./pages/ScheduleManager/AddSchedule";
 import EditSchedule from "./pages/ScheduleManager/EditSchedule";
 import DeleteSchedule from "./pages/ScheduleManager/DeleteSchedule";
 import UserManager from "./pages/UserManager/UserManager";
+import TicketManager from "./pages/TicketManager/TicketManager";
+import DetailTicket from "./pages/TicketManager/DetailTicket";
 
 function App() {
   return (
@@ -126,6 +127,10 @@ function App() {
           path="/scheduleManager/deleteSchedule"
           element={<DeleteSchedule />}
         />
+
+        {/* TicketManger */}
+        <Route path="/ticketManager" element={<TicketManager />} />
+        <Route path="/ticketManager/detail" element={<DetailTicket />} />
       </Routes>
     </Router>
   );
