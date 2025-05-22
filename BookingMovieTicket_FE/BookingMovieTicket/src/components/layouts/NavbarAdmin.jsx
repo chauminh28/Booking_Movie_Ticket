@@ -78,9 +78,9 @@ export default function NavbarAdmin() {
         </div>
         <div className="flex items-center">
           <BiCategory className="text-white mx-3" />
-          <a href="#" className="text-white font-medium">
+          <Link to={"/seatTypeManager"} className="text-white font-medium">
             Loại ghế
-          </a>
+          </Link>
         </div>
         <div className="flex items-center">
           <FaPersonChalkboard className="text-white mx-3" />

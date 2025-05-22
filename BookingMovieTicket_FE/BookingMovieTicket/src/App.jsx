@@ -32,6 +32,10 @@ import ServiceManager from "./pages/ServiceManager/ServiceManager";
 import AddService from "./pages/ServiceManager/AddService";
 import EditService from "./pages/ServiceManager/EditService";
 import DeleteService from "./pages/ServiceManager/DeleteService";
+import SeatTypeManager from "./pages/SeatTypeManager/SeatTypeManager";
+import AddSeatType from "./pages/SeatTypeManager/AddSeatType";
+import EditSeatType from "./pages/SeatTypeManager/EditSeatType";
+import DeleteSeatType from "./pages/SeatTypeManager/DeleteSeatType";
 
 function App() {
   return (
@@ -90,6 +94,12 @@ function App() {
         <Route path="/serviceManager/editService" element={<EditService />} />
         <Route path="/serviceManager/addService" element={<AddService />} />
         <Route path="/serviceManager/deleteService" element={<DeleteService />} />
+
+        {/* SeatType Manager */}
+        <Route path="/seatTypeManager" element={<SeatTypeManager />} />
+        <Route path="/seatTypeManager/editSeatType" element={<EditSeatType />} />
+        <Route path="/seatTypeManager/addSeatType" element={<AddSeatType />} />
+        <Route path="/seatTypeManager/deleteSeatType" element={<DeleteSeatType />} />
       </Routes>
     </Router>
   );
