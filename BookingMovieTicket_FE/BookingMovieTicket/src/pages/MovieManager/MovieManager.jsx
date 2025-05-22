@@ -6,7 +6,7 @@ import { IoIosAddCircle } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
-import Search from "../../components/layouts/Search";
+import { CiSearch } from "react-icons/ci";
 function MovieManager() {
   return (
     <div>
@@ -33,7 +33,7 @@ function MovieManager() {
                 >
                   <a href="#">
                     <FaFilter className="text-[28px]" />
-                  </a>{" "}
+                  </a>
                   <svg
                     className="w-2.5 h-2.5 ms-3"
                     aria-hidden="true"
@@ -98,7 +98,13 @@ function MovieManager() {
             </div>
 
             <div>
-              <Search />
+              <div className="relative w-[576px]">
+                <input
+                  className="w-[576px] h-[50px] outline-none rounded-xl border-[#BDC5D4] border-[2px] px-3 py-2"
+                  placeholder="Tìm kiếm phim"
+                />
+                <CiSearch className="absolute top-[16px] right-[20px]" />
+              </div>
               <div className="mt-3">
                 <table className="table-auto w-full text-left text-sm">
                   <thead>
@@ -164,8 +170,8 @@ function MovieManager() {
                       href="#"
                       className="px-3 py-2 rounded-r-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white"
                     >
-                      {" "}
-                      Next{" "}
+                      
+                      Next
                     </a>
                   </nav>
                 </div>

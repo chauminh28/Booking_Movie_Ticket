@@ -65,9 +65,9 @@ export default function NavbarAdmin() {
         </div>
         <div className="flex items-center">
           <FaCalendarAlt className="text-white mx-3" />
-          <a href="#" className="text-white font-medium">
+          <Link to={"/scheduleManager"} className="text-white font-medium">
             Lịch chiếu
-          </a>
+          </Link>
         </div>
         <div className="flex items-center">
           <FaCirclePlay className="text-white mx-3" />
@@ -95,9 +95,9 @@ export default function NavbarAdmin() {
         </div>
         <div className="flex items-center">
           <FaUserGroup className="text-white mx-3" />
-          <a href="#" className="text-white font-medium">
+          <Link to={"/userManager"} className="text-white font-medium">
             Người dùng
-          </a>
+          </Link>
         </div>
       </div>
     </>

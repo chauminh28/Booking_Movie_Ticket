@@ -30,7 +30,7 @@ function DeleteMovie() {
                       htmlFor="name"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Tên phim <span className="text-red-600">*</span>{" "}
+                      Tên phim 
                     </label>
                     <input
                       type="text"
@@ -45,7 +45,7 @@ function DeleteMovie() {
                       htmlFor="duration"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Thời lượng (phút) <span className="text-red-600">*</span>{" "}
+                      Thời lượng (phút) 
                     </label>
                     <input
                       type="text"
@@ -74,7 +74,7 @@ function DeleteMovie() {
                       htmlFor="age"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Độ tuổi giới hạn<span className="text-red-600">*</span>{" "}
+                      Độ tuổi giới hạn
                     </label>
                     <select
                       type="text"
@@ -94,7 +94,7 @@ function DeleteMovie() {
                       htmlFor="status"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Trạng thái<span className="text-red-600">*</span>{" "}
+                      Trạng thái
                     </label>
                     <select
                       type="text"
@@ -116,7 +116,7 @@ function DeleteMovie() {
                       htmlFor="description"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Mô tả phim <span className="text-red-600">*</span>{" "}
+                      Mô tả phim 
                     </label>
                     <textarea
                       type="text"
@@ -131,7 +131,7 @@ function DeleteMovie() {
                       htmlFor="country"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Quốc gia <span className="text-red-600">*</span>{" "}
+                      Quốc gia 
                     </label>
                     <select
                       type="text"
@@ -151,7 +151,7 @@ function DeleteMovie() {
                       htmlFor="genres"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Thể loại <span className="text-red-600">*</span>{" "}
+                      Thể loại 
                     </label>
                     <select
                       type="text"
@@ -171,7 +171,7 @@ function DeleteMovie() {
                       htmlFor="image"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Ảnh phim <span className="text-red-600">*</span>{" "}
+                      Ảnh phim 
                     </label>
                     <input
                       type="file"

@@ -30,7 +30,7 @@ function AddMovie() {
                       htmlFor="name"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Tên phim <span className="text-red-600">*</span>{" "}
+                      Tên phim <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -45,7 +45,7 @@ function AddMovie() {
                       htmlFor="duration"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Thời lượng (phút) <span className="text-red-600">*</span>{" "}
+                      Thời lượng (phút) <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="text"
@@ -74,7 +74,7 @@ function AddMovie() {
                       htmlFor="age"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Độ tuổi giới hạn<span className="text-red-600">*</span>{" "}
+                      Độ tuổi giới hạn<span className="text-red-600">*</span>
                     </label>
                     <select
                       type="text"
@@ -94,7 +94,7 @@ function AddMovie() {
                       htmlFor="status"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Trạng thái<span className="text-red-600">*</span>{" "}
+                      Trạng thái<span className="text-red-600">*</span>
                     </label>
                     <select
                       type="text"
@@ -104,9 +104,9 @@ function AddMovie() {
                       required
                     >
                       <option>-- Chọn trạng thái --</option>
-                      <option>Chưa chiếu</option>
-                      <option>Đang chiếu</option>
                       <option>Sắp chiếu</option>
+                      <option>Đang chiếu</option>
+                      <option>Ngừng chiếu</option>
                     </select>
                   </div>
                 </div>
@@ -116,7 +116,7 @@ function AddMovie() {
                       htmlFor="description"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Mô tả phim <span className="text-red-600">*</span>{" "}
+                      Mô tả phim <span className="text-red-600">*</span>
                     </label>
                     <textarea
                       type="text"
@@ -131,7 +131,7 @@ function AddMovie() {
                       htmlFor="country"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Quốc gia <span className="text-red-600">*</span>{" "}
+                      Quốc gia <span className="text-red-600">*</span>
                     </label>
                     <select
                       type="text"
@@ -151,7 +151,7 @@ function AddMovie() {
                       htmlFor="genres"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Thể loại <span className="text-red-600">*</span>{" "}
+                      Thể loại <span className="text-red-600">*</span>
                     </label>
                     <select
                       type="text"
@@ -171,7 +171,7 @@ function AddMovie() {
                       htmlFor="image"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Ảnh phim <span className="text-red-600">*</span>{" "}
+                      Ảnh phim <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="file"

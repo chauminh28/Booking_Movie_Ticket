@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import NavbarAdmin from "../../components/layouts/NavbarAdmin";
 import HeaderAdmin from "../../components/layouts/HeaderAdmin";
 
-
 export default function AddRoom() {
   const [row, setRow] = useState(0);
   const [col, setCol] = useState(0);
@@ -27,16 +26,21 @@ export default function AddRoom() {
           <NavbarAdmin />
         </div>
 
-        <div className='col-span-10'>
-          <div className='bg-white col-span-10 h-[100vh] p-[30px]'>
+        <div className="col-span-10">
+          <div className="bg-white col-span-10 h-[100vh] p-[30px]">
             <HeaderAdmin />
-            <p className='font-bold text-[28px]'>SỬA PHÒNG CHIẾU</p>
-            <div className='mt-[30px] pl-[30px]'>
+            <p className="font-bold text-[28px]">SỬA PHÒNG CHIẾU</p>
+            <div className="mt-[30px] pl-[30px]">
               <form>
-                <div className='grid grid-cols-12 gap-5 '>
-                  <div className='col-span-6 gap-y-4 flex flex-col'>
+                <div className="grid grid-cols-12 gap-5 ">
+                  <div className="col-span-6 gap-y-4 flex flex-col">
                     <div>
-                      <label htmlFor="date" className="block text-sm font-bold text-gray-700">Ngày tạo phòng</label>
+                      <label
+                        htmlFor="date"
+                        className="block text-sm font-bold text-gray-700"
+                      >
+                        Ngày tạo phòng
+                      </label>
                       <input
                         type="date"
                         id="date"
@@ -45,7 +49,12 @@ export default function AddRoom() {
                       />
                     </div>
                     <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700">Tên phòng chiếu <span className='text-red-600'>*</span> </label>
+                      <label
+                        htmlFor="name"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Tên phòng chiếu
+                      </label>
                       <input
                         type="text"
                         id="name"
@@ -55,7 +64,12 @@ export default function AddRoom() {
                       />
                     </div>
                     <div>
-                      <label htmlFor="total" className="block text-sm font-medium text-gray-700">Sức chứa</label>
+                      <label
+                        htmlFor="total"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Sức chứa
+                      </label>
                       <input
                         type="text"
                         id="total"
@@ -65,11 +79,18 @@ export default function AddRoom() {
                         readOnly
                       />
                     </div>
-                    <div className=' w-[404px]'>
-                      <label className="block text-sm font-medium text-gray-700 mb-4">Sơ đồ ghế <span className='text-red-600'>*</span> </label>
-                      <div className='flex justify-around'>
-                        <div className='col-span-1'>
-                          <label htmlFor="row" className="block text-sm font-medium text-gray-700">Số hàng <span className='text-red-600'>*</span> </label>
+                    <div className=" w-[404px]">
+                      <label className="block text-sm font-medium text-gray-700 mb-4">
+                        Sơ đồ ghế
+                      </label>
+                      <div className="flex justify-around">
+                        <div className="col-span-1">
+                          <label
+                            htmlFor="row"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Số hàng
+                          </label>
                           <input
                             type="text"
                             value={row}
@@ -80,8 +101,13 @@ export default function AddRoom() {
                             required
                           />
                         </div>
-                        <div className='col-span-1'>
-                          <label htmlFor="column" className="block text-sm font-medium text-gray-700">Số cột <span className='text-red-600'>*</span> </label>
+                        <div className="col-span-1">
+                          <label
+                            htmlFor="column"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Số cột
+                          </label>
                           <input
                             type="text"
                             value={col}
@@ -95,9 +121,14 @@ export default function AddRoom() {
                       </div>
                     </div>
                   </div>
-                  <div className='col-span-6 flex flex-col gap-4'>
+                  <div className="col-span-6 flex flex-col gap-4">
                     <div>
-                      <label htmlFor="monitor" className="block text-sm font-medium text-gray-700">Loại màn hình  <span className='text-red-600'>*</span> </label>
+                      <label
+                        htmlFor="monitor"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Loại màn hình
+                      </label>
                       <select
                         type="text"
                         id="monitor"
@@ -112,7 +143,12 @@ export default function AddRoom() {
                       </select>
                     </div>
                     <div>
-                      <label htmlFor="sound" className="block text-sm font-medium text-gray-700">Hệ thống âm thanh  <span className='text-red-600'>*</span> </label>
+                      <label
+                        htmlFor="sound"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Hệ thống âm thanh
+                      </label>
                       <select
                         type="text"
                         id="sound"
@@ -127,7 +163,12 @@ export default function AddRoom() {
                       </select>
                     </div>
                     <div>
-                      <label htmlFor="projector" className="block text-sm font-medium text-gray-700">Máy chiếu <span className='text-red-600'>*</span> </label>
+                      <label
+                        htmlFor="projector"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Máy chiếu
+                      </label>
                       <select
                         type="text"
                         id="projector"
@@ -143,13 +184,13 @@ export default function AddRoom() {
                     </div>
                   </div>
                 </div>
-                <div className='mt-[56px]'>
+                <div className="mt-[56px]">
                   <Link to={"/roomManager"}>
-                    <button className='bg-white px-4 py-2 text-black border-1 border-black font-bold text-[16px] w-[120px] h-[55px] rounded-[90px] cursor-pointer'>
+                    <button className="bg-white px-4 py-2 text-black border-1 border-black font-bold text-[16px] w-[120px] h-[55px] rounded-[90px] cursor-pointer">
                       Huỷ
                     </button>
                   </Link>
-                  <button className='bg-black px-4 py-2 text-white font-bold text-[16px] w-[120px] h-[55px] rounded-[90px] ml-6 cursor-pointer'>
+                  <button className="bg-black px-4 py-2 text-white font-bold text-[16px] w-[120px] h-[55px] rounded-[90px] ml-6 cursor-pointer">
                     Lưu
                   </button>
                 </div>
@@ -159,5 +200,5 @@ export default function AddRoom() {
         </div>
       </div>
     </>
-  )
+  );
 }

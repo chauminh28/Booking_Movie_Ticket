@@ -35,7 +35,7 @@ function EditMovie() {
                     htmlFor="name"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Tên phim <span className="text-red-600">*</span>{" "}
+                    Tên phim
                   </label>
                   <input
                     type="text"
@@ -50,7 +50,7 @@ function EditMovie() {
                     htmlFor="duration"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Thời lượng (phút) <span className="text-red-600">*</span>{" "}
+                    Thời lượng (phút)
                   </label>
                   <input
                     type="text"
@@ -79,7 +79,7 @@ function EditMovie() {
                     htmlFor="age"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Độ tuổi giới hạn<span className="text-red-600">*</span>{" "}
+                    Độ tuổi giới hạn
                   </label>
                   <select
                     type="text"
@@ -99,7 +99,7 @@ function EditMovie() {
                     htmlFor="status"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Trạng thái<span className="text-red-600">*</span>{" "}
+                    Trạng thái
                   </label>
                   <select
                     type="text"
@@ -121,7 +121,7 @@ function EditMovie() {
                     htmlFor="description"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Mô tả phim <span className="text-red-600">*</span>{" "}
+                    Mô tả phim
                   </label>
                   <textarea
                     type="text"
@@ -136,7 +136,7 @@ function EditMovie() {
                     htmlFor="country"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Quốc gia <span className="text-red-600">*</span>{" "}
+                    Quốc gia
                   </label>
                   <select
                     type="text"
@@ -156,7 +156,7 @@ function EditMovie() {
                     htmlFor="genres"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Thể loại <span className="text-red-600">*</span>{" "}
+                    Thể loại
                   </label>
                   <select
                     type="text"
@@ -176,7 +176,7 @@ function EditMovie() {
                     htmlFor="image"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Ảnh phim <span className="text-red-600">*</span>
+                    Ảnh phim
                   </label>
                   <input
                     type="file"
@@ -272,15 +272,14 @@ function EditMovie() {
                               <div class="grid gap-4 mb-4 grid-cols-2">
                                 <div class="col-span-2">
                                   <label
-                                    for="name"
+                                    for="director_name"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                   >
-                                    Tên đạo diễn{" "}
-                                    <span className="text-red-600">*</span>
+                                    Tên đạo diễn
                                   </label>
                                   <select
                                     type="text"
-                                    id="genres"
+                                    id="director_name"
                                     className="bg-[#F9F9F9] mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                     required
                                   >
@@ -397,15 +396,14 @@ function EditMovie() {
                               <div class="grid gap-4 mb-4 grid-cols-2">
                                 <div class="col-span-2">
                                   <label
-                                    for="name"
+                                    for="actor_name"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                   >
-                                    Tên diễn viên{" "}
-                                    <span className="text-red-600">*</span>
+                                    Tên diễn viên
                                   </label>
                                   <select
                                     type="text"
-                                    id="genres"
+                                    id="actor_name"
                                     className="bg-[#F9F9F9] mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                     required
                                   >

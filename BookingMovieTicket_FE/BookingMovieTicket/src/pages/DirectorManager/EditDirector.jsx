@@ -30,7 +30,7 @@ function EditDirector() {
                       htmlFor="name"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Tên đạo diễn <span className="text-red-600">*</span>
+                      Tên đạo diễn
                     </label>
                     <input
                       type="text"
@@ -45,7 +45,7 @@ function EditDirector() {
                       htmlFor="gender"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Giới tính <span className="text-red-600">*</span>
+                      Giới tính
                     </label>
                     <div className="flex p-2 space-x-10 text-gray-500">
                       <label htmlFor="gender">
@@ -73,7 +73,7 @@ function EditDirector() {
                       htmlFor="country"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Quốc gia <span className="text-red-600">*</span>{" "}
+                      Quốc gia
                     </label>
                     <select
                       type="text"
@@ -92,7 +92,7 @@ function EditDirector() {
                       htmlFor="image"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Ảnh đạo diễn<span className="text-red-600">*</span>{" "}
+                      Ảnh đạo diễn
                     </label>
                     <input
                       type="file"

@@ -1,12 +1,11 @@
 import React from "react";
 import HeaderAdmin from "../../components/layouts/HeaderAdmin";
 import NavbarAdmin from "../../components/layouts/NavbarAdmin";
-import { FaFilter } from "react-icons/fa6";
 import { IoIosAddCircle } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
-import Search from "../../components/layouts/Search";
+import { CiSearch } from "react-icons/ci";
 function ActorManager() {
   return (
     <div>
@@ -32,7 +31,13 @@ function ActorManager() {
             </div>
 
             <div>
-              <Search />
+              <div className="relative w-[576px]">
+                <input
+                  className="w-[576px] h-[50px] outline-none rounded-xl border-[#BDC5D4] border-[2px] px-3 py-2"
+                  placeholder="Tìm kiếm diễn viên"
+                />
+                <CiSearch className="absolute top-[16px] right-[20px]" />
+              </div>
               <div className="mt-3">
                 <table className="table-auto w-full text-left text-sm">
                   <thead>
@@ -104,8 +109,8 @@ function ActorManager() {
                       href="#"
                       className="px-3 py-2 rounded-r-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white"
                     >
-                      {" "}
-                      Next{" "}
+                      
+                      Next
                     </a>
                   </nav>
                 </div>

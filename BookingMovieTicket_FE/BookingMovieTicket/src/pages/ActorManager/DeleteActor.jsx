@@ -30,7 +30,7 @@ function DeleteActor() {
                       htmlFor="name"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Tên diễn viên <span className="text-red-600">*</span>
+                      Tên diễn viên 
                     </label>
                     <input
                       type="text"
@@ -45,7 +45,7 @@ function DeleteActor() {
                       htmlFor="gender"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Giới tính <span className="text-red-600">*</span>
+                      Giới tính 
                     </label>
                     <div className="flex p-2 space-x-10 text-gray-500">
                       <label htmlFor="gender">
@@ -73,7 +73,7 @@ function DeleteActor() {
                       htmlFor="country"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Quốc gia <span className="text-red-600">*</span>{" "}
+                      Quốc gia 
                     </label>
                     <select
                       type="text"
@@ -92,7 +92,7 @@ function DeleteActor() {
                       htmlFor="image"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Ảnh diễn viên <span className="text-red-600">*</span>{" "}
+                      Ảnh diễn viên 
                     </label>
                     <input
                       type="file"

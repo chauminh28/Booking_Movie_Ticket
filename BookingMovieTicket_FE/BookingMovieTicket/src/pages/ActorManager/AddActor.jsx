@@ -73,7 +73,7 @@ function AddActor() {
                       htmlFor="country"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Quốc gia <span className="text-red-600">*</span>{" "}
+                      Quốc gia <span className="text-red-600">*</span>
                     </label>
                     <select
                       type="text"
@@ -92,7 +92,7 @@ function AddActor() {
                       htmlFor="image"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Ảnh diễn viên <span className="text-red-600">*</span>{" "}
+                      Ảnh diễn viên <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="file"

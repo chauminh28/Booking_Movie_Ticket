@@ -53,7 +53,7 @@ export default function AddRoom() {
                         for="name"
                         className="block text-sm font-medium text-gray-700"
                       >
-                        Tên phòng chiếu <span className="text-red-600">*</span>{" "}
+                        Tên phòng chiếu <span className="text-red-600">*</span>
                       </label>
                       <input
                         type="text"
@@ -81,7 +81,7 @@ export default function AddRoom() {
                     </div>
                     <div className=" w-[404px]">
                       <label className="block text-sm font-medium text-gray-700 mb-4">
-                        Sơ đồ ghế <span className="text-red-600">*</span>{" "}
+                        Sơ đồ ghế <span className="text-red-600">*</span>
                       </label>
                       <div className="flex justify-around">
                         <div className="col-span-1">
@@ -89,7 +89,7 @@ export default function AddRoom() {
                             for="row"
                             className="block text-sm font-medium text-gray-700"
                           >
-                            Số hàng <span className="text-red-600">*</span>{" "}
+                            Số hàng <span className="text-red-600">*</span>
                           </label>
                           <input
                             type="text"
@@ -106,7 +106,7 @@ export default function AddRoom() {
                             for="column"
                             className="block text-sm font-medium text-gray-700"
                           >
-                            Số cột <span className="text-red-600">*</span>{" "}
+                            Số cột <span className="text-red-600">*</span>
                           </label>
                           <input
                             type="text"
@@ -127,7 +127,7 @@ export default function AddRoom() {
                         for="monitor"
                         className="block text-sm font-medium text-gray-700"
                       >
-                        Loại màn hình <span className="text-red-600">*</span>{" "}
+                        Loại màn hình <span className="text-red-600">*</span>
                       </label>
                       <select
                         type="text"
@@ -147,8 +147,8 @@ export default function AddRoom() {
                         for="sound"
                         className="block text-sm font-medium text-gray-700"
                       >
-                        Hệ thống âm thanh{" "}
-                        <span className="text-red-600">*</span>{" "}
+                        Hệ thống âm thanh
+                        <span className="text-red-600">*</span>
                       </label>
                       <select
                         type="text"
@@ -168,7 +168,7 @@ export default function AddRoom() {
                         for="projector"
                         className="block text-sm font-medium text-gray-700"
                       >
-                        Máy chiếu <span className="text-red-600">*</span>{" "}
+                        Máy chiếu <span className="text-red-600">*</span>
                       </label>
                       <select
                         type="text"

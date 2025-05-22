@@ -26,7 +26,11 @@ import ActorManager from "./pages/ActorManager/ActorManager";
 import DeleteActor from "./pages/ActorManager/DeleteActor";
 import MovieSchedulePage from "./pages/public/MovieSchedulePage";
 import UserManager from "./pages/UserManager/UserManager";
-import EditUser from "./pages/UserManager/EditUser"
+import EditUser from "./pages/UserManager/EditUser";
+import ScheduleManager from "./pages/ScheduleManager/ScheduleManager";
+import AddSchedule from "./pages/ScheduleManager/AddSchedule";
+import EditSchedule from "./pages/ScheduleManager/EditSchedule";
+import DeleteSchedule from "./pages/ScheduleManager/DeleteSchedule";
 
 function App() {
   return (
@@ -73,8 +77,22 @@ function App() {
         <Route path="/actorManager/addActor" element={<AddActor />} />
         <Route path="/actorManager/editActor" element={<EditActor />} />
         <Route path="/actorManager/deleteActor" element={<DeleteActor />} />
+
+        {/* User Manager */}
         <Route path="/userManager" element={<UserManager />} />
         <Route path="/userManager/editUser" element={<EditUser />} />
+
+        {/* Schedule Manager */}
+        <Route path="/scheduleManager" element={<ScheduleManager />} />
+        <Route path="/scheduleManager/addSchedule" element={<AddSchedule />} />
+        <Route
+          path="/scheduleManager/editSchedule"
+          element={<EditSchedule />}
+        />
+        <Route
+          path="/scheduleManager/deleteSchedule"
+          element={<DeleteSchedule />}
+        />
       </Routes>
     </Router>
   );

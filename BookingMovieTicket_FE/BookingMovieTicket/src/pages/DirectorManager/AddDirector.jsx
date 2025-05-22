@@ -73,7 +73,7 @@ function AddDirector() {
                       htmlFor="country"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Quốc gia <span className="text-red-600">*</span>{" "}
+                      Quốc gia <span className="text-red-600">*</span>
                     </label>
                     <select
                       type="text"
@@ -92,7 +92,7 @@ function AddDirector() {
                       htmlFor="image"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Ảnh đạo diễn <span className="text-red-600">*</span>{" "}
+                      Ảnh đạo diễn <span className="text-red-600">*</span>
                     </label>
                     <input
                       type="file"
