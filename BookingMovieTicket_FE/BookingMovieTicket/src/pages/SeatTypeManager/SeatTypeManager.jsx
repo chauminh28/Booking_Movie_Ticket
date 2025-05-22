@@ -29,7 +29,7 @@ function SeatTypeManager() {
                             <div className='flex justify-end items-end w-full gap-x-10 pr-[100px]'>
                                 <button id="lockButton" data-dropdown-toggle="lock" className="font-medium rounded-lg text-sm text-center inline-flex items-center" type="button">
                                     <a href='#'><FaFilter className='text-[28px]' /></a> <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                                     </svg>
                                 </button>
 

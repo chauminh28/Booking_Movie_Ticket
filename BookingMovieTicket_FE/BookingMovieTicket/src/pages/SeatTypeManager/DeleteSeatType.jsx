@@ -53,7 +53,7 @@ function DeleteSeatType() {
                                                 htmlFor="description"
                                                 className="block text-sm font-medium text-gray-700"
                                             >
-                                                Mô tả phim <span className="text-red-600">*</span>{" "}
+                                                Mô tả loại ghế <span className="text-red-600">*</span>{" "}
                                             </label>
                                             <textarea
                                                 type="text"

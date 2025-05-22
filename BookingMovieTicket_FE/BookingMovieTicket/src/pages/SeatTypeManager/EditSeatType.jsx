@@ -52,7 +52,7 @@ function EditSeatType() {
                                             htmlFor="description"
                                             className="block text-sm font-medium text-gray-700"
                                         >
-                                            Mô tả phim
+                                            Mô tả loại ghế
                                         </label>
                                         <textarea
                                             type="text"
