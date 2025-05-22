@@ -16,63 +16,106 @@ function AddSeatType() {
                         <p className="font-bold text-[28px]">THÊM LOẠI GHẾ</p>
                         <div className="mt-[30px] pl-[30px]">
                             <form>
-                                <div className="grid grid-cols-12 gap-5 ">
-                                    <div className="col-span-6 gap-y-4 flex flex-col">
+                                <div className='grid grid-cols-12 gap-5 '>
+                                    <div className='col-span-6 gap-y-4 flex flex-col'>
                                         <div>
-                                            <label
-                                                htmlFor="name"
-                                                className="block text-sm font-medium text-gray-700"
-                                            >
-                                                Tên loại ghế <span className="text-red-600">*</span>
-                                            </label>
+                                            <div className='col-span-2'>
+                                                <label
+                                                    htmlFor="lastname"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
+                                                    Họ và tên đệm <span className="text-red-600">*</span>
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="lastname"
+                                                    placeholder="Họ"
+                                                    className="bg-[#F9F9F9] mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                                    required
+                                                />
+                                            </div>
+                                            <div className='col-span-2'>
+                                                <label
+                                                    htmlFor="firstname"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
+                                                    Tên <span className="text-red-600">*</span>
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="firstname"
+                                                    placeholder="Tên"
+                                                    className="bg-[#F9F9F9] mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
                                             <input
                                                 type="text"
-                                                id="name"
-                                                placeholder="Tên loại ghế"
+                                                id="email"
                                                 className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                                 required
                                             />
                                         </div>
                                         <div>
-                                            <label
-                                                htmlFor="price"
-                                                className="block text-sm font-medium text-gray-700"
-                                            >
-                                                Giá <span className="text-red-600">*</span>
-                                            </label>
+                                            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Số điện thoại</label>
                                             <input
                                                 type="text"
-                                                id="price"
-                                                placeholder="Giá loại ghế"
-                                                className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                                                required
-                                            />
-                                        </div>
-                                        <div>
-                                            <label
-                                                htmlFor="description"
-                                                className="block text-sm font-medium text-gray-700"
-                                            >
-                                                Mô tả phim <span className="text-red-600">*</span>{" "}
-                                            </label>
-                                            <textarea
-                                                type="text"
-                                                id="description"
-                                                placeholder="Mô tả phim"
+                                                id="phone"
                                                 className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                                 required
                                             />
                                         </div>
                                     </div>
+                                    <div className='col-span-6 flex flex-col gap-4'>
+                                        <div>
+                                            <label htmlFor="dob" className="block text-sm font-medium text-gray-700">Ngày sinh</label>
+                                            <input
+                                                type="date"
+                                                id="dob"
+                                                className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                                required
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Giới tính</label>
+                                            <select
+                                                type="text"
+                                                id="gender"
+                                                className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                                required
+                                            >
+                                                <option>-- Chọn giới tính --</option>
+                                                <option>Nam</option>
+                                                <option>Nữ</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label htmlFor="role" className="block text-sm font-medium text-gray-700">Role</label>
+                                            <select
+                                                type="text"
+                                                id="role"
+                                                className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                                required
+                                            >
+                                                <option>-- Chọn vai trò --</option>
+                                                <option>Admin</option>
+                                                <option>Khách hàng</option>
+                                                <option>Nhân viên</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="mt-[56px]">
-                                    <Link to={"/seatTypeManager"}>
-                                        <button className="bg-white px-4 py-2 text-black border-1 border-black font-bold text-[16px] w-[120px] h-[55px] rounded-[90px] cursor-pointer">
+                                <div className='mt-[56px]'>
+                                    <Link to={"/userManager"}>
+                                        <button className='bg-white px-4 py-2 text-black border-1 border-black font-bold text-[16px] w-[120px] h-[55px] rounded-[90px] cursor-pointer'>
                                             Huỷ
                                         </button>
                                     </Link>
-                                    <button className="bg-black px-4 py-2 text-white font-bold text-[16px] w-[120px] h-[55px] rounded-[90px] ml-6 cursor-pointer">
-                                        Tạo
+                                    <button className='bg-black px-4 py-2 text-white font-bold text-[16px] w-[120px] h-[55px] rounded-[90px] ml-6 cursor-pointer'>
+                                        Lưu
                                     </button>
                                 </div>
                             </form>
