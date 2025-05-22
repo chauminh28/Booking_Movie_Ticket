@@ -9,6 +9,7 @@ import { FaPersonChalkboard } from "react-icons/fa6";
 import { FaPersonRays } from "react-icons/fa6";
 import { FaUserGroup } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
+import { GiPopcorn } from "react-icons/gi";
 import Logo from "/logo.png";
 import { initFlowbite } from "flowbite";
 import { Link } from "react-router-dom";
@@ -77,9 +78,9 @@ export default function NavbarAdmin() {
         </div>
         <div className="flex items-center">
           <BiCategory className="text-white mx-3" />
-          <a href="#" className="text-white font-medium">
+          <Link to={"/seatTypeManager"} className="text-white font-medium">
             Loại ghế
-          </a>
+          </Link>
         </div>
         <div className="flex items-center">
           <FaPersonChalkboard className="text-white mx-3" />
@@ -91,6 +92,12 @@ export default function NavbarAdmin() {
           <FaPersonRays className="text-white mx-3" />
           <Link to={"/actorManager"} className="text-white font-medium">
             Diễn viên
+          </Link>
+        </div>
+        <div className="flex items-center">
+          <GiPopcorn className="text-white mx-3" />
+          <Link to={"/serviceManager"} className="text-white font-medium">
+            Dịch vụ
           </Link>
         </div>
         <div className="flex items-center">

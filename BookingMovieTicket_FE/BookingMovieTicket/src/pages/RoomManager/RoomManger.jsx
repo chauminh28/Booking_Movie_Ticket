@@ -140,7 +140,7 @@ export default function RoomMangaer() {
                       </td>
                       <td className="px-4 py-2 flex space-x-4">
                         <Link to="/roomManager/editRoom">
-                          <button className="text-blue-600 hover:text-blue-800 text-[20px] cursor-pointer">
+                          <button className="text-blue-600 hover:text-blue-800 text-[20px] cursor-pointer mt-1.5">
                             <MdEdit />
                           </button>
                         </Link>
