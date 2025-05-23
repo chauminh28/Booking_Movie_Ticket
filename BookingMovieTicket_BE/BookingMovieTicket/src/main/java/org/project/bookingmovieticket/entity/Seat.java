@@ -10,6 +10,8 @@ public class Seat {
 
     private String seatNumber;
     private String seatStatus;
+    private int seatRow;
+    private String seatCol;
 
     @ManyToOne
     @JoinColumn(name = "roomId")
