@@ -3,20 +3,82 @@ import { useState } from 'react'
 import googleIcon from '../../assets/public/icons/google-icon.png'
 import { Link } from 'react-router-dom'
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import axiosClient from '../../api/axiosClient'
 import { initFlowbite } from 'flowbite'
+import SuccessToast from '../../components/toasts/SuccessToast';
+import ErrorToast from '../../components/toasts/ErrorToast';
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
+  const [showRePassword, setShowRePassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccesMessage] = useState('');
+  const [showSuccessToast, setSuccessShowToast] = useState(false);
+  const [showErrorToast, setErrorShowToast] = useState(false);
+
+  const [form, setForm] = useState({
+    userName: '',
+    lastName: '',
+    firstName: '',
+    phone: '',
+    email: '',
+    password: '',
+    rePassword: '',
+    status: true,
+    roleId: 2
+  })
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.id]: e.target.value
+    })
+    console.log(form)
+  }
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    if (form.password !== form.rePassword) {
+      setErrorMessage("Mật khẩu không khớp")
+      setErrorShowToast(true)
+      return
+    }
+
+    const { rePassword, ...payload } = form
+
+    try {
+      const res = await axiosClient.post("/users", payload)
+      setSuccesMessage("Đăng ký thành công")
+      setSuccessShowToast(true)
+    } catch (err) {
+      setErrorMessage("Lỗi api")
+      setErrorShowToast(true)
+    }
+  }
 
   useEffect(() => {
     initFlowbite();
   }, [])
 
+
   return (
     <>
+      {showSuccessToast && (
+        <SuccessToast
+          message={successMessage}
+          onClose={() => setSuccessShowToast(false)}
+        />
+      )}
+
+      {showErrorToast && (
+        <ErrorToast
+          message={errorMessage}
+          onClose={() => setErrorShowToast(false)}
+        />
+      )}
       <div className="bg-login h-screen w-full bg-cover bg-center bg-no-repeat 
                 flex items-center justify-center">
-        <div className='px-1 grid grid-cols-2 gap-6'>
+        <div className='px-1 grid grid-cols-2'>
           <div id="default-carousel" className="relative w-full h-[400px] mt-[100px]" data-carousel="slide">
             <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
               <div className="hidden duration-700" data-carousel-item>
@@ -63,23 +125,63 @@ export default function Register() {
           <div className='w-[460px] h-full bg-white rounded-3xl p-8 flex-col'>
             <p className='font-bold text-[23px] mb-1'>Bắt đầu ngay!</p>
             <p className='text-[22px] mb-2'>Tạo tài khoản mới</p>
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handleRegister}>
               <div>
-                <label htmlFor="fullname" className="block text-sm font-medium text-gray-700">Họ và tên</label>
+                <label htmlFor="userName" className="block text-sm font-medium text-gray-700">Username <span className="text-red-600">*</span></label>
                 <input
                   type="text"
-                  id="fullname"
-                  placeholder="Họ và tên"
+                  id="userName"
+                  value={form.userName}
+                  onChange={handleChange}
+                  placeholder="Username"
                   className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                   required
                 />
               </div>
+              <div className='flex gap-3'>
+                <div>
+                  <label
+                    htmlFor="lastName"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Họ và tên đệm <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    value={form.lastName}
+                    onChange={handleChange}
+                    placeholder="Họ"
+                    className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                    required
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="firstName"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Tên <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    value={form.firstName}
+                    onChange={handleChange}
+                    placeholder="Tên"
+                    className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                    required
+                  />
+                </div>
+              </div>
               <div>
-                <label htmlFor="Phone" className="block text-sm font-medium text-gray-700">Điện thoại</label>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Điện thoại <span className="text-red-600">*</span></label>
 
                 <input
                   type="text"
-                  id="Phone"
+                  id="phone"
+                  value={form.phone}
+                  onChange={handleChange}
                   placeholder="Số điện thoại"
                   className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                   required
@@ -87,20 +189,24 @@ export default function Register() {
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email <span className="text-red-600">*</span></label>
                 <input
                   type="email"
                   id="email"
+                  value={form.email}
+                  onChange={handleChange}
                   placeholder="your@email.com"
                   className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                   required
                 />
               </div>
               <div className='relative'>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mật khẩu</label>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mật khẩu <span className="text-red-600">*</span></label>
                 <input
                   type={showPassword ? "text" : "password"}
                   id="password"
+                  value={form.password}
+                  onChange={handleChange}
                   placeholder="********"
                   className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                   required
@@ -113,11 +219,30 @@ export default function Register() {
                   {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
                 </button>
               </div>
-              <button className='bg-[#395F18] px-4 py-2 text-white font-bold text-[16px] w-full h-[55px] rounded-lg mt-5 cursor-pointer'>Bắt đầu</button>
+              <div className='relative'>
+                <label htmlFor="rePassword" className="block text-sm font-medium text-gray-700">Nhập lại mật khẩu <span className="text-red-600">*</span></label>
+                <input
+                  type={showRePassword ? "text" : "password"}
+                  id="rePassword"
+                  value={form.rePassword}
+                  onChange={handleChange}
+                  placeholder="********"
+                  className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute top-[50px] right-3 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+                >
+                  {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                </button>
+              </div>
+              <button type='submit' className='bg-[#395F18] px-4 py-2 text-white font-bold text-[16px] w-full h-[55px] rounded-lg mt-2 cursor-pointer'>Bắt đầu</button>
             </form>
             <p className='font-bold text-[13px] flex items-center justify-center my-3'>Hoặc</p>
             <div>
-              <button className='border-1 bg-white px-4 py-2 w-full h-[48px] rounded-lg mb-2 flex items-center justify-center gap-3'>
+              <button className='border-1 bg-white px-4 py-2 w-full h-[48px] rounded-lg mb-1 flex items-center justify-center gap-3'>
                 <img src={googleIcon} className='w[18px] h-[18px]' />
                 <p className='text-[#616161] text-[13px]'>Đăng ký với Google</p>
               </button>

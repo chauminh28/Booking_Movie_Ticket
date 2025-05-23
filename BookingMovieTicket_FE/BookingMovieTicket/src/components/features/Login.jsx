@@ -2,9 +2,29 @@ import React, { useState } from 'react'
 import googleIcon from '../../assets/public/icons/google-icon.png'
 import { Link } from 'react-router-dom'
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import ErrorToast from '../../components/toasts/ErrorToast';
 
 export default function Login() {
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showErrorToast, setErrorShowToast] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+
+    const [form, setForm] = useState({
+        userName: '',
+        password: ''
+    })
+
+    const handleChange = (e) => {
+        setForm({
+            ...form,
+            [e.target.id]: e.target.value
+        })
+        console.log(form)
+    }
+
+    const handleSubmit = async (e) => {
+
+    }
 
     return (
         <>
@@ -12,13 +32,15 @@ export default function Login() {
                 flex items-center justify-center`}>
                 <div className='w-[460px] h-[570px] bg-white flex items-star justify-star rounded-3xl p-8 flex-col'>
                     <p className='font-bold text-2xl mb-6'>Đăng nhập ngay!</p>
-                    <form className="space-y-6">
+                    <form className="space-y-6" onSubmit={handleSubmit}>
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                            <label htmlFor="userName" className="block text-sm font-medium text-gray-700">Username</label>
                             <input
-                                type="email"
-                                id="email"
-                                placeholder="your@email.com"
+                                type="text"
+                                id="userName"
+                                value={form.userName}
+                                onChange={handleChange}
+                                placeholder="Username"
                                 className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                 required
                             />
@@ -28,6 +50,8 @@ export default function Login() {
                             <input
                                 type={showPassword ? "text" : "password"}
                                 id="password"
+                                value={form.userName}
+                                onChange={handleChange}
                                 placeholder="********"
                                 className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                 required
@@ -40,9 +64,9 @@ export default function Login() {
                                 {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
                             </button>
                         </div>
+                        <button type='submit' className='bg-[#395F18] px-4 py-2 text-white font-bold text-[16px] w-full h-[55px] rounded-lg'>Bắt đầu</button>
                     </form>
                     <Link to={"/forgetPassword"} className='text-[12px] text-[#BDBDBD] flex items-center justify-center my-5'>Quên mật khẩu?</Link>
-                    <button className='bg-[#395F18] px-4 py-2 text-white font-bold text-[16px] w-full h-[55px] rounded-lg'>Bắt đầu</button>
                     <p className='font-bold text-[13px] flex items-center justify-center my-5'>Hoặc</p>
                     <div>
                         <button className='border-1 bg-white px-4 py-2 w-[380px] h-[48px] rounded-lg mb-5 flex items-center justify-center gap-3'>
