@@ -12,7 +12,7 @@ function EditSeatType() {
                 </div>
                 <div className="bg-white col-span-10 h-[100vh] p-[30px]">
                     <HeaderAdmin />
-                    <p className="font-bold text-[28px]">SỬA PHIM</p>
+                    <p className="font-bold text-[28px]">SỬA LOẠI GHẾ</p>
                     <div className="mt-[30px] pl-[30px]">
                         <form>
                             <div className="grid grid-cols-12 gap-5 ">
@@ -57,7 +57,7 @@ function EditSeatType() {
                                         <textarea
                                             type="text"
                                             id="description"
-                                            placeholder="Mô tả phim"
+                                            placeholder="Mô tả loại ghế"
                                             className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                             required
                                         />
@@ -71,7 +71,7 @@ function EditSeatType() {
                                     </button>
                                 </Link>
                                 <button className="bg-black px-4 py-2 text-white font-bold text-[16px] w-[120px] h-[55px] rounded-[90px] ml-6 cursor-pointer">
-                                    Tạo
+                                    Lưu
                                 </button>
                             </div>
                         </form>

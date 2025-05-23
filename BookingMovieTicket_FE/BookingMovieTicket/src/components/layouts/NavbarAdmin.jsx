@@ -10,6 +10,7 @@ import { FaPersonRays } from "react-icons/fa6";
 import { FaUserGroup } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
 import { GiPopcorn } from "react-icons/gi";
+import { IoTicket } from "react-icons/io5";
 import Logo from "/logo.png";
 import { initFlowbite } from "flowbite";
 import { Link } from "react-router-dom";
@@ -104,6 +105,12 @@ export default function NavbarAdmin() {
           <FaUserGroup className="text-white mx-3" />
           <Link to={"/userManager"} className="text-white font-medium">
             Người dùng
+          </Link>
+        </div>
+        <div className="flex items-center">
+          <IoTicket className="text-white mx-3" />
+          <Link to={"/ticketManager"} className="text-white font-medium">
+            Đặt vé
           </Link>
         </div>
       </div>

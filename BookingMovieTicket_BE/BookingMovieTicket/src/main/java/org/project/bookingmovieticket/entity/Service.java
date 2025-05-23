@@ -12,6 +12,7 @@ public class Service {
 
     private String serviceName;
     private double price;
+    private String image;
 
     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL)
     private List<BookingService> bookingServices;
