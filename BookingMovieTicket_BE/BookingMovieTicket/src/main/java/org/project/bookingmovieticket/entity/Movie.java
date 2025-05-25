@@ -9,7 +9,7 @@ public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
+    @Column(columnDefinition = "nvarchar(255)")
     private String movieName;
     private int movieDuration;
     private boolean status;

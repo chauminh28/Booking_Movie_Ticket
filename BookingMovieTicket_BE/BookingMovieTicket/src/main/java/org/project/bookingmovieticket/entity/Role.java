@@ -18,8 +18,9 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
+    @Column(columnDefinition = "nvarchar(255)")
     private String roleName;
+    @Column(columnDefinition = "nvarchar(255)")
     private String description;
 
     @OneToMany(mappedBy = "role")

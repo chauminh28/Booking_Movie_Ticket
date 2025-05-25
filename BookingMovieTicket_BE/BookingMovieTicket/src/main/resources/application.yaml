@@ -12,3 +12,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.SQLServerDialect
+server:
+  servlet:
+    encoding:
+      enabled: true
+      charset: UTF-8
+      force: true

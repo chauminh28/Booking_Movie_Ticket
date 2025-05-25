@@ -10,8 +10,9 @@ public class Director {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
+    @Column(columnDefinition = "nvarchar(255)")
     private String directorName;
+    @Column(columnDefinition = "nvarchar(255)")
     private String avatar;
     private Gender gender;
 

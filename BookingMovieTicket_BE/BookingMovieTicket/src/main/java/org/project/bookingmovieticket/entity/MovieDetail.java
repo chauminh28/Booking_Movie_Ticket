@@ -10,9 +10,11 @@ public class MovieDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
+    @Column(columnDefinition = "nvarchar(255)")
     private String country;
+    @Column(columnDefinition = "nvarchar(255)")
     private String description;
+    @Column(columnDefinition = "nvarchar(255)")
     private String trailer;
     private LocalDate startDate;
 

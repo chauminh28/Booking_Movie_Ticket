@@ -24,6 +24,7 @@ public class Booking {
     private Seat seat;
 
     private LocalDateTime bookingTime;
+    @Column(columnDefinition = "nvarchar(255)")
     private String paymentStatus;
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)

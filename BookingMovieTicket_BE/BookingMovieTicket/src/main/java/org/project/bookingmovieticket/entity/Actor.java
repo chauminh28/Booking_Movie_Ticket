@@ -10,8 +10,9 @@ public class Actor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
+    @Column(columnDefinition = "nvarchar(255)")
     private String actorName;
+    @Column(columnDefinition = "nvarchar(255)")
     private String avatar;
     private Gender gender;
 
