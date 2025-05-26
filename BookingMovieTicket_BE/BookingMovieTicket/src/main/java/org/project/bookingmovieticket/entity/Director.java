@@ -15,6 +15,7 @@ public class Director {
     @Column(columnDefinition = "nvarchar(255)")
     private String avatar;
     private Gender gender;
+    @Column(columnDefinition = "nvarchar(255)")
     private String country;
 
     @ManyToMany(mappedBy = "directors")
