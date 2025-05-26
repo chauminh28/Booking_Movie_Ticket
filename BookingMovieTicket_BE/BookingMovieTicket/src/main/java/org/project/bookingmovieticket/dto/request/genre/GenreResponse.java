@@ -1,5 +1,6 @@
 package org.project.bookingmovieticket.dto.request.genre;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data

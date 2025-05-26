@@ -5,12 +5,12 @@ import org.project.bookingmovieticket.entity.MovieDetail;
 
 import java.util.List;
 
-public class MovieResponse {
+public class MovieCreateRequest {
     private Long id;
     private String movieName;
     private String movieDuration;
     private boolean status;
 
-    private List<String> genreNames;
+    private List<Genre> genres;
     private MovieDetail movieDetail;
 }

@@ -1,10 +1,13 @@
 package org.project.bookingmovieticket.controller;
 
+import jakarta.validation.Valid;
 import org.project.bookingmovieticket.dto.request.genre.GenreCreateRequest;
 import org.project.bookingmovieticket.dto.request.genre.GenreResponse;
 import org.project.bookingmovieticket.dto.request.genre.GenreUpdateRequest;
 import org.project.bookingmovieticket.entity.Genre;
 import org.project.bookingmovieticket.service.GenreService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,13 +23,13 @@ public class GenreController {
     }
 
     @PostMapping
-    public Genre createGenre(@RequestBody GenreCreateRequest request) {
+    public Genre createGenre(@RequestBody @Valid GenreCreateRequest request) {
         return genreService.createGenre(request);
     }
 
     @GetMapping
-    public List<GenreResponse> getAllGenres() {
-        return genreService.getGenres();
+    public Page<GenreResponse> getAllGenres(@RequestParam(value = "search", required = false) String searchValue, Pageable pageable) {
+        return genreService.getGenres(searchValue, pageable);
     }
 
     @GetMapping("{genreId}")
@@ -35,7 +38,7 @@ public class GenreController {
     }
 
     @PutMapping("{genreId}")
-    public Genre updateGenre(@PathVariable("genreId") Long id ,@RequestBody GenreUpdateRequest request) {
+    public Genre updateGenre(@PathVariable("genreId") Long id ,@RequestBody @Valid GenreUpdateRequest request) {
         return genreService.updateGenre(id, request);
     }
 

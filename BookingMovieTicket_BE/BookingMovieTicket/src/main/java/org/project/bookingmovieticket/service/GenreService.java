@@ -5,6 +5,8 @@ import org.project.bookingmovieticket.dto.request.genre.GenreResponse;
 import org.project.bookingmovieticket.dto.request.genre.GenreUpdateRequest;
 import org.project.bookingmovieticket.entity.Genre;
 import org.project.bookingmovieticket.repository.GenreRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,14 +27,20 @@ public class GenreService {
         return genreRepository.save(genre);
     }
 
-    public List<GenreResponse> getGenres() {
-        return genreRepository.findAll().stream()
-                .map(user -> {
-                    GenreResponse dto = new GenreResponse();
-                    dto.setId(user.getId());
-                    dto.setGenreName(user.getGenreName());
-                    return dto;})
-                .collect(Collectors.toList());
+    public Page<GenreResponse> getGenres(String searchValue, Pageable pageable) {
+      Page<Genre> page;
+      if (searchValue.isEmpty() || searchValue == null) {
+        page = genreRepository.findAll(pageable);
+      }
+      else {
+          page = genreRepository.findByGenreNameContainingIgnoreCase(searchValue, pageable);
+      }
+      return page.map(genre -> {
+          GenreResponse dto = new GenreResponse();
+          dto.setId(genre.getId());
+          dto.setGenreName(genre.getGenreName());
+          return dto;
+      });
     }
 
     public GenreResponse getGenre(Long id) {
