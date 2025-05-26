@@ -13,4 +13,5 @@ public class SeatType {
 
     private String seatTypeName;
     private double price;
+    private String description;
 }

@@ -14,6 +14,10 @@ public class Service {
     private double price;
     private String image;
 
+    @ManyToOne
+    @JoinColumn(name = "serviceTypeId")
+    private ServiceType serviceType;
+
     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL)
     private List<BookingService> bookingServices;
 }

@@ -1,12 +1,9 @@
 package org.project.bookingmovieticket.controller;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.project.bookingmovieticket.dto.request.UserCreateRequest;
-import org.project.bookingmovieticket.dto.request.UserResponse;
-import org.project.bookingmovieticket.dto.request.UserUpdateRequest;
+import lombok.*;
+import org.project.bookingmovieticket.dto.request.user.UserCreateRequest;
+import org.project.bookingmovieticket.dto.request.user.UserResponse;
+import org.project.bookingmovieticket.dto.request.user.UserUpdateRequest;
 import org.project.bookingmovieticket.entity.User;
 import org.project.bookingmovieticket.service.UserService;
 import org.springframework.web.bind.annotation.*;

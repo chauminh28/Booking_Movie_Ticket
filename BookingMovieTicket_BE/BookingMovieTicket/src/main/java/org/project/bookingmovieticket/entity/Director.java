@@ -14,6 +14,7 @@ public class Director {
     private String directorName;
     private String avatar;
     private Gender gender;
+    private String country;
 
     @ManyToMany(mappedBy = "directors")
     private List<MovieDetail> movies;
