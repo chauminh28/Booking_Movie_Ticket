@@ -2,6 +2,10 @@ package org.project.bookingmovieticket.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.project.bookingmovieticket.enums.Gender;
+
+import java.time.LocalDate;
+
 
 @Data
 @Entity
@@ -18,10 +22,14 @@ public class User {
     private String lastName;
     @Column(columnDefinition = "nvarchar(255)")
     private String firstName;
+    private LocalDate dob;
+    private Gender gender;
     @Column(columnDefinition = "nvarchar(255)")
     private String email;
     @Column(columnDefinition = "nvarchar(255)")
     private String phone;
+    @Column(columnDefinition = "nvarchar(255)")
+    private String avatar;
     private boolean status;
 
     @ManyToOne

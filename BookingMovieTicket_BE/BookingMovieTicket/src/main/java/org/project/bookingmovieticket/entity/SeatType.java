@@ -10,4 +10,5 @@ public class SeatType {
     @Column(columnDefinition = "nvarchar(255)")
     private String seatTypeName;
     private double price;
+    private String description;
 }

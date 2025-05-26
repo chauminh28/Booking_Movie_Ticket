@@ -1,9 +1,9 @@
 package org.project.bookingmovieticket.service;
 
 import lombok.*;
-import org.project.bookingmovieticket.dto.request.UserCreateRequest;
-import org.project.bookingmovieticket.dto.request.UserResponse;
-import org.project.bookingmovieticket.dto.request.UserUpdateRequest;
+import org.project.bookingmovieticket.dto.request.user.UserCreateRequest;
+import org.project.bookingmovieticket.dto.request.user.UserResponse;
+import org.project.bookingmovieticket.dto.request.user.UserUpdateRequest;
 import org.project.bookingmovieticket.entity.Role;
 import org.project.bookingmovieticket.entity.User;
 import org.project.bookingmovieticket.repository.RoleRepository;
@@ -12,7 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +35,8 @@ public class UserService {
 
         user.setLastName(request.getLastName());
         user.setFirstName(request.getFirstName());
+        user.setDob(request.getDob());
+        user.setGender(request.getGender());
         user.setEmail(request.getEmail());
         user.setPhone(request.getPhone());
         user.setStatus(true);
@@ -51,9 +52,12 @@ public class UserService {
         return userRepository.findAll().stream()
                 .map(user -> {
                     UserResponse dto = new UserResponse();
+                    dto.setId(user.getId());
                     dto.setUserName(user.getUserName());
                     dto.setLastName(user.getLastName());
                     dto.setFirstName(user.getFirstName());
+                    dto.setDob(user.getDob());
+                    dto.setGender(user.getGender());
                     dto.setEmail(user.getEmail());
                     dto.setPhone(user.getPhone());
                     dto.setStatus(user.isStatus());
@@ -68,9 +72,12 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         UserResponse response = new UserResponse();
+        response.setId(user.getId());
         response.setUserName(user.getUserName());
         response.setFirstName(user.getFirstName());
         response.setLastName(user.getLastName());
+        response.setDob(user.getDob());
+        response.setGender(user.getGender());
         response.setEmail(user.getEmail());
         response.setPhone(user.getPhone());
         response.setStatus(user.isStatus());
@@ -87,6 +94,8 @@ public class UserService {
         user.setPassword(request.getPassword());
         user.setLastName(request.getLastName());
         user.setFirstName(request.getFirstName());
+        user.setDob(request.getDob());
+        user.setGender(request.getGender());
         user.setEmail(request.getEmail());
         user.setPhone(request.getPhone());
         user.setStatus(true);
