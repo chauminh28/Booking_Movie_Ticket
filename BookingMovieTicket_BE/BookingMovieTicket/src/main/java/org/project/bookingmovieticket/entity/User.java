@@ -28,8 +28,6 @@ public class User {
     private String email;
     @Column(columnDefinition = "nvarchar(255)")
     private String phone;
-    @Column(columnDefinition = "nvarchar(255)")
-    private String avatar;
     private boolean status;
 
     @ManyToOne

@@ -13,6 +13,7 @@ public class Movie {
     private String movieName;
     private int movieDuration;
     private boolean status;
+    private String movieImage;
     private boolean movieStatus;
 
     @ManyToMany
