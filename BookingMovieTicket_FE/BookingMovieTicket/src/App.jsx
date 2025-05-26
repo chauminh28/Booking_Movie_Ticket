@@ -42,6 +42,10 @@ import DeleteSchedule from "./pages/ScheduleManager/DeleteSchedule";
 import UserManager from "./pages/UserManager/UserManager";
 import TicketManager from "./pages/TicketManager/TicketManager";
 import DetailTicket from "./pages/TicketManager/DetailTicket";
+import GenreManager from "./pages/GenreManager/GenreManager";
+import AddGenre from "./pages/GenreManager/AddGenre";
+import EditGender from "./pages/GenreManager/EditGender";
+import DeleteGenre from "./pages/GenreManager/DeleteGenre";
 
 function App() {
   return (
@@ -131,6 +135,12 @@ function App() {
         {/* TicketManger */}
         <Route path="/ticketManager" element={<TicketManager />} />
         <Route path="/ticketManager/detail" element={<DetailTicket />} />
+
+        {/* GenreManager */}
+        <Route path="/genreManager" element={<GenreManager />} />
+        <Route path="/genreManager/addGenre/" element={<AddGenre />} />
+        <Route path="/genreManager/editGenre/:id" element={<EditGender />} />
+        <Route path="/genreManager/deleteGenre/:id" element={<DeleteGenre />} />
       </Routes>
     </Router>
   );

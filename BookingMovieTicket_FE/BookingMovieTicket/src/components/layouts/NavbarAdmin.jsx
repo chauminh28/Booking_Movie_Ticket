@@ -79,6 +79,12 @@ export default function NavbarAdmin() {
         </div>
         <div className="flex items-center">
           <BiCategory className="text-white mx-3" />
+          <Link to="/genreManager" className="text-white font-medium">
+            Thể loại phim
+          </Link>
+        </div>
+        <div className="flex items-center">
+          <BiCategory className="text-white mx-3" />
           <Link to={"/seatTypeManager"} className="text-white font-medium">
             Loại ghế
           </Link>
