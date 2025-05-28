@@ -1,17 +1,11 @@
 package org.project.bookingmovieticket.dto.request.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.project.bookingmovieticket.enums.Gender;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class UserUpdateRequest {
     private String userName;
     private String password;

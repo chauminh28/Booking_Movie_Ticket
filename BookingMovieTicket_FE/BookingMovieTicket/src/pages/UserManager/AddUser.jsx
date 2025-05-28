@@ -1,21 +1,102 @@
 import React, { useState } from 'react'
-
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import NavbarAdmin from "../../components/layouts/NavbarAdmin";
 import HeaderAdmin from "../../components/layouts/HeaderAdmin";
+import SuccessToast from '../../components/toasts/SuccessToast';
+import ErrorToast from '../../components/toasts/ErrorToast';
+import axiosClient from '../../api/axiosClient'
 
 function AddUser() {
-    const [image, setImage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showErrorToast, setErrorShowToast] = useState(false);
+    const [successMessage, setSuccesMessage] = useState('');
+    const [showSuccessToast, setSuccessShowToast] = useState(false);
+    const [errors, setErrors] = useState({});
+    const navigate = useNavigate();
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setImage(URL.createObjectURL(file));
+    const [form, setForm] = useState({
+        userName: '',
+        lastName: '',
+        firstName: '',
+        dob: '',
+        gender: '',
+        phone: '',
+        email: '',
+        password: '',
+        status: true,
+        roleId: ''
+    })
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setForm({
+            ...form,
+            [name]: value
+        });
+        console.log(form)
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        const newErrors = {};
+
+        if (!form.userName.trim()) {
+            newErrors.userName = "Vui lòng nhập tên đăng nhập"
         }
-    };
+        if (!form.lastName.trim()) {
+            newErrors.lastName = "Vui lòng nhập họ đệm"
+        }
+        if (!form.firstName.trim()) {
+            newErrors.firstName = "Vui lòng nhập tên"
+        }
+        if (!form.dob.trim()) {
+            newErrors.dob = "Vui lòng nhập ngày sinh"
+        }
+        if (!form.gender.trim()) {
+            newErrors.gender = "Vui lòng nhập giới tính"
+        }
+        if (!form.phone.trim()) {
+            newErrors.phone = "Vui lòng nhập số điện thoại"
+        }
+        if (!form.email.trim()) {
+            newErrors.email = "Vui lòng nhập email"
+        }
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+        setErrors({});
+
+        try {
+            const res = await axiosClient.post("/users", form)
+            setSuccesMessage("Tạo người dùng thành công")
+            setSuccessShowToast(true)
+
+            setTimeout(() => {
+                navigate("/userManager")
+            }, 1500);
+        } catch (err) {
+            console.log(err)
+            setErrorMessage("Lỗi api")
+            setErrorShowToast(true)
+        }
+    }
 
     return (
         <>
+            {showSuccessToast && (
+                <SuccessToast
+                    message={successMessage}
+                    onClose={() => setSuccessShowToast(false)}
+                />
+            )}
+
+            {showErrorToast && (
+                <ErrorToast
+                    message={errorMessage}
+                    onClose={() => setErrorShowToast(false)}
+                />
+            )}
             <div className="grid grid-cols-12">
                 <div className="col-span-2">
                     <NavbarAdmin />
@@ -26,54 +107,72 @@ function AddUser() {
                         <HeaderAdmin />
                         <p className="font-bold text-[28px]">THÊM NGƯỜI DÙNG</p>
                         <div className="mt-[30px] pl-[30px]">
-                            <form>
+                            <form onSubmit={handleSubmit}>
                                 <div className="grid grid-cols-12 gap-5">
                                     <div className="col-span-6 gap-y-4 flex flex-col w-[800px">
                                         <div>
                                             <label
-                                                htmlFor="username"
+                                                htmlFor="userName"
                                                 className="block text-sm font-medium text-gray-700"
                                             >
                                                 Username <span className="text-red-600">*</span>
                                             </label>
                                             <input
                                                 type="text"
-                                                id="username"
+                                                id="userName"
+                                                name='userName'
+                                                value={form.userName}
+                                                onChange={handleChange}
                                                 placeholder="Username"
                                                 className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                                 required
                                             />
+                                            <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                                                {errors.userName || ""}
+                                            </p>
                                         </div>
-                                        <div className='grid grid-cols-7 gap-10'>
+                                        <div className='grid grid-cols-7 gap-12'>
                                             <div className='col-span-2'>
                                                 <label
-                                                    htmlFor="lastname"
+                                                    htmlFor="lastName"
                                                     className="block text-sm font-medium text-gray-700"
                                                 >
                                                     Họ và tên đệm <span className="text-red-600">*</span>
                                                 </label>
                                                 <input
                                                     type="text"
-                                                    id="lastname"
+                                                    id="lastName"
+                                                    name='lastName'
+                                                    value={form.lastName}
+                                                    onChange={handleChange}
                                                     placeholder="Họ"
                                                     className="bg-[#F9F9F9] mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                                     required
                                                 />
+                                                <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                                                    {errors.lastName || ""}
+                                                </p>
                                             </div>
                                             <div className='col-span-2'>
                                                 <label
-                                                    htmlFor="firstname"
+                                                    htmlFor="firstName"
                                                     className="block text-sm font-medium text-gray-700"
                                                 >
                                                     Tên <span className="text-red-600">*</span>
                                                 </label>
                                                 <input
                                                     type="text"
-                                                    id="firstname"
+                                                    id="firstName"
+                                                    name='firstName'
+                                                    value={form.firstName}
+                                                    onChange={handleChange}
                                                     placeholder="Tên"
                                                     className="bg-[#F9F9F9] mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                                     required
                                                 />
+                                                <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                                                    {errors.firstName || ""}
+                                                </p>
                                             </div>
                                         </div>
                                         <div>
@@ -88,7 +187,9 @@ function AddUser() {
                                                     <input
                                                         type="radio"
                                                         name="gender"
-                                                        value="Nam"
+                                                        value="NAM"
+                                                        checked={form.gender === "NAM"}
+                                                        onChange={handleChange}
                                                         className="mr-2 text-gray-500"
                                                     />
                                                     Nam
@@ -97,12 +198,17 @@ function AddUser() {
                                                     <input
                                                         type="radio"
                                                         name="gender"
-                                                        value="Nữ"
+                                                        value="NU"
+                                                        checked={form.gender === "NU"}
+                                                        onChange={handleChange}
                                                         className="mr-2 text-gray-500"
                                                     />
                                                     Nữ
                                                 </label>
                                             </div>
+                                            <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                                                {errors.gender || ""}
+                                            </p>
                                         </div>
                                         <div>
                                             <label
@@ -114,9 +220,15 @@ function AddUser() {
                                             <input
                                                 type="date"
                                                 id="dob"
+                                                name='dob'
+                                                value={form.dob}
+                                                onChange={handleChange}
                                                 className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                                 required
                                             />
+                                            <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                                                {errors.dob || ""}
+                                            </p>
                                         </div>
                                     </div>
                                     <div className="col-span-6 gap-y-4 flex flex-col">
@@ -125,45 +237,56 @@ function AddUser() {
                                             <input
                                                 type="text"
                                                 id="email"
+                                                name='email'
+                                                value={form.email}
+                                                onChange={handleChange}
                                                 placeholder='Email'
                                                 className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                                                required
                                             />
+                                            <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                                                {errors.email || ""}
+                                            </p>
                                         </div>
                                         <div>
                                             <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Số điện thoại <span className="text-red-600">*</span></label>
                                             <input
                                                 type="text"
                                                 id="phone"
+                                                name='phone'
+                                                value={form.phone}
+                                                onChange={handleChange}
                                                 placeholder='Số điện thoại'
                                                 className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                                                required
                                             />
+                                            <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                                                {errors.phone || ""}
+                                            </p>
                                         </div>
                                         <div>
                                             <label
-                                                htmlFor="avatar"
+                                                htmlFor="roleId"
                                                 className="block text-sm font-medium text-gray-700"
                                             >
-                                                Ảnh đại diện
+                                                Role <span className="text-red-600">*</span>
                                             </label>
-                                            <input
-                                                type="file"
-                                                id="avatar"
-                                                placeholder="image"
-                                                className="bg-[#F9F9F9] rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition w-[404px]"
-                                                onChange={handleImageChange}
-                                            />
-                                            {image && (
-                                                <div className="flex items-center justify-center mt-2 w-[404px]">
-                                                    <img
-                                                        src={image}
-                                                        alt="Preview"
-                                                        className="mt-2 w-40 h-40 object-cover rounded-md border"
-                                                    />
-                                                </div>
-                                            )}
+                                            <select
+                                                type="text"
+                                                id="roleId"
+                                                name='roleId'
+                                                value={form.roleId}
+                                                onChange={handleChange}
+                                                className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                                required
+                                            >
+                                                <option>-- Chọn role --</option>
+                                                <option value={1}>Admin</option>
+                                                <option value={2}>Customer</option>
+                                                <option value={3}>Employee</option>
+                                            </select>
                                         </div>
+                                        <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                                            {errors.lastName || ""}
+                                        </p>
                                     </div>
                                 </div>
                                 <div className="mt-[56px]">

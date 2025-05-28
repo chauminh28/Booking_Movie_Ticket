@@ -69,7 +69,7 @@ function App() {
         {/* Room Manager */}
         <Route path="/roomManager" element={<RoomManger />} />
         <Route path="/roomManager/addRoom" element={<AddRoom />} />
-        <Route path="/roomManager/editRoom" element={<EditRoom />} />
+        <Route path="/roomManager/editRoom/:id" element={<EditRoom />} />
 
         {/* Movie Manager */}
         <Route path="/movieManager" element={<MovieManager />} />
@@ -95,9 +95,9 @@ function App() {
 
         {/* User Manager */}
         <Route path="/userManager" element={<UserManager />} />
-        <Route path="/userManager/editUser" element={<EditUser />} />
+        <Route path="/userManager/editUser/:id" element={<EditUser />} />
         <Route path="/userManager/addUser" element={<AddUser />} />
-        <Route path="/userManager/deleteUser" element={<DeleteUser />} />
+        <Route path="/userManager/deleteUser/:id" element={<DeleteUser />} />
 
         {/* Service Manager */}
         <Route path="/serviceManager" element={<ServiceManager />} />

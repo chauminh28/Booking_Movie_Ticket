@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavbarAdmin from "../../components/layouts/NavbarAdmin";
 import HeaderAdmin from "../../components/layouts/HeaderAdmin";
 import { Link } from "react-router-dom";
@@ -8,11 +8,63 @@ import { IoIosAddCircle } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
+import axios from "axios";
+import axiosClient from "../../api/axiosClient";
 
 function UserManager() {
-  const [userStatus, setUserStatus] = useState(true);
+  const [users, setUsers] = useState([])
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [searchValue, setSearchValue] = useState("");
+  const roleMap = {
+    1: 'Admin',
+    2: 'Customer',
+    3: 'Employee'
+  };
+  const size = 5;
 
-  const toggleUser = () => setUserStatus(!userStatus);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/users`, {
+        params: {
+          page: page,
+          size: size,
+          search: searchValue,
+        },
+      })
+      .then((response) => {
+        setUsers(response.data.content)
+        setTotalPages(response.data.totalPages)
+      })
+      .catch((error) => {
+        console.error("Lỗi fetch api user", error);
+      });
+  }, [page, searchValue])
+
+  const goToPage = (pageNumber) => {
+    if (pageNumber >= 0 && pageNumber < totalPages) {
+      setPage(pageNumber);
+    }
+  };
+
+  const toggleUser = async (userId) => {
+    const user = users.find(u => u.id === userId);
+    if (!user) return;
+
+    const updatedUser = { ...user, status: !user.status };
+    updatedUser.password = ''
+
+    try {
+      const res = await axiosClient.put(`/users/${userId}`, updatedUser)
+      setUsers(prevUsers =>
+        prevUsers.map(u =>
+          u.id === userId ? updatedUser : u
+        )
+      );
+    } catch (err) {
+      console.log(err)
+    }
+  };
 
   return (
     <>
@@ -106,6 +158,11 @@ function UserManager() {
             <div>
               <div className="relative w-[576px]">
                 <input
+                  value={searchValue}
+                  onChange={(e) => {
+                    setSearchValue(e.target.value);
+                    setPage(0);
+                  }}
                   className="w-[576px] h-[50px] outline-none rounded-xl border-[#BDC5D4] border-[2px] px-3 py-2"
                   placeholder="Tìm kiếm người dùng"
                 />
@@ -127,75 +184,84 @@ function UserManager() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border-t border-[#EEEEEE]">
-                      <td className="px-4 py-2">trinhza1</td>
-                      <td className="px-4 py-2">Huỳnh Ngọc Trình</td>
-                      <td className="px-4 py-2">trinhza1@gmail.com</td>
-                      <td className="px-4 py-2">12/12/2002</td>
-                      <td className="px-4 py-2">Nam</td>
-                      <td className="px-4 py-2">0123456789</td>
-                      <td className="px-4 py-2">Admin</td>
-                      <td className="px-4 py-2">
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={userStatus}
-                            onChange={toggleUser}
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-gray-300 peer-checked:bg-black rounded-full transition-colors duration-300"></div>
-                          <div className="absolute w-5 h-5 bg-white rounded-full shadow left-0.5 top-0.5 peer-checked:translate-x-full transition transform duration-300"></div>
-                        </label>
-                      </td>
-                      <td className="px-4 py-2 flex space-x-4">
-                        <Link to="/userManager/editUser">
-                          <button className="text-blue-600 hover:text-blue-800 text-[20px] cursor-pointer">
-                            <MdEdit />
-                          </button>
-                        </Link>
-                        <Link to={"/userManager/deleteUser"}>
-                          <button className="text-red-600 hover:text-red-800 text-[20px] cursor-pointer">
-                            <MdDelete />
-                          </button>
-                        </Link>
-                      </td>
-                    </tr>
+                    {users.length > 0 ? (
+                      users.map((user) => (
+                        <tr className="border-t border-[#EEEEEE]" key={user.id}>
+                          <td className="px-4 py-2" >{user.userName}</td>
+                          <td className="px-4 py-2">{user.lastName + " " + user.firstName}</td>
+                          <td className="px-4 py-2">{user.email}</td>
+                          <td className="px-4 py-2">{user.dob}</td>
+                          <td className="px-4 py-2">{user.gender}</td>
+                          <td className="px-4 py-2">{user.phone}</td>
+                          <td className="px-4 py-2">{roleMap[user.roleId]}</td>
+                          <td className="px-4 py-2">
+                            <label className="relative inline-flex items-center cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={user.status}
+                                onChange={() => toggleUser(user.id)}
+                                className="sr-only peer"
+                              />
+                              <div className="w-11 h-6 bg-gray-300 peer-checked:bg-black rounded-full transition-colors duration-300"></div>
+                              <div className="absolute w-5 h-5 bg-white rounded-full shadow left-0.5 top-0.5 peer-checked:translate-x-full transition transform duration-300"></div>
+                            </label>
+                          </td>
+                          <td className="px-4 py-2 flex space-x-4">
+                            <Link to={`/userManager/editUser/${user.id}`}>
+                              <button className="text-blue-600 hover:text-blue-800 text-[20px] cursor-pointer">
+                                <MdEdit />
+                              </button>
+                            </Link>
+                            <Link to={`/userManager/deleteUser/${user.id}`}>
+                              <button className="text-red-600 hover:text-red-800 text-[20px] cursor-pointer">
+                                <MdDelete />
+                              </button>
+                            </Link>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan="2"
+                          className="text-center py-4 text-gray-500"
+                        >
+                          Không có người dùng nào.
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
                 <div className="flex justify-center mt-4">
                   <nav className="inline-flex items-center space-x-1 text-sm">
-                    <a
-                      href="#"
-                      className="px-3 py-2 rounded-l-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white"
+                    <button
+                      onClick={() => goToPage(page - 1)}
+                      disabled={page === 0}
+                      className="px-3 py-2 rounded-l-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white disabled:opacity-50"
                     >
-                      {" "}
-                      Prev{" "}
-                    </a>
-                    <a
-                      href="#"
-                      className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md"
+                      Prev
+                    </button>
+
+                    {[...Array(totalPages)].map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => goToPage(index)}
+                        className={`px-3 py-2 border border-gray-300 ${index === page
+                          ? "bg-black text-white"
+                          : "bg-[#F5F5F5] hover:bg-black hover:text-white"
+                          } rounded-md`}
+                      >
+                        {index + 1}
+                      </button>
+                    ))}
+
+                    <button
+                      onClick={() => goToPage(page + 1)}
+                      disabled={page === totalPages - 1}
+                      className="px-3 py-2 rounded-r-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white disabled:opacity-50"
                     >
-                      1
-                    </a>
-                    <a
-                      href="#"
-                      className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md"
-                    >
-                      2
-                    </a>
-                    <a
-                      href="#"
-                      className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md"
-                    >
-                      3
-                    </a>
-                    <a
-                      href="#"
-                      className="px-3 py-2 rounded-r-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white"
-                    >
-                      {" "}
-                      Next{" "}
-                    </a>
+                      Next
+                    </button>
                   </nav>
                 </div>
               </div>
