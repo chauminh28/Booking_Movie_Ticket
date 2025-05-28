@@ -74,8 +74,8 @@ function App() {
         {/* Movie Manager */}
         <Route path="/movieManager" element={<MovieManager />} />
         <Route path="/movieManager/addMovie" element={<AddMovie />} />
-        <Route path="/movieManager/editMovie" element={<EditMovie />} />
-        <Route path="/movieManager/deleteMovie" element={<DeleteMovie />} />
+        <Route path="/movieManager/editMovie/:id" element={<EditMovie />} />
+        <Route path="/movieManager/deleteMovie/:id" element={<DeleteMovie />} />
         {/* Director Manager */}
         <Route path="/directorManager" element={<DirectorManager />} />
         <Route path="/directorManager/addDirector" element={<AddDirector />} />
