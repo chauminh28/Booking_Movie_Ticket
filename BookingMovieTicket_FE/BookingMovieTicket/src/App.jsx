@@ -69,7 +69,7 @@ function App() {
         {/* Room Manager */}
         <Route path="/roomManager" element={<RoomManger />} />
         <Route path="/roomManager/addRoom" element={<AddRoom />} />
-        <Route path="/roomManager/editRoom" element={<EditRoom />} />
+        <Route path="/roomManager/editRoom/:id" element={<EditRoom />} />
 
         {/* Movie Manager */}
         <Route path="/movieManager" element={<MovieManager />} />
