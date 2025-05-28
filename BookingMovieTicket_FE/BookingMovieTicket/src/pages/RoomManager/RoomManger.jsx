@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavbarAdmin from "../../components/layouts/NavbarAdmin";
 import Search from "../../components/layouts/Search";
 import HeaderAdmin from "../../components/layouts/HeaderAdmin";
@@ -9,11 +9,57 @@ import { IoIosAddCircle } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import axiosClient from "../../api/axiosClient";
 
 export default function RoomMangaer() {
-  const [roomStatus, setRoomStatus] = useState(false);
+  const [rooms, setRooms] = useState([])
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [searchValue, setSearchValue] = useState("");
+  const size = 5;
 
-  const toggleRoom = () => setRoomStatus(!roomStatus);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/rooms`, {
+        params: {
+          page: page,
+          size: size,
+          search: searchValue,
+        },
+      })
+      .then((response) => {
+        setRooms(response.data.content)
+        setTotalPages(response.data.totalPages)
+      })
+      .catch((error) => {
+        console.error("Lỗi fetch api room", error);
+      });
+  }, [page, searchValue])
+
+  const goToPage = (pageNumber) => {
+    if (pageNumber >= 0 && pageNumber < totalPages) {
+      setPage(pageNumber);
+    }
+  };
+
+  const toggleRoom = async (roomId) => {
+    const room = rooms.find(r => r.id === roomId);
+    if (!room) return;
+
+    const updatedRoom = { ...room, status: !room.status };
+
+    try {
+      const res = await axiosClient.put(`/rooms/${roomId}`, updatedRoom)
+      setRooms(prevRooms =>
+        prevRooms.map(r =>
+          r.id === roomId ? updatedRoom : r
+        )
+      );
+    } catch (err) {
+      console.log(err)
+    }
+  };
 
   return (
     <>
@@ -120,70 +166,80 @@ export default function RoomMangaer() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border-t border-[#EEEEEE]">
-                      <td className="px-4 py-2">Phòng 1</td>
-                      <td className="px-4 py-2">160</td>
-                      <td className="px-4 py-2">2D</td>
-                      <td className="px-4 py-2">Digital Projector</td>
-                      <td className="px-4 py-2">Dolby Atmos</td>
-                      <td className="px-4 py-2">
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={roomStatus}
-                            onChange={toggleRoom}
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-gray-300 peer-checked:bg-black rounded-full transition-colors duration-300"></div>
-                          <div className="absolute w-5 h-5 bg-white rounded-full shadow left-0.5 top-0.5 peer-checked:translate-x-full transition transhtmlForm duration-300"></div>
-                        </label>
-                      </td>
-                      <td className="px-4 py-2 flex space-x-4">
-                        <Link to="/roomManager/editRoom">
-                          <button className="text-blue-600 hover:text-blue-800 text-[20px] cursor-pointer mt-1.5">
-                            <MdEdit />
-                          </button>
-                        </Link>
-                        <button className="text-red-600 hover:text-red-800 text-[20px] cursor-pointer">
-                          <MdDelete />
-                        </button>
-                      </td>
-                    </tr>
+                    {rooms.length > 0 ? (
+                      rooms.map((room) => (
+                        <tr className="border-t border-[#EEEEEE]" key={room.id}>
+                          <td className="px-4 py-2">{room.roomName}</td>
+                          <td className="px-4 py-2">{room.rows * room.cols}</td>
+                          <td className="px-4 py-2">{room.monitor}</td>
+                          <td className="px-4 py-2">{room.projector}</td>
+                          <td className="px-4 py-2">{room.soundSystem}</td>
+                          <td className="px-4 py-2">
+                            <label className="relative inline-flex items-center cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={room.status}
+                                onChange={() => toggleRoom(room.id)}
+                                className="sr-only peer"
+                              />
+                              <div className="w-11 h-6 bg-gray-300 peer-checked:bg-black rounded-full transition-colors duration-300"></div>
+                              <div className="absolute w-5 h-5 bg-white rounded-full shadow left-0.5 top-0.5 peer-checked:translate-x-full transition transhtmlForm duration-300"></div>
+                            </label>
+                          </td>
+                          <td className="px-4 py-2 flex space-x-4">
+                            <Link to={`/roomManager/editRoom/${room.id}`}>
+                              <button className="text-blue-600 hover:text-blue-800 text-[20px] cursor-pointer mt-1.5">
+                                <MdEdit />
+                              </button>
+                            </Link>
+                            {/* <button className="text-red-600 hover:text-red-800 text-[20px] cursor-pointer">
+                              <MdDelete />
+                            </button> */}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan="2"
+                          className="text-center py-4 text-gray-500"
+                        >
+                          Không có người dùng nào.
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
                 <div className="flex justify-center mt-4">
                   <nav className="inline-flex items-center space-x-1 text-sm">
-                    <a
-                      href="#"
-                      className="px-3 py-2 rounded-l-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white"
+                    <button
+                      onClick={() => goToPage(page - 1)}
+                      disabled={page === 0}
+                      className="px-3 py-2 rounded-l-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white disabled:opacity-50"
                     >
                       Prev
-                    </a>
-                    <a
-                      href="#"
-                      className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md"
+                    </button>
+
+                    {[...Array(totalPages)].map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => goToPage(index)}
+                        className={`px-3 py-2 border border-gray-300 ${index === page
+                          ? "bg-black text-white"
+                          : "bg-[#F5F5F5] hover:bg-black hover:text-white"
+                          } rounded-md`}
+                      >
+                        {index + 1}
+                      </button>
+                    ))}
+
+                    <button
+                      onClick={() => goToPage(page + 1)}
+                      disabled={page === totalPages - 1}
+                      className="px-3 py-2 rounded-r-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white disabled:opacity-50"
                     >
-                      1
-                    </a>
-                    <a
-                      href="#"
-                      className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md"
-                    >
-                      2
-                    </a>
-                    <a
-                      href="#"
-                      className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md"
-                    >
-                      3
-                    </a>
-                    <a
-                      href="#"
-                      className="px-3 py-2 rounded-r-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white"
-                    >
-                      {" "}
-                      Next{" "}
-                    </a>
+                      Next
+                    </button>
                   </nav>
                 </div>
               </div>

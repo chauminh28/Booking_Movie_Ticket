@@ -1,26 +1,100 @@
 import React, { useEffect, useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import NavbarAdmin from "../../components/layouts/NavbarAdmin";
 import HeaderAdmin from "../../components/layouts/HeaderAdmin";
+import SuccessToast from '../../components/toasts/SuccessToast';
+import ErrorToast from '../../components/toasts/ErrorToast';
+import axiosClient from '../../api/axiosClient'
 
 export default function AddRoom() {
-  const [row, setRow] = useState(0);
-  const [col, setCol] = useState(0);
-  const [total, setTotal] = useState();
+  const [errorMessage, setErrorMessage] = useState('');
+  const [showErrorToast, setErrorShowToast] = useState(false);
+  const [successMessage, setSuccesMessage] = useState('');
+  const [showSuccessToast, setSuccessShowToast] = useState(false);
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const r = parseInt(row);
-    const c = parseInt(col);
-    if (!isNaN(r) && !isNaN(c)) {
-      setTotal(r * c);
-    } else {
-      setTotal(0);
+  const [form, setForm] = useState({
+    createAt: '',
+    roomName: '',
+    monitor: '',
+    soundSystem: '',
+    projector: '',
+    rows: '',
+    cols: '',
+    status: true
+  })
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.id]: e.target.value
+    })
+    console.log(form)
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const newErrors = {};
+
+    if (!form.createAt.trim()) {
+      newErrors.createAt = "Vui lòng nhập ngày tạo phòng"
     }
-  }, [row, col]);
+    if (!form.roomName.trim()) {
+      newErrors.roomName = "Vui lòng nhập tên phòng"
+    }
+    if (!form.monitor.trim()) {
+      newErrors.monitor = "Vui lòng chọn màn hình"
+    }
+    if (!form.soundSystem.trim()) {
+      newErrors.soundSystem = "Vui lòng chọn hệ thống âm thanh"
+    }
+    if (!form.projector.trim()) {
+      newErrors.projector = "Vui lòng chọn máy chiếu"
+    }
+    if (!form.rows.trim()) {
+      newErrors.rows = "Vui lòng nhập số hàng"
+    }
+    if (!form.cols.trim()) {
+      newErrors.cols = "Vui lòng nhập số cột"
+    }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    setErrors({});
+
+    try {
+      const res = await axiosClient.post("/rooms", form)
+      setSuccesMessage("Tạo phòng chiếu thành công")
+      setSuccessShowToast(true)
+
+      setTimeout(() => {
+        navigate("/roomManager")
+      }, 1500);
+    } catch (err) {
+      console.log(err)
+      setErrorMessage("Lỗi api")
+      setErrorShowToast(true)
+    }
+  }
 
   return (
     <>
+      {showSuccessToast && (
+        <SuccessToast
+          message={successMessage}
+          onClose={() => setSuccessShowToast(false)}
+        />
+      )}
+
+      {showErrorToast && (
+        <ErrorToast
+          message={errorMessage}
+          onClose={() => setErrorShowToast(false)}
+        />
+      )}
       <div className="grid grid-cols-12">
         <div className="col-span-2">
           <NavbarAdmin />
@@ -31,41 +105,51 @@ export default function AddRoom() {
             <HeaderAdmin />
             <p className="font-bold text-[28px]">THÊM PHÒNG CHIẾU</p>
             <div className="mt-[30px] pl-[30px]">
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-12 gap-5 ">
                   <div className="col-span-6 gap-y-4 flex flex-col">
                     <div>
                       <label
-                        for="date"
+                        htmlFor="createAt"
                         className="block text-sm font-bold text-gray-700"
                       >
                         Ngày tạo phòng
                       </label>
                       <input
                         type="date"
-                        id="date"
+                        id="createAt"
+                        value={form.createAt}
+                        onChange={handleChange}
                         placeholder="dd/MM/yyyy"
                         className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                       />
+                      <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                        {errors.createAt || ""}
+                      </p>
                     </div>
                     <div>
                       <label
-                        for="name"
+                        htmlFor="roomName"
                         className="block text-sm font-medium text-gray-700"
                       >
                         Tên phòng chiếu <span className="text-red-600">*</span>
                       </label>
                       <input
                         type="text"
-                        id="name"
+                        id="roomName"
+                        value={form.roomName}
+                        onChange={handleChange}
                         placeholder="Tên phòng chiếu"
                         className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                         required
                       />
+                      <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                        {errors.roomName || ""}
+                      </p>
                     </div>
                     <div>
                       <label
-                        for="total"
+                        htmlFor="total"
                         className="block text-sm font-medium text-gray-700"
                       >
                         Sức chứa
@@ -73,7 +157,7 @@ export default function AddRoom() {
                       <input
                         type="text"
                         id="total"
-                        value={total}
+                        value={form.cols * form.rows}
                         placeholder="Sức chứa"
                         className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                         readOnly
@@ -86,37 +170,44 @@ export default function AddRoom() {
                       <div className="flex justify-around">
                         <div className="col-span-1">
                           <label
-                            for="row"
+                            htmlFor="rows"
                             className="block text-sm font-medium text-gray-700"
                           >
                             Số hàng <span className="text-red-600">*</span>
                           </label>
                           <input
                             type="text"
-                            value={row}
-                            id="row"
+                            value={form.rows}
+                            id="rows"
+                            onAbort={handleChange}
                             placeholder="Hàng"
-                            onChange={(e) => setRow(e.target.value)}
+                            onChange={handleChange}
                             className="bg-[#F9F9F9] mt-1 block w-[125px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                             required
                           />
+                          <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                            {errors.rows || ""}
+                          </p>
                         </div>
                         <div className="col-span-1">
                           <label
-                            for="column"
+                            htmlFor="cols"
                             className="block text-sm font-medium text-gray-700"
                           >
                             Số cột <span className="text-red-600">*</span>
                           </label>
                           <input
                             type="text"
-                            value={col}
-                            id="column"
+                            value={form.cols}
+                            id="cols"
+                            onChange={handleChange}
                             placeholder="Cột"
-                            onChange={(e) => setCol(e.target.value)}
                             className="bg-[#F9F9F9] mt-1 block w-[125px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                             required
                           />
+                          <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                            {errors.cols || ""}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -124,7 +215,7 @@ export default function AddRoom() {
                   <div className="col-span-6 flex flex-col gap-4">
                     <div>
                       <label
-                        for="monitor"
+                        htmlFor="monitor"
                         className="block text-sm font-medium text-gray-700"
                       >
                         Loại màn hình <span className="text-red-600">*</span>
@@ -132,19 +223,23 @@ export default function AddRoom() {
                       <select
                         type="text"
                         id="monitor"
-                        placeholder="your@email.com"
+                        value={form.monitor}
+                        onChange={handleChange}
                         className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                         required
                       >
                         <option>-- Chọn màn hình --</option>
-                        <option>2D</option>
-                        <option>3D</option>
-                        <option>IMAX</option>
+                        <option value={"2D"}>2D</option>
+                        <option value={"3D"}>3D</option>
+                        <option value={"IMAX"}>IMAX</option>
                       </select>
+                      <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                        {errors.monitor || ""}
+                      </p>
                     </div>
                     <div>
                       <label
-                        for="sound"
+                        htmlFor="soundSystem"
                         className="block text-sm font-medium text-gray-700"
                       >
                         Hệ thống âm thanh
@@ -152,20 +247,25 @@ export default function AddRoom() {
                       </label>
                       <select
                         type="text"
-                        id="sound"
+                        id="soundSystem"
+                        value={form.soundSystem}
+                        onChange={handleChange}
                         placeholder="your@email.com"
                         className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                         required
                       >
                         <option>-- Chọn hệ thống âm thanh --</option>
-                        <option>Dolby Atmos</option>
-                        <option>DTS:X</option>
-                        <option>IMAX Audio</option>
+                        <option value={"Dolby Atmos"}>Dolby Atmos</option>
+                        <option value={"DTS:X"}>DTS:X</option>
+                        <option value={"IMAX Audio"}>IMAX Audio</option>
                       </select>
+                      <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                        {errors.soundSystem || ""}
+                      </p>
                     </div>
                     <div>
                       <label
-                        for="projector"
+                        htmlFor="projector"
                         className="block text-sm font-medium text-gray-700"
                       >
                         Máy chiếu <span className="text-red-600">*</span>
@@ -173,15 +273,19 @@ export default function AddRoom() {
                       <select
                         type="text"
                         id="projector"
-                        placeholder="your@email.com"
+                        value={form.projector}
+                        onChange={handleChange}
                         className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                         required
                       >
                         <option>-- Chọn máy chiếu --</option>
-                        <option>Digital Projector</option>
-                        <option>IMAX</option>
-                        <option>3D</option>
+                        <option value={"Digital Projector"}>Digital Projector</option>
+                        <option value={"IMAX"}>IMAX</option>
+                        <option value={"3D"}>3D</option>
                       </select>
+                      <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                        {errors.projector || ""}
+                      </p>
                     </div>
                   </div>
                 </div>

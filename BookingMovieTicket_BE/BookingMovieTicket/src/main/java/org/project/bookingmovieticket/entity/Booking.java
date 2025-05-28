@@ -11,6 +11,8 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private int ticketStatus;
+
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
@@ -24,7 +26,7 @@ public class Booking {
     private Seat seat;
 
     private LocalDateTime bookingTime;
-    private String paymentStatus;
+    private int paymentStatus;
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
     private List<BookingService> bookingServices;

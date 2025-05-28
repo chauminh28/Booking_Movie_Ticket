@@ -42,6 +42,10 @@ import DeleteSchedule from "./pages/ScheduleManager/DeleteSchedule";
 import UserManager from "./pages/UserManager/UserManager";
 import TicketManager from "./pages/TicketManager/TicketManager";
 import DetailTicket from "./pages/TicketManager/DetailTicket";
+import GenreManager from "./pages/GenreManager/GenreManager";
+import AddGenre from "./pages/GenreManager/AddGenre";
+import EditGender from "./pages/GenreManager/EditGender";
+import DeleteGenre from "./pages/GenreManager/DeleteGenre";
 
 function App() {
   return (
@@ -65,13 +69,13 @@ function App() {
         {/* Room Manager */}
         <Route path="/roomManager" element={<RoomManger />} />
         <Route path="/roomManager/addRoom" element={<AddRoom />} />
-        <Route path="/roomManager/editRoom" element={<EditRoom />} />
+        <Route path="/roomManager/editRoom/:id" element={<EditRoom />} />
 
         {/* Movie Manager */}
         <Route path="/movieManager" element={<MovieManager />} />
         <Route path="/movieManager/addMovie" element={<AddMovie />} />
-        <Route path="/movieManager/editMovie" element={<EditMovie />} />
-        <Route path="/movieManager/deleteMovie" element={<DeleteMovie />} />
+        <Route path="/movieManager/editMovie/:id" element={<EditMovie />} />
+        <Route path="/movieManager/deleteMovie/:id" element={<DeleteMovie />} />
         {/* Director Manager */}
         <Route path="/directorManager" element={<DirectorManager />} />
         <Route path="/directorManager/addDirector" element={<AddDirector />} />
@@ -91,9 +95,9 @@ function App() {
 
         {/* User Manager */}
         <Route path="/userManager" element={<UserManager />} />
-        <Route path="/userManager/editUser" element={<EditUser />} />
+        <Route path="/userManager/editUser/:id" element={<EditUser />} />
         <Route path="/userManager/addUser" element={<AddUser />} />
-        <Route path="/userManager/deleteUser" element={<DeleteUser />} />
+        <Route path="/userManager/deleteUser/:id" element={<DeleteUser />} />
 
         {/* Service Manager */}
         <Route path="/serviceManager" element={<ServiceManager />} />
@@ -131,6 +135,12 @@ function App() {
         {/* TicketManger */}
         <Route path="/ticketManager" element={<TicketManager />} />
         <Route path="/ticketManager/detail" element={<DetailTicket />} />
+
+        {/* GenreManager */}
+        <Route path="/genreManager" element={<GenreManager />} />
+        <Route path="/genreManager/addGenre/" element={<AddGenre />} />
+        <Route path="/genreManager/editGenre/:id" element={<EditGender />} />
+        <Route path="/genreManager/deleteGenre/:id" element={<DeleteGenre />} />
       </Routes>
     </Router>
   );

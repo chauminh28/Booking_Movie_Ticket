@@ -39,7 +39,7 @@ function AddActor() {
                       className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                       required
                     />
-                  </div>
+                  </div>  
                   <div>
                     <label
                       htmlFor="gender"

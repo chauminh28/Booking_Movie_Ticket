@@ -1,18 +1,26 @@
 package org.project.bookingmovieticket.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class MovieDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
+    @Column(columnDefinition = "nvarchar(255)")
     private String country;
+    @Column(columnDefinition = "nvarchar(255)")
     private String description;
+    @Column(columnDefinition = "nvarchar(255)")
     private String trailer;
     private LocalDate startDate;
 
