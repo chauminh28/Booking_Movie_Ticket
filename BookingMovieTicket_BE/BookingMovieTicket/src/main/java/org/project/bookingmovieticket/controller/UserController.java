@@ -1,17 +1,22 @@
 package org.project.bookingmovieticket.controller;
 
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.project.bookingmovieticket.dto.request.user.UserCreateRequest;
 import org.project.bookingmovieticket.dto.request.user.UserResponse;
 import org.project.bookingmovieticket.dto.request.user.UserUpdateRequest;
 import org.project.bookingmovieticket.entity.User;
 import org.project.bookingmovieticket.service.UserService;
+//import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("users")
+@Slf4j
 public class UserController {
     private UserService userService;
 
@@ -25,8 +30,13 @@ public class UserController {
     }
 
     @GetMapping
-    List<UserResponse> getUsers() {
-        return userService.getUsers();
+    Page<UserResponse> getUsers(@RequestParam(value = "search", required = false) String searchValue, Pageable pageable) {
+//        var authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//        log.info("Username: {}", authentication.getName());
+//        log.info("Role: {}", authentication.getAuthorities());
+
+        return userService.getUsers(searchValue, pageable);
     }
 
     @GetMapping("/{userId}")

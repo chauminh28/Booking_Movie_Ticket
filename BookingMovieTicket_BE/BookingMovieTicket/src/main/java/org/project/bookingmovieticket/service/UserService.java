@@ -8,12 +8,11 @@ import org.project.bookingmovieticket.entity.Role;
 import org.project.bookingmovieticket.entity.User;
 import org.project.bookingmovieticket.repository.RoleRepository;
 import org.project.bookingmovieticket.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -48,9 +47,17 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public List<UserResponse> getUsers() {
-        return userRepository.findAll().stream()
-                .map(user -> {
+    public Page<UserResponse> getUsers(String searchValue, Pageable pageable) {
+        Page<User> page;
+
+        if (searchValue == null || searchValue.isEmpty()) {
+            page = userRepository.findAll(pageable);
+        }
+        else {
+            page = userRepository.findByUserNameContainingIgnoreCase(searchValue, pageable);
+        }
+
+        return page.map(user -> {
                     UserResponse dto = new UserResponse();
                     dto.setId(user.getId());
                     dto.setUserName(user.getUserName());
@@ -61,10 +68,9 @@ public class UserService {
                     dto.setEmail(user.getEmail());
                     dto.setPhone(user.getPhone());
                     dto.setStatus(user.isStatus());
-                    dto.setRoleName(user.getRole() != null ? user.getRole().getRoleName() : null);
+                    dto.setRoleId(user.getRole() != null ? user.getRole().getId() : null);
                     return dto;
-                })
-                .collect(Collectors.toList());
+                });
     }
 
     public UserResponse getUser(Long id) {
@@ -81,7 +87,7 @@ public class UserService {
         response.setEmail(user.getEmail());
         response.setPhone(user.getPhone());
         response.setStatus(user.isStatus());
-        response.setRoleName(user.getRole() != null ? user.getRole().getRoleName() : null);
+        response.setRoleId(user.getRole() != null ? user.getRole().getId() : null);
 
         return response;
     }
@@ -98,7 +104,7 @@ public class UserService {
         user.setGender(request.getGender());
         user.setEmail(request.getEmail());
         user.setPhone(request.getPhone());
-        user.setStatus(true);
+        user.setStatus(request.isStatus());
 
         Role role = roleRepository.findById(request.getRoleId())
                 .orElseThrow(() -> new RuntimeException("Role not found"));

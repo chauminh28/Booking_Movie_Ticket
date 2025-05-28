@@ -11,6 +11,7 @@ import org.project.bookingmovieticket.dto.request.authentication.AuthenticationR
 import org.project.bookingmovieticket.dto.request.authentication.IntrospectRequest;
 import org.project.bookingmovieticket.dto.response.AuthenticationResponse;
 import org.project.bookingmovieticket.dto.response.IntrospectResponse;
+import org.project.bookingmovieticket.entity.User;
 import org.project.bookingmovieticket.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -52,31 +53,30 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         var user = userRepository.findByUserName(request.getUserName())
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
 
-        if(!authenticated) throw new RuntimeException("Unauthenticated");
-
-        var token = generateToken(request.getUserName());
+        var token = generateToken(user);
 
         return AuthenticationResponse.builder()
                 .token(token)
-                .authenticated(true)
+                .authenticated(authenticated)
                 .build();
     }
 
-    private String generateToken(String userName) {
+    private String generateToken(User user) {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(userName)
+                .subject(user.getUserName())
                 .issuer("GiaComingPlay.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(
                         Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
                 ))
+                .claim("scope", user.getRole().getRoleName())
+                .claim("userId", user.getId())
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
