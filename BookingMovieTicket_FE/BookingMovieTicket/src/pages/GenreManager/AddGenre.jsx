@@ -10,6 +10,7 @@ function AddGenre() {
   const [genreName, setGenreName] = useState("");
   const [toast, setToast] = useState(null);
   const [errors, setErrors] = useState({});
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
@@ -33,6 +34,7 @@ function AddGenre() {
       console.error("There was an error adding the genre!", error);
     }
   };
+
   return (
     <>
       {toast && (

@@ -95,9 +95,9 @@ function App() {
 
         {/* User Manager */}
         <Route path="/userManager" element={<UserManager />} />
-        <Route path="/userManager/editUser" element={<EditUser />} />
+        <Route path="/userManager/editUser/:id" element={<EditUser />} />
         <Route path="/userManager/addUser" element={<AddUser />} />
-        <Route path="/userManager/deleteUser" element={<DeleteUser />} />
+        <Route path="/userManager/deleteUser/:id" element={<DeleteUser />} />
 
         {/* Service Manager */}
         <Route path="/serviceManager" element={<ServiceManager />} />

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import googleIcon from '../../assets/public/icons/google-icon.png'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import axiosClient from '../../api/axiosClient'
 import { initFlowbite } from 'flowbite'
@@ -12,14 +12,18 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [showErrorToast, setErrorShowToast] = useState(false);
   const [successMessage, setSuccesMessage] = useState('');
   const [showSuccessToast, setSuccessShowToast] = useState(false);
-  const [showErrorToast, setErrorShowToast] = useState(false);
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const [form, setForm] = useState({
     userName: '',
     lastName: '',
     firstName: '',
+    dob: '',
+    gender: '',
     phone: '',
     email: '',
     password: '',
@@ -38,11 +42,45 @@ export default function Register() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    const newErrors = {};
     if (form.password !== form.rePassword) {
-      setErrorMessage("Mật khẩu không khớp")
+      setErrorMessage("Hai mật khẩu không khớp")
       setErrorShowToast(true)
       return
     }
+
+    if (!form.userName.trim()) {
+      newErrors.userName = "Vui lòng nhập tên đăng nhập"
+    }
+    if (!form.lastName.trim()) {
+      newErrors.lastName = "Vui lòng nhập họ đệm"
+    }
+    if (!form.firstName.trim()) {
+      newErrors.firstName = "Vui lòng nhập tên"
+    }
+    if (!form.dob.trim()) {
+      newErrors.dob = "Vui lòng nhập ngày sinh"
+    }
+    if (!form.gender.trim()) {
+      newErrors.gender = "Vui lòng nhập giới tính"
+    }
+    if (!form.phone.trim()) {
+      newErrors.phone = "Vui lòng nhập số điện thoại"
+    }
+    if (!form.email.trim()) {
+      newErrors.email = "Vui lòng nhập email"
+    }
+    if (!form.password.trim()) {
+      newErrors.password = "Vui lòng nhập mật khẩu"
+    }
+    if (!form.rePassword.trim()) {
+      newErrors.rePassword = "Vui lòng nhập lại mật khẩu"
+    }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    setErrors({});
 
     const { rePassword, ...payload } = form
 
@@ -50,7 +88,10 @@ export default function Register() {
       const res = await axiosClient.post("/users", payload)
       setSuccesMessage("Đăng ký thành công")
       setSuccessShowToast(true)
+
+      navigate("/userManager")
     } catch (err) {
+      console.log(err)
       setErrorMessage("Lỗi api")
       setErrorShowToast(true)
     }
@@ -122,8 +163,7 @@ export default function Register() {
               </span>
             </button>
           </div>
-          <div className='w-[460px] h-full bg-white rounded-3xl p-8 flex-col'>
-            <p className='font-bold text-[23px] mb-1'>Bắt đầu ngay!</p>
+          <div className='w-[460px] h-full max-h-[90vh] bg-white rounded-2xl p-6 flex flex-col overflow-y-auto'>
             <p className='text-[22px] mb-2'>Tạo tài khoản mới</p>
             <form className="space-y-6" onSubmit={handleRegister}>
               <div>
@@ -137,6 +177,9 @@ export default function Register() {
                   className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                   required
                 />
+                <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                  {errors.userName || ""}
+                </p>
               </div>
               <div className='flex gap-3'>
                 <div>
@@ -155,6 +198,9 @@ export default function Register() {
                     className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                     required
                   />
+                  <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                    {errors.lastName || ""}
+                  </p>
                 </div>
                 <div>
                   <label
@@ -172,6 +218,46 @@ export default function Register() {
                     className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                     required
                   />
+                  <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                    {errors.firstName || ""}
+                  </p>
+                </div>
+              </div>
+              <div className='flex gap-3'>
+                <div className="w-1/2">
+                  <label htmlFor="dob" className="block text-sm font-medium text-gray-700">
+                    Ngày sinh <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    id="dob"
+                    value={form.dob}
+                    onChange={handleChange}
+                    className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                    required
+                  />
+                  <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                    {errors.dob || ""}
+                  </p>
+                </div>
+                <div className="w-1/2">
+                  <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
+                    Giới tính <span className="text-red-600">*</span>
+                  </label>
+                  <select
+                    id="gender"
+                    value={form.gender}
+                    onChange={handleChange}
+                    className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                    required
+                  >
+                    <option value="">Chọn giới tính</option>
+                    <option value="NAM">Nam</option>
+                    <option value="NU">Nữ</option>
+                  </select>
+                  <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                    {errors.gender || ""}
+                  </p>
                 </div>
               </div>
               <div>
@@ -185,8 +271,10 @@ export default function Register() {
                   placeholder="Số điện thoại"
                   className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                   required
-
                 />
+                <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                  {errors.phone || ""}
+                </p>
               </div>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email <span className="text-red-600">*</span></label>
@@ -199,6 +287,9 @@ export default function Register() {
                   className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                   required
                 />
+                <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                  {errors.email || ""}
+                </p>
               </div>
               <div className='relative'>
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mật khẩu <span className="text-red-600">*</span></label>
@@ -211,6 +302,9 @@ export default function Register() {
                   className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                   required
                 />
+                <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                  {errors.password || ""}
+                </p>
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
@@ -230,27 +324,31 @@ export default function Register() {
                   className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                   required
                 />
+                <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                  {errors.rePassword || ""}
+                </p>
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() => setShowRePassword(!showRePassword)}
                   className="absolute top-[50px] right-3 transform -translate-y-1/2 text-gray-500 cursor-pointer"
                 >
-                  {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
+                  {showRePassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
                 </button>
               </div>
               <button type='submit' className='bg-[#395F18] px-4 py-2 text-white font-bold text-[16px] w-full h-[55px] rounded-lg mt-2 cursor-pointer'>Bắt đầu</button>
             </form>
-            <p className='font-bold text-[13px] flex items-center justify-center my-3'>Hoặc</p>
-            <div>
-              <button className='border-1 bg-white px-4 py-2 w-full h-[48px] rounded-lg mb-1 flex items-center justify-center gap-3'>
-                <img src={googleIcon} className='w[18px] h-[18px]' />
-                <p className='text-[#616161] text-[13px]'>Đăng ký với Google</p>
-              </button>
-            </div>
-            <p className='text-[16px] flex items-center justify-center gap-2'>Đã có tài khoản? <Link to={"/login"}><span className='font-bold'> Đăng nhập ngay </span></Link></p>
+            <p className='font-bold text-[13px] flex items-center justify-center my-1'>Hoặc</p>
+            <button className='border-1 bg-white px-4 py-2 w-full h-[48px] rounded-lg mb-1 flex items-center justify-center gap-2'>
+              <img src={googleIcon} className='w-[18px] h-[18px]' />
+              <p className='text-[#616161] text-[13px]'>Đăng ký với Google</p>
+            </button>
+            <p className='text-[16px] flex items-center justify-center gap-2'>
+              Đã có tài khoản? <Link to={"/login"}><span className='font-bold'> Đăng nhập ngay </span></Link>
+            </p>
           </div>
         </div>
       </div>
     </>
   )
 }
+

@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import googleIcon from '../../assets/public/icons/google-icon.png'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import ErrorToast from '../../components/toasts/ErrorToast';
+import axiosClient from '../../api/axiosClient';
+import { jwtDecode } from 'jwt-decode';
 
 export default function Login() {
     const [errorMessage, setErrorMessage] = useState('');
     const [showErrorToast, setErrorShowToast] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
 
     const [form, setForm] = useState({
         userName: '',
@@ -19,15 +22,43 @@ export default function Login() {
             ...form,
             [e.target.id]: e.target.value
         })
-        console.log(form)
     }
 
     const handleSubmit = async (e) => {
+        e.preventDefault()
 
+        try {
+            const res = await axiosClient.post("/auth/login", form)
+            var data = res.data
+            const isAuthenticated = data.authenticated
+
+            if (isAuthenticated === true) {
+                const decoded = jwtDecode(data.token)
+
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("username", decoded.sub);
+
+                navigate("/")
+            }
+            else {
+                setErrorMessage("Thông tin ko đúng")
+                setErrorShowToast(true)
+            }
+        } catch (err) {
+            console.log(err)
+            setErrorMessage("Lỗi api")
+            setErrorShowToast(true)
+        }
     }
 
     return (
         <>
+            {showErrorToast && (
+                <ErrorToast
+                    message={errorMessage}
+                    onClose={() => setErrorShowToast(false)}
+                />
+            )}
             <div className={`bg-login h-screen w-full bg-cover bg-center bg-no-repeat 
                 flex items-center justify-center`}>
                 <div className='w-[460px] h-[570px] bg-white flex items-star justify-star rounded-3xl p-8 flex-col'>
@@ -50,7 +81,7 @@ export default function Login() {
                             <input
                                 type={showPassword ? "text" : "password"}
                                 id="password"
-                                value={form.userName}
+                                value={form.password}
                                 onChange={handleChange}
                                 placeholder="********"
                                 className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
