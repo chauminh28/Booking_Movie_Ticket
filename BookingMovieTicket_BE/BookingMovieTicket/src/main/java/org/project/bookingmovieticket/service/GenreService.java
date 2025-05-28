@@ -29,7 +29,7 @@ public class GenreService {
 
     public Page<GenreResponse> getGenres(String searchValue, Pageable pageable) {
       Page<Genre> page;
-      if (searchValue.isEmpty() || searchValue == null) {
+      if (searchValue == null || searchValue.isEmpty()) {
         page = genreRepository.findAll(pageable);
       }
       else {
@@ -43,6 +43,15 @@ public class GenreService {
       });
     }
 
+    public List<GenreResponse> getListGenres() {
+        return genreRepository.findAll().stream().map(genre -> {
+            GenreResponse dto = new GenreResponse();
+            dto.setId(genre.getId());
+            dto.setGenreName(genre.getGenreName());
+            return dto;
+        }).collect(Collectors.toList());
+
+    }
     public GenreResponse getGenre(Long id) {
         Genre genre = genreRepository.findById(id).orElseThrow( () -> new RuntimeException("User not found"));
         GenreResponse dto = new GenreResponse();

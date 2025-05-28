@@ -32,6 +32,11 @@ public class GenreController {
         return genreService.getGenres(searchValue, pageable);
     }
 
+    @GetMapping("/list")
+    public List<GenreResponse> getListGenres() {
+        return genreService.getListGenres();
+    }
+
     @GetMapping("{genreId}")
     public GenreResponse getGenreById(@PathVariable("genreId") Long id) {
         return genreService.getGenre(id);

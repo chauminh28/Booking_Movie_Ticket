@@ -1,11 +1,17 @@
 package org.project.bookingmovieticket.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.project.bookingmovieticket.enums.Gender;
 
 import java.util.List;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Director {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

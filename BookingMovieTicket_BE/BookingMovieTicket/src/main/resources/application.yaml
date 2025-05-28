@@ -12,12 +12,18 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.SQLServerDialect
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
 server:
   servlet:
     encoding:
       enabled: true
       charset: UTF-8
       force: true
+
+
 
 jwt:
   signerKey: "Vz8SbmcFpTpK4iDX65I2q469YpxP1pizxOKcze/SH9g5J+HRuFjkbfcswze5nvdr"

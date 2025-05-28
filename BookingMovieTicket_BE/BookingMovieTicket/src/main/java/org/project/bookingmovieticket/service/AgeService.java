@@ -19,10 +19,9 @@ public class AgeService {
 
     public Age createAge(AgeCreateRequest request) {
         Age age = new Age();
+        age.setId(request.getId());
         age.setAgeType(request.getAgeType());
-        System.out.println(age.getAgeType());
         age.setDescription(request.getDescription());
-        System.out.println(age.getDescription());
         return ageRepository.save(age);
     }
 
@@ -30,6 +29,7 @@ public class AgeService {
         Age age = ageRepository.findById(id).orElseThrow(() -> new RuntimeException("Age not found"));
 
         AgeResponse ageResponse = new AgeResponse();
+        ageResponse.setId(age.getId());
         ageResponse.setAgeType(age.getAgeType());
         ageResponse.setDescription(age.getDescription());
         return ageResponse;
@@ -38,6 +38,7 @@ public class AgeService {
     public List<AgeResponse> getAges() {
         return ageRepository.findAll().stream().map(age -> {
             AgeResponse ageResponse = new AgeResponse();
+            ageResponse.setId(age.getId());
             ageResponse.setAgeType(age.getAgeType());
             ageResponse.setDescription(age.getDescription());
             return ageResponse;
