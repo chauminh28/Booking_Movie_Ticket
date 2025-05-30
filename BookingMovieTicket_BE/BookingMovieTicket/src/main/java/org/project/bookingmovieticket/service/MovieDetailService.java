@@ -38,10 +38,10 @@ public class MovieDetailService {
             movieDetailResponse.setStartDate(movie.getStartDate());
             movieDetailResponse.setAgeName(movie.getAge().getAgeType());
 
-            List<String> actorNames = movie.getActors().stream().map(Actor::getActorName).toList();
-            movieDetailResponse.setActors(actorNames);
-            List<String> directorNames = movie.getDirectors().stream().map(Director::getDirectorName).toList();
-            movieDetailResponse.setDirectors(directorNames);
+            List<Long> actorIds = movie.getActors().stream().map(Actor::getId).toList();
+            movieDetailResponse.setActors(actorIds);
+            List<Long> directorIds = movie.getDirectors().stream().map(Director::getId).toList();
+            movieDetailResponse.setDirectors(directorIds);
             return movieDetailResponse;
         }).collect(Collectors.toList());
     }

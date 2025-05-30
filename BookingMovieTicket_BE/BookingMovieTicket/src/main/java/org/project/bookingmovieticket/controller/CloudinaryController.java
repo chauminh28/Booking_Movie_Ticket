@@ -3,9 +3,7 @@ package org.project.bookingmovieticket.controller;
 import org.project.bookingmovieticket.enums.MediaType;
 import org.project.bookingmovieticket.service.CloudinaryService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -29,5 +27,13 @@ public class CloudinaryController {
             return ResponseEntity.status(500).body(Map.of("message", e.getMessage()));
         }
     }
+
+    @DeleteMapping("uploads/delete")
+    public ResponseEntity<?> delete(@RequestBody Map<String, String> url, @RequestParam("type")MediaType type) {
+        boolean result = cloudinaryService.deleteMedia(url.get("url"), type);
+        return result ? ResponseEntity.ok("Deleted") : ResponseEntity.status(500).body(Map.of("message", "Delete failed"));
+    }
+
+
 
 }

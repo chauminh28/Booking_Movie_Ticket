@@ -3,20 +3,24 @@ package org.project.bookingmovieticket.dto.request.movie;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.project.bookingmovieticket.entity.Genre;
-import org.project.bookingmovieticket.entity.MovieDetail;
 
+import java.time.LocalDate;
 import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MovieResponse {
+public class MovieFullUpdateRequest {
     private Long id;
+    private Long movieId;
     private String movieName;
     private int movieDuration;
-    private String movieImage;
-    private int movieStatus;
     private boolean status;
-
-    private List<String> genres;
+    private String movieImage;
+    private List<Long> movieGenres;
+    private int movieStatus;
+    private String trailer;
+    private String description;
+    private String country;
+    private LocalDate startDate;
+    private Long ageId;
 }
