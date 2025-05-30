@@ -90,8 +90,8 @@ function App() {
         {/* Actor Manager */}
         <Route path="/actorManager" element={<ActorManager />} />
         <Route path="/actorManager/addActor" element={<AddActor />} />
-        <Route path="/actorManager/editActor" element={<EditActor />} />
-        <Route path="/actorManager/deleteActor" element={<DeleteActor />} />
+        <Route path="/actorManager/editActor/:id" element={<EditActor />} />
+        <Route path="/actorManager/deleteActor/:id" element={<DeleteActor />} />
 
         {/* User Manager */}
         <Route path="/userManager" element={<UserManager />} />
@@ -111,12 +111,12 @@ function App() {
         {/* SeatType Manager */}
         <Route path="/seatTypeManager" element={<SeatTypeManager />} />
         <Route
-          path="/seatTypeManager/editSeatType"
+          path="/seatTypeManager/editSeatType/:id"
           element={<EditSeatType />}
         />
         <Route path="/seatTypeManager/addSeatType" element={<AddSeatType />} />
         <Route
-          path="/seatTypeManager/deleteSeatType"
+          path="/seatTypeManager/deleteSeatType/:id"
           element={<DeleteSeatType />}
         />
 

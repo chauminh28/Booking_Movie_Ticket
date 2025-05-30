@@ -2,6 +2,7 @@ package org.project.bookingmovieticket.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.project.bookingmovieticket.enums.Gender;
@@ -12,6 +13,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Actor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

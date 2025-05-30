@@ -61,6 +61,9 @@ function AddUser() {
         if (!form.email.trim()) {
             newErrors.email = "Vui lòng nhập email"
         }
+        if (form.roleId == 0) {
+            newErrors.roleId = "Vui lòng chọn role"
+        }
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
             return;
@@ -278,14 +281,14 @@ function AddUser() {
                                                 className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                                 required
                                             >
-                                                <option>-- Chọn role --</option>
+                                                <option value={0}>-- Chọn role --</option>
                                                 <option value={1}>Admin</option>
                                                 <option value={2}>Customer</option>
                                                 <option value={3}>Employee</option>
                                             </select>
                                         </div>
                                         <p className="text-red-600 text-sm mt-1 min-h-[20px]">
-                                            {errors.lastName || ""}
+                                            {errors.roleId || ""}
                                         </p>
                                     </div>
                                 </div>
