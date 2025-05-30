@@ -1,19 +1,127 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavbarAdmin from "../../components/layouts/NavbarAdmin";
 import HeaderAdmin from "../../components/layouts/HeaderAdmin";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import SuccessToast from "../../components/toasts/SuccessToast";
 
+const MOVIE_STATUS = {
+  STOPPED: -1,
+  UPCOMING: 0,
+  SHOWING: 1,
+};
 function DeleteMovie() {
-  const [image, setImage] = useState(null);
+  const [ages, setAges] = useState([]);
+  const [genres, setGenres] = useState([]);
+  const { id } = useParams();
+  const [toast, setToast] = useState(null);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImage(URL.createObjectURL(file));
+  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    movieName: "",
+    movieDuration: "",
+    movieImage: "",
+    trailer: "",
+    ageName: "",
+    movieStatus: "",
+    country: "",
+    movieGenres: [],
+    startDate: "",
+    status: true,
+    directors: [],
+    actors: [],
+    description: "",
+  });
+  const getStatusLabel = (status) => {
+    switch (status) {
+      case MOVIE_STATUS.STOPPED:
+        return "Ngừng chiếu";
+      case MOVIE_STATUS.UPCOMING:
+        return "Sắp chiếu";
+      case MOVIE_STATUS.SHOWING:
+        return "Đang chiếu";
+      default:
+        return "Không xác định";
+    }
+  };
+  useEffect(() => {
+    const fetchAges = async () => {
+      await axios
+        .get("http://localhost:8080/ages")
+        .then((response) => {
+          setAges(response.data);
+        })
+        .catch((error) => {
+          console.error("There was an error fetching ages!", error);
+        });
+    };
+
+    fetchAges();
+  }, []);
+
+  useEffect(() => {
+    const fetchGenres = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/genres/list");
+        const fetchedGenres = response.data;
+        setGenres(fetchedGenres);
+      } catch (error) {
+        console.error("There was an error fetching genres!", error);
+      }
+    };
+
+    fetchGenres();
+  }, []);
+  useEffect(() => {
+    try {
+      axios
+        .get(`http://localhost:8080/movies/${id}`)
+        .then((response) => {
+          const data = response.data;
+          const updatedForm = {
+            movieName: data.movie.movieName || "",
+            movieDuration: data.movie.movieDuration || "",
+            movieImage: data.movie.movieImage || "",
+            trailer: data.detail.trailer || "",
+            ageName: data.detail.ageName || "",
+            movieStatus: getStatusLabel(data.movie.movieStatus) ?? "",
+            country: data.detail.country || "",
+            movieGenres: data.movie.genres || [],
+            startDate: data.detail.startDate || "",
+            status: data.movie.status || "",
+            description: data.detail.description || "",
+            directors:
+              data.detail.directors.map((director) => director.id) || [],
+            actors: data.detail.actors.map((actor) => actor.id) || [],
+          };
+
+          setForm(updatedForm);
+        })
+        .catch((error) => {
+          console.error("Error fetching movie data:", error);
+        });
+    } catch (error) {
+      console.error("Error fetching movie data:", error);
+    }
+  }, [id, ages, genres]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.delete(`http://localhost:8080/movies/${id}`);
+      setToast({ message: "Xóa phim thành công!" });
+      setTimeout(() => {
+        navigate("/movieManager"); // Redirect to movie manager after deletion
+      }, 1500); // Redirect after 2 seconds
+    } catch (error) {
+      console.error("Error deleting movie:", error);
+      alert("Xóa phim thất bại!");
     }
   };
   return (
     <div className="grid grid-cols-12">
+      {toast && (
+        <SuccessToast message={toast.message} onClose={() => setToast(null)} />
+      )}
       <div className="col-span-2">
         <NavbarAdmin />
       </div>
@@ -22,72 +130,72 @@ function DeleteMovie() {
           <HeaderAdmin />
           <p className="font-bold text-[28px]">XÓA PHIM</p>
           <div className="mt-[30px] pl-[30px]">
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-12 gap-5 ">
                 <div className="col-span-6 gap-y-4 flex flex-col">
                   <div>
                     <label
-                      htmlFor="name"
+                      htmlFor="movieName"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Tên phim 
+                      Tên phim
                     </label>
                     <input
                       type="text"
-                      id="name"
+                      id="movieName"
+                      value={form.movieName}
                       placeholder="Tên phim"
                       className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                      required
+                      readOnly
                     />
                   </div>
                   <div>
                     <label
-                      htmlFor="duration"
+                      htmlFor="movieDuration"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Thời lượng (phút) 
+                      Thời lượng (phút)
                     </label>
                     <input
                       type="text"
-                      id="duration"
+                      id="movieDuration"
+                      value={form.movieDuration}
                       placeholder="Thời lượng (phút)"
                       className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                      required
+                      readOnly
                     />
                   </div>
                   <div>
                     <label
-                      htmlFor="date"
+                      htmlFor="startDate"
                       className="block text-sm font-bold text-gray-700"
                     >
                       Ngày khởi chiếu
                     </label>
                     <input
                       type="date"
-                      id="date"
+                      id="startDate"
+                      value={form.startDate}
                       placeholder="dd/MM/yyyy"
                       className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                      readOnly
                     />
                   </div>
                   <div>
                     <label
-                      htmlFor="age"
+                      htmlFor="ageId"
                       className="block text-sm font-medium text-gray-700"
                     >
                       Độ tuổi giới hạn
                     </label>
-                    <select
+                    <input
                       type="text"
-                      id="age"
+                      id="ageId"
+                      value={form.ageName}
                       placeholder="your@email.com"
                       className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                      required
-                    >
-                      <option>-- Chọn độ tuổi giới hạn --</option>
-                      <option>P</option>
-                      <option>T13</option>
-                      <option>T16</option>
-                    </select>
+                      readOnly
+                    ></input>
                   </div>
                   <div>
                     <label
@@ -96,94 +204,103 @@ function DeleteMovie() {
                     >
                       Trạng thái
                     </label>
-                    <select
+                    <input
                       type="text"
-                      id="status"
+                      id="movieStatus"
+                      value={form.movieStatus}
                       placeholder="your@email.com"
                       className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                      required
-                    >
-                      <option>-- Chọn trạng thái --</option>
-                      <option>Chưa chiếu</option>
-                      <option>Đang chiếu</option>
-                      <option>Sắp chiếu</option>
-                    </select>
+                      readOnly
+                    ></input>
                   </div>
-                </div>
-                <div className="col-span-6 flex flex-col gap-4">
                   <div>
                     <label
                       htmlFor="description"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Mô tả phim 
+                      Mô tả
                     </label>
                     <textarea
                       type="text"
                       id="description"
-                      placeholder="Mô tả phim"
+                      value={form.description}
+                      placeholder="Tên phim"
                       className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                      required
+                      readOnly
                     />
+                  </div>
+                  {/* Button submit */}
+                  <div className="mt-[56px]">
+                    <Link to={"/movieManager"}>
+                      <button className="bg-white px-4 py-2 text-black border-1 border-black font-bold text-[16px] w-[120px] h-[55px] rounded-[90px] cursor-pointer">
+                        Huỷ
+                      </button>
+                    </Link>
+                    <button
+                      type="submit"
+                      className={`bg-red-500 text-white font-bold w-[120px] h-[55px] rounded-[90px] ml-6 cursor-pointer hover:bg-gray-800`}
+                    >
+                      Xóa
+                    </button>
+                  </div>
+                </div>
+                <div className="col-span-6 flex flex-col gap-4">
+                  <div>
+                    <label
+                      htmlFor="trailer"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Trailer
+                    </label>
+                    {form.trailer && (
+                      <video
+                        src={form.trailer}
+                        controls
+                        className="mt-2 w-[404px] rounded-md border"
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="movieGenres"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Thể loại
+                    </label>
+                    <input
+                      type="text"
+                      id="genres"
+                      value={form.movieGenres.join(", ")}
+                      className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                      readOnly
+                    ></input>
                   </div>
                   <div>
                     <label
                       htmlFor="country"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Quốc gia 
-                    </label>
-                    <select
-                      type="text"
-                      id="country"
-                      placeholder="your@email.com"
-                      className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                      required
-                    >
-                      <option>-- Chọn quốc gia --</option>
-                      <option>Hàn Quốc</option>
-                      <option>Nhật Bản</option>
-                      <option>Việt Nam</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="genres"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Thể loại 
-                    </label>
-                    <select
-                      type="text"
-                      id="genres"
-                      placeholder="your@email.com"
-                      className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                      required
-                    >
-                      <option>-- Chọn thể loại --</option>
-                      <option>Khoa học - viễn tưởng</option>
-                      <option>Hành động</option>
-                      <option>Hoạt hình</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="image"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Ảnh phim 
+                      Quốc gia
                     </label>
                     <input
-                      type="file"
-                      id="image"
-                      placeholder="image"
-                      className="bg-[#F9F9F9] rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition w-[404px]"
-                      onChange={handleImageChange}
-                    />
-                    {image && (
+                      type="text"
+                      id="country"
+                      value={form.country}
+                      className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                      readOnly
+                    ></input>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="movieImage"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Ảnh phim
+                    </label>
+                    {form.movieImage && (
                       <div className="flex items-center justify-center mt-2 w-[404px]">
                         <img
-                          src={image}
+                          src={form.movieImage}
                           alt="Preview"
                           className="mt-2 w-40 h-40 object-cover rounded-md border"
                         />
@@ -191,16 +308,6 @@ function DeleteMovie() {
                     )}
                   </div>
                 </div>
-              </div>
-              <div className="mt-[56px]">
-                <Link to={"/movieManager"}>
-                  <button className="bg-white px-4 py-2 text-black border-1 border-black font-bold text-[16px] w-[120px] h-[55px] rounded-[90px] cursor-pointer">
-                    Huỷ
-                  </button>
-                </Link>
-                <button className="bg-red-500 px-4 py-2 text-white font-bold text-[16px] w-[120px] h-[55px] rounded-[90px] ml-6 cursor-pointer">
-                  Xóa
-                </button>
               </div>
             </form>
           </div>

@@ -3,11 +3,11 @@ import { IoPersonCircle } from "react-icons/io5";
 import Logo from "/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { initFlowbite } from "flowbite";
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
 
 function Header() {
   const [username, setUsername] = useState(null);
-  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,14 +21,14 @@ function Header() {
         localStorage.removeItem("username");
       }
     }
-  }, [])
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
     setUsername(null);
 
-    navigate("/")
+    navigate("/");
   };
 
   React.useEffect(() => {
@@ -39,11 +39,7 @@ function Header() {
       <div className="h-full items-center flex container justify-around mx-auto">
         <Link to={"/"}>
           <div className="h-full flex items-center justify-center w-[150px]">
-            <img
-              src={Logo}
-              alt="Logo"
-              className="w-full h-full object-cover"
-            />
+            <img src={Logo} alt="Logo" className="w-full h-full object-cover" />
           </div>
         </Link>
 
@@ -129,24 +125,16 @@ function Header() {
           </div>
         ) : (
           <div className="flex gap-4 h-full">
-            <div className="text-[24px] cursor-pointer hover:border-b-2 hover:border-black h-full w-30 items-center flex justify-center">
-              <Link
-                to="/login"
-              >
-                Đăng nhập
-              </Link>
+            <div className="text-[22px] cursor-pointer hover:border-b-2 hover:border-black h-full w-30 items-center flex justify-center">
+              <Link to="/login">Đăng nhập</Link>
             </div>
-            <div className="text-[24px] cursor-pointer hover:border-b-2 hover:border-black h-full w-30 items-center flex justify-center">
-              <Link
-                to="/register"
-              >
-                Đăng ký
-              </Link>
+            <div className="text-[22px] cursor-pointer hover:border-b-2 hover:border-black h-full w-30 items-center flex justify-center">
+              <Link to="/register">Đăng ký</Link>
             </div>
           </div>
         )}
       </div>
-    </div >
+    </div>
   );
 }
 

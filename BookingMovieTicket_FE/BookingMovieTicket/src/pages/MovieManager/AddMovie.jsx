@@ -12,13 +12,13 @@ const MOVIE_STATUS = {
   UPCOMING: 0,
   SHOWING: 1,
 };
+const MediaType = {
+  MOVIE_IMAGE: "MOVIE_IMAGE",
+  DIRECTOR_IMAGE: "DIRECTOR_IMAGE",
+  ACTOR_IMAGE: "ACTOR_IMAGE",
+  TRAILER: "TRAILER",
+};
 function AddMovie() {
-  const MediaType = {
-    MOVIE_IMAGE: "MOVIE_IMAGE",
-    DIRECTOR_IMAGE: "DIRECTOR_IMAGE",
-    ACTOR_IMAGE: "ACTOR_IMAGE",
-    TRAILER: "TRAILER",
-  };
   const [image, setImage] = useState(null);
   const [countriesList, setCountriesList] = useState([]);
   const [ages, setAges] = useState([]);
