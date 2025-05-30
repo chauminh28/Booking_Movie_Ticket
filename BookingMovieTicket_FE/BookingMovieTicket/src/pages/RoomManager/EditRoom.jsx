@@ -11,7 +11,7 @@ import ErrorToast from '../../components/toasts/ErrorToast';
 import axiosClient from '../../api/axiosClient'
 import axios from "axios";
 
-export default function AddRoom() {
+export default function EditRoom() {
   const { id } = useParams();
   const [errorMessage, setErrorMessage] = useState('');
   const [showErrorToast, setErrorShowToast] = useState(false);

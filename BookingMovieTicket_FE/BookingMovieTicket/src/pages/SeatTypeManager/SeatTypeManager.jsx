@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import NavbarAdmin from '../../components/layouts/NavbarAdmin'
 import HeaderAdmin from '../../components/layouts/HeaderAdmin'
 import { Link } from 'react-router-dom'
@@ -8,8 +8,39 @@ import { IoIosAddCircle } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
+import axios from "axios";
 
 function SeatTypeManager() {
+    const [seatTypes, setSeatTypes] = useState([])
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const [searchValue, setSearchValue] = useState("");
+    const size = 5;
+
+    useEffect(() => {
+        axios
+            .get(`http://localhost:8080/seatTypes`, {
+                params: {
+                    page: page,
+                    size: size,
+                    search: searchValue,
+                },
+            })
+            .then((response) => {
+                setSeatTypes(response.data.content)
+                setTotalPages(response.data.totalPages)
+            })
+            .catch((error) => {
+                console.error("Lỗi fetch api seat type", error);
+            });
+    }, [page, searchValue])
+
+    const goToPage = (pageNumber) => {
+        if (pageNumber >= 0 && pageNumber < totalPages) {
+            setPage(pageNumber);
+        }
+    };
+
     return (
         <>
             <div className='grid grid-cols-12'>
@@ -70,26 +101,39 @@ function SeatTypeManager() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr className="border-t border-[#EEEEEE]">
-                                            <td className="px-4 py-2">Standard</td>
-                                            <td className="px-4 py-2">Combo</td>
-                                            <td className="px-4 py-2">95.000VND</td>
+                                        {seatTypes.length > 0 ? (
+                                            seatTypes.map((seatType) => (
+                                                <tr className="border-t border-[#EEEEEE]">
+                                                    <td className="px-4 py-2">{seatType.seatTypeName}</td>
+                                                    <td className="px-4 py-2">{seatType.price}</td>
+                                                    <td className="px-4 py-2">{seatType.description}</td>
 
-                                            <td className="px-4 py-2 h-full">
-                                                <div className="flex justify-start items-center gap-x-4">
-                                                    <Link to="/seatTypeManager/editSeatType">
-                                                        <button className="text-blue-600 hover:text-blue-800 text-[20px] cursor-pointer">
-                                                            <MdEdit />
-                                                        </button>
-                                                    </Link>
-                                                    <Link to={"/seatTypeManager/deleteSeatType"}>
-                                                        <button className="text-red-600 hover:text-red-800 text-[20px] cursor-pointer">
-                                                            <MdDelete />
-                                                        </button>
-                                                    </Link>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                    <td className="px-4 py-2 h-full">
+                                                        <div className="flex justify-start items-center gap-x-4">
+                                                            <Link to={`/seatTypeManager/editSeatType/${seatType.id}`}>
+                                                                <button className="text-blue-600 hover:text-blue-800 text-[20px] cursor-pointer">
+                                                                    <MdEdit />
+                                                                </button>
+                                                            </Link>
+                                                            <Link to={`/seatTypeManager/deleteSeatType/${seatType.id}`}>
+                                                                <button className="text-red-600 hover:text-red-800 text-[20px] cursor-pointer">
+                                                                    <MdDelete />
+                                                                </button>
+                                                            </Link>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td
+                                                    colSpan="2"
+                                                    className="text-center py-4 text-gray-500"
+                                                >
+                                                    Không có người dùng nào.
+                                                </td>
+                                            </tr>
+                                        )}
                                     </tbody>
                                 </table>
                             </div>
