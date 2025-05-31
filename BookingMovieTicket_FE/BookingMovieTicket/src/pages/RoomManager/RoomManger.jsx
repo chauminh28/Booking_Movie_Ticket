@@ -13,7 +13,7 @@ import axios from "axios";
 import axiosClient from "../../api/axiosClient";
 
 export default function RoomMangaer() {
-  const [rooms, setRooms] = useState([])
+  const [rooms, setRooms] = useState([]);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [searchValue, setSearchValue] = useState("");
@@ -29,13 +29,13 @@ export default function RoomMangaer() {
         },
       })
       .then((response) => {
-        setRooms(response.data.content)
-        setTotalPages(response.data.totalPages)
+        setRooms(response.data.content);
+        setTotalPages(response.data.totalPages);
       })
       .catch((error) => {
         console.error("Lỗi fetch api room", error);
       });
-  }, [page, searchValue])
+  }, [page, searchValue]);
 
   const goToPage = (pageNumber) => {
     if (pageNumber >= 0 && pageNumber < totalPages) {
@@ -44,20 +44,19 @@ export default function RoomMangaer() {
   };
 
   const toggleRoom = async (roomId) => {
-    const room = rooms.find(r => r.id === roomId);
+    const room = rooms.find((r) => r.id === roomId);
     if (!room) return;
 
     const updatedRoom = { ...room, status: !room.status };
 
     try {
-      const res = await axiosClient.put(`/rooms/${roomId}`, updatedRoom)
-      setRooms(prevRooms =>
-        prevRooms.map(r =>
-          r.id === roomId ? updatedRoom : r
-        )
+      // eslint-disable-next-line no-unused-vars
+      const res = await axiosClient.put(`/rooms/${roomId}`, updatedRoom);
+      setRooms((prevRooms) =>
+        prevRooms.map((r) => (r.id === roomId ? updatedRoom : r))
       );
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   };
 
@@ -224,10 +223,11 @@ export default function RoomMangaer() {
                       <button
                         key={index}
                         onClick={() => goToPage(index)}
-                        className={`px-3 py-2 border border-gray-300 ${index === page
-                          ? "bg-black text-white"
-                          : "bg-[#F5F5F5] hover:bg-black hover:text-white"
-                          } rounded-md`}
+                        className={`px-3 py-2 border border-gray-300 ${
+                          index === page
+                            ? "bg-black text-white"
+                            : "bg-[#F5F5F5] hover:bg-black hover:text-white"
+                        } rounded-md`}
                       >
                         {index + 1}
                       </button>

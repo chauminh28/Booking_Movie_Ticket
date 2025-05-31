@@ -66,6 +66,11 @@ function ActorManager() {
               <div>
                 <div className="relative w-[576px]">
                   <input
+                    value={searchValue}
+                    onChange={(e) => {
+                      setSearchValue(e.target.value);
+                      setPage(0);
+                    }}
                     className="w-[576px] h-[50px] outline-none rounded-xl border-[#BDC5D4] border-[2px] px-3 py-2"
                     placeholder="Tìm kiếm diễn viên"
                   />
@@ -85,7 +90,10 @@ function ActorManager() {
                     <tbody>
                       {actors.length > 0 ? (
                         actors.map((actor) => (
-                          <tr className="border-t border-[#EEEEEE]" key={actor.id}>
+                          <tr
+                            className="border-t border-[#EEEEEE]"
+                            key={actor.id}
+                          >
                             <td className="w-36 h-24">
                               <img
                                 src={actor.avatar}
@@ -99,12 +107,16 @@ function ActorManager() {
 
                             <td className="px-4 py-2 h-full">
                               <div className="flex justify-start items-center gap-x-4">
-                                <Link to={`/actorManager/editActor/${actor.id}`}>
+                                <Link
+                                  to={`/actorManager/editActor/${actor.id}`}
+                                >
                                   <button className="text-blue-600 hover:text-blue-800 text-[20px] cursor-pointer">
                                     <MdEdit />
                                   </button>
                                 </Link>
-                                <Link to={`/actorManager/deleteActor/${actor.id}`}>
+                                <Link
+                                  to={`/actorManager/deleteActor/${actor.id}`}
+                                >
                                   <button className="text-red-600 hover:text-red-800 text-[20px] cursor-pointer">
                                     <MdDelete />
                                   </button>
@@ -115,7 +127,10 @@ function ActorManager() {
                         ))
                       ) : (
                         <tr>
-                          <td colSpan="7" className="text-center py-4 text-gray-500">
+                          <td
+                            colSpan="7"
+                            className="text-center py-4 text-gray-500"
+                          >
                             Không có diễn viên nào.
                           </td>
                         </tr>
@@ -124,37 +139,35 @@ function ActorManager() {
                   </table>
                   <div className="flex justify-center mt-4">
                     <nav className="inline-flex items-center space-x-1 text-sm">
-                      <a
-                        href="#"
-                        className="px-3 py-2 rounded-l-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white"
+                      <button
+                        onClick={() => goToPage(page - 1)}
+                        disabled={page === 0}
+                        className="px-3 py-2 rounded-l-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white disabled:opacity-50"
                       >
                         Prev
-                      </a>
-                      <a
-                        href="#"
-                        className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md"
-                      >
-                        1
-                      </a>
-                      <a
-                        href="#"
-                        className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md"
-                      >
-                        2
-                      </a>
-                      <a
-                        href="#"
-                        className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md"
-                      >
-                        3
-                      </a>
-                      <a
-                        href="#"
-                        className="px-3 py-2 rounded-r-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white"
-                      >
+                      </button>
 
+                      {[...Array(totalPages)].map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => goToPage(index)}
+                          className={`px-3 py-2 border border-gray-300 ${
+                            index === page
+                              ? "bg-black text-white"
+                              : "bg-[#F5F5F5] hover:bg-black hover:text-white"
+                          } rounded-md`}
+                        >
+                          {index + 1}
+                        </button>
+                      ))}
+
+                      <button
+                        onClick={() => goToPage(page + 1)}
+                        disabled={page === totalPages - 1}
+                        className="px-3 py-2 rounded-r-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white disabled:opacity-50"
+                      >
                         Next
-                      </a>
+                      </button>
                     </nav>
                   </div>
                 </div>

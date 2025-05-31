@@ -3,10 +3,10 @@ import NavbarAdmin from "../../components/layouts/NavbarAdmin";
 import HeaderAdmin from "../../components/layouts/HeaderAdmin";
 import { Link, useNavigate } from "react-router-dom";
 import countries from "../../assets/data/countries.json";
-import SuccessToast from '../../components/toasts/SuccessToast';
-import ErrorToast from '../../components/toasts/ErrorToast';
+import SuccessToast from "../../components/toasts/SuccessToast";
+import ErrorToast from "../../components/toasts/ErrorToast";
 import axios from "axios";
-import axiosClient from '../../api/axiosClient'
+import axiosClient from "../../api/axiosClient";
 
 function AddActor() {
   const MediaType = {
@@ -17,19 +17,19 @@ function AddActor() {
   };
   const [image, setImage] = useState(null);
   const [countriesList, setCountriesList] = useState([]);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const [showErrorToast, setErrorShowToast] = useState(false);
-  const [successMessage, setSuccesMessage] = useState('');
+  const [successMessage, setSuccesMessage] = useState("");
   const [showSuccessToast, setSuccessShowToast] = useState(false);
   const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    actorName: '',
-    avatar: '',
-    gender: '',
-    country: ''
-  })
+    actorName: "",
+    avatar: "",
+    gender: "",
+    country: "",
+  });
 
   useEffect(() => {
     const countryArray = Object.entries(countries).map(([code, name]) => ({
@@ -37,11 +37,11 @@ function AddActor() {
       name,
     }));
     setCountriesList(countryArray);
-  }, [])
+  }, []);
 
   useEffect(() => {
-    console.log(form)
-  }, [form])
+    console.log(form);
+  }, [form]);
 
   const uploadToCloudinary = async (file, type) => {
     const formData = new FormData();
@@ -65,7 +65,7 @@ function AddActor() {
     const { name, value } = e.target;
     setForm({
       ...form,
-      [name]: value
+      [name]: value,
     });
   };
 
@@ -93,18 +93,18 @@ function AddActor() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const newErrors = {}
+    const newErrors = {};
 
     if (!form.actorName.trim()) {
-      newErrors.actorName = "Vui lòng nhập tên diễn viên"
+      newErrors.actorName = "Vui lòng nhập tên diễn viên";
     }
     if (!form.gender.trim()) {
-      newErrors.gender = "Vui lòng nhập giới tính"
+      newErrors.gender = "Vui lòng nhập giới tính";
     }
     if (!form.country.trim()) {
-      newErrors.country = "Vui lòng nhập quốc gia"
+      newErrors.country = "Vui lòng nhập quốc gia";
     }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -113,20 +113,21 @@ function AddActor() {
     setErrors({});
 
     try {
-      console.log(form)
-      const res = await axiosClient.post("/actors", form)
-      setSuccesMessage("Thêm diễn viên thành công")
-      setSuccessShowToast(true)
+      console.log(form);
+      // eslint-disable-next-line no-unused-vars
+      const res = await axiosClient.post("/actors", form);
+      setSuccesMessage("Thêm diễn viên thành công");
+      setSuccessShowToast(true);
 
       setTimeout(() => {
-        navigate("/actorManager")
+        navigate("/actorManager");
       }, 1500);
     } catch (err) {
-      console.log(err)
-      setErrorMessage("Lỗi api")
-      setErrorShowToast(true)
+      console.log(err);
+      setErrorMessage("Lỗi api");
+      setErrorShowToast(true);
     }
-  }
+  };
 
   return (
     <>

@@ -2,29 +2,27 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import NavbarAdmin from "../../components/layouts/NavbarAdmin";
 import HeaderAdmin from "../../components/layouts/HeaderAdmin";
-import SuccessToast from '../../components/toasts/SuccessToast';
-import ErrorToast from '../../components/toasts/ErrorToast';
+import SuccessToast from "../../components/toasts/SuccessToast";
+import ErrorToast from "../../components/toasts/ErrorToast";
 import countries from "../../assets/data/countries.json";
-import axiosClient from '../../api/axiosClient'
 import axios from "axios";
 
 function DeleteActor() {
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const [showErrorToast, setErrorShowToast] = useState(false);
-  const [successMessage, setSuccesMessage] = useState('');
+  const [successMessage, setSuccesMessage] = useState("");
   const [showSuccessToast, setSuccessShowToast] = useState(false);
-  const [errors, setErrors] = useState({});
   const [countriesList, setCountriesList] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
   const [image, setImage] = useState(null);
 
   const [form, setForm] = useState({
-    actorName: '',
-    avatar: '',
-    gender: '',
-    country: ''
-  })
+    actorName: "",
+    avatar: "",
+    gender: "",
+    country: "",
+  });
 
   useEffect(() => {
     const countryArray = Object.entries(countries).map(([code, name]) => ({
@@ -32,23 +30,23 @@ function DeleteActor() {
       name,
     }));
     setCountriesList(countryArray);
-  }, [])
+  }, []);
 
   useEffect(() => {
-    console.log(form)
-    setImage(form.avatar)
-  }, [form])
+    console.log(form);
+    setImage(form.avatar);
+  }, [form]);
 
   useEffect(() => {
     axios
       .get(`http://localhost:8080/actors/${id}`)
       .then((response) => {
-        const data = response.data
+        const data = response.data;
         setForm({
-          actorName: data.actorName || '',
-          avatar: data.avatar || '',
-          gender: data.gender || '',
-          country: data.country || ''
+          actorName: data.actorName || "",
+          avatar: data.avatar || "",
+          gender: data.gender || "",
+          country: data.country || "",
         });
       })
       .catch((error) => {
@@ -60,16 +58,16 @@ function DeleteActor() {
     e.preventDefault();
     try {
       await axios.delete(`http://localhost:8080/actors/${id}`);
-      setSuccesMessage("Xoá diễn viên thành công")
-      setSuccessShowToast(true)
+      setSuccesMessage("Xoá diễn viên thành công");
+      setSuccessShowToast(true);
 
       setTimeout(() => {
-        navigate("/actorManager")
+        navigate("/actorManager");
       }, 1500);
     } catch (error) {
-      console.log(err)
-      setErrorMessage("Lỗi api")
-      setErrorShowToast(true)
+      console.log(error);
+      setErrorMessage("Lỗi api");
+      setErrorShowToast(true);
     }
   };
 

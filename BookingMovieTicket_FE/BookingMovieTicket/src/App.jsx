@@ -80,11 +80,11 @@ function App() {
         <Route path="/directorManager" element={<DirectorManager />} />
         <Route path="/directorManager/addDirector" element={<AddDirector />} />
         <Route
-          path="/directorManager/editDirector"
+          path="/directorManager/editDirector/:id"
           element={<EditDirector />}
         />
         <Route
-          path="/directorManager/deleteDirector"
+          path="/directorManager/deleteDirector/:id"
           element={<DeleteDirector />}
         />
         {/* Actor Manager */}

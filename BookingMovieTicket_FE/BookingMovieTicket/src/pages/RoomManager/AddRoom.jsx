@@ -1,63 +1,63 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 import NavbarAdmin from "../../components/layouts/NavbarAdmin";
 import HeaderAdmin from "../../components/layouts/HeaderAdmin";
-import SuccessToast from '../../components/toasts/SuccessToast';
-import ErrorToast from '../../components/toasts/ErrorToast';
-import axiosClient from '../../api/axiosClient'
+import SuccessToast from "../../components/toasts/SuccessToast";
+import ErrorToast from "../../components/toasts/ErrorToast";
+import axiosClient from "../../api/axiosClient";
 
 export default function AddRoom() {
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const [showErrorToast, setErrorShowToast] = useState(false);
-  const [successMessage, setSuccesMessage] = useState('');
+  const [successMessage, setSuccesMessage] = useState("");
   const [showSuccessToast, setSuccessShowToast] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
-    createAt: '',
-    roomName: '',
-    monitor: '',
-    soundSystem: '',
-    projector: '',
-    rows: '',
-    cols: '',
-    status: true
-  })
+    createAt: "",
+    roomName: "",
+    monitor: "",
+    soundSystem: "",
+    projector: "",
+    rows: "",
+    cols: "",
+    status: true,
+  });
 
   const handleChange = (e) => {
     setForm({
       ...form,
-      [e.target.id]: e.target.value
-    })
-    console.log(form)
-  }
+      [e.target.id]: e.target.value,
+    });
+    console.log(form);
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const newErrors = {};
 
     if (!form.createAt.trim()) {
-      newErrors.createAt = "Vui lòng nhập ngày tạo phòng"
+      newErrors.createAt = "Vui lòng nhập ngày tạo phòng";
     }
     if (!form.roomName.trim()) {
-      newErrors.roomName = "Vui lòng nhập tên phòng"
+      newErrors.roomName = "Vui lòng nhập tên phòng";
     }
     if (!form.monitor.trim()) {
-      newErrors.monitor = "Vui lòng chọn màn hình"
+      newErrors.monitor = "Vui lòng chọn màn hình";
     }
     if (!form.soundSystem.trim()) {
-      newErrors.soundSystem = "Vui lòng chọn hệ thống âm thanh"
+      newErrors.soundSystem = "Vui lòng chọn hệ thống âm thanh";
     }
     if (!form.projector.trim()) {
-      newErrors.projector = "Vui lòng chọn máy chiếu"
+      newErrors.projector = "Vui lòng chọn máy chiếu";
     }
     if (!form.rows.trim()) {
-      newErrors.rows = "Vui lòng nhập số hàng"
+      newErrors.rows = "Vui lòng nhập số hàng";
     }
     if (!form.cols.trim()) {
-      newErrors.cols = "Vui lòng nhập số cột"
+      newErrors.cols = "Vui lòng nhập số cột";
     }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -66,19 +66,20 @@ export default function AddRoom() {
     setErrors({});
 
     try {
-      const res = await axiosClient.post("/rooms", form)
-      setSuccesMessage("Tạo phòng chiếu thành công")
-      setSuccessShowToast(true)
+      // eslint-disable-next-line no-unused-vars
+      const res = await axiosClient.post("/rooms", form);
+      setSuccesMessage("Tạo phòng chiếu thành công");
+      setSuccessShowToast(true);
 
       setTimeout(() => {
-        navigate("/roomManager")
+        navigate("/roomManager");
       }, 1500);
     } catch (err) {
-      console.log(err)
-      setErrorMessage("Lỗi api")
-      setErrorShowToast(true)
+      console.log(err);
+      setErrorMessage("Lỗi api");
+      setErrorShowToast(true);
     }
-  }
+  };
 
   return (
     <>
@@ -279,7 +280,9 @@ export default function AddRoom() {
                         required
                       >
                         <option>-- Chọn máy chiếu --</option>
-                        <option value={"Digital Projector"}>Digital Projector</option>
+                        <option value={"Digital Projector"}>
+                          Digital Projector
+                        </option>
                         <option value={"IMAX"}>IMAX</option>
                         <option value={"3D"}>3D</option>
                       </select>
