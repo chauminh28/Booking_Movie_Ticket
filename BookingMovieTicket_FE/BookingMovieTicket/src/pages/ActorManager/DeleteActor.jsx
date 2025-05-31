@@ -13,7 +13,6 @@ function DeleteActor() {
   const [showErrorToast, setErrorShowToast] = useState(false);
   const [successMessage, setSuccesMessage] = useState('');
   const [showSuccessToast, setSuccessShowToast] = useState(false);
-  const [errors, setErrors] = useState({});
   const [countriesList, setCountriesList] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();

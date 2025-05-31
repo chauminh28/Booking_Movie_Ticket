@@ -66,6 +66,11 @@ function ActorManager() {
               <div>
                 <div className="relative w-[576px]">
                   <input
+                    value={searchValue}
+                    onChange={(e) => {
+                      setSearchValue(e.target.value);
+                      setPage(0);
+                    }}
                     className="w-[576px] h-[50px] outline-none rounded-xl border-[#BDC5D4] border-[2px] px-3 py-2"
                     placeholder="Tìm kiếm diễn viên"
                   />
@@ -124,37 +129,34 @@ function ActorManager() {
                   </table>
                   <div className="flex justify-center mt-4">
                     <nav className="inline-flex items-center space-x-1 text-sm">
-                      <a
-                        href="#"
-                        className="px-3 py-2 rounded-l-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white"
+                      <button
+                        onClick={() => goToPage(page - 1)}
+                        disabled={page === 0}
+                        className="px-3 py-2 rounded-l-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white disabled:opacity-50"
                       >
                         Prev
-                      </a>
-                      <a
-                        href="#"
-                        className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md"
-                      >
-                        1
-                      </a>
-                      <a
-                        href="#"
-                        className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md"
-                      >
-                        2
-                      </a>
-                      <a
-                        href="#"
-                        className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md"
-                      >
-                        3
-                      </a>
-                      <a
-                        href="#"
-                        className="px-3 py-2 rounded-r-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white"
-                      >
+                      </button>
 
+                      {[...Array(totalPages)].map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => goToPage(index)}
+                          className={`px-3 py-2 border border-gray-300 ${index === page
+                            ? "bg-black text-white"
+                            : "bg-[#F5F5F5] hover:bg-black hover:text-white"
+                            } rounded-md`}
+                        >
+                          {index + 1}
+                        </button>
+                      ))}
+
+                      <button
+                        onClick={() => goToPage(page + 1)}
+                        disabled={page === totalPages - 1}
+                        className="px-3 py-2 rounded-r-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white disabled:opacity-50"
+                      >
                         Next
-                      </a>
+                      </button>
                     </nav>
                   </div>
                 </div>

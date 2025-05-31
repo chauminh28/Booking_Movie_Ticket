@@ -1,20 +1,90 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import NavbarAdmin from "../../components/layouts/NavbarAdmin";
 import HeaderAdmin from "../../components/layouts/HeaderAdmin";
-import { Link } from "react-router-dom";
+import SuccessToast from '../../components/toasts/SuccessToast';
+import ErrorToast from '../../components/toasts/ErrorToast';
+import axiosClient from '../../api/axiosClient'
+import axios from "axios";
 
 function DeleteService() {
-    const [image, setImage] = useState(null);
+    const { id } = useParams();
+    const [serviceTypes, setServiceTypes] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showErrorToast, setErrorShowToast] = useState(false);
+    const [successMessage, setSuccesMessage] = useState('');
+    const [showSuccessToast, setSuccessShowToast] = useState(false);
+    const [errors, setErrors] = useState({});
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setImage(URL.createObjectURL(file));
+    const navigate = useNavigate();
+    const [form, setForm] = useState({
+        serviceName: '',
+        price: '',
+        serviceTypeId: '',
+        image: ''
+    })
+
+    useEffect(() => {
+        axios
+            .get(`http://localhost:8080/serviceTypes`)
+            .then((response) => {
+                setServiceTypes(response.data.content);
+            })
+            .catch((error) => {
+                console.error("Lỗi fetch api serviceType", error);
+            });
+    }, []);
+
+    useEffect(() => {
+        axios
+            .get(`http://localhost:8080/products/${id}`)
+            .then((response) => {
+                const data = response.data
+                setForm({
+                    serviceName: data.serviceName || '',
+                    price: data.price || '',
+                    serviceTypeId: data.serviceTypeId || '',
+                    image: data.image || ''
+                })
+            })
+            .catch((error) => {
+                console.error("Lỗi khi tải danh sách diễn viên!", error);
+            });
+    }, [id]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+
+        try {
+            const res = await axiosClient.delete(`/products/${id}`, form)
+            setSuccesMessage("Xoá dịch vụ thành công")
+            setSuccessShowToast(true)
+
+            setTimeout(() => {
+                navigate("/serviceManager")
+            }, 1500);
+        } catch (err) {
+            console.log(err)
+            setErrorMessage("Lỗi api")
+            setErrorShowToast(true)
         }
-    };
+    }
 
     return (
         <>
+            {showSuccessToast && (
+                <SuccessToast
+                    message={successMessage}
+                    onClose={() => setSuccessShowToast(false)}
+                />
+            )}
+
+            {showErrorToast && (
+                <ErrorToast
+                    message={errorMessage}
+                    onClose={() => setErrorShowToast(false)}
+                />
+            )}
             <div className="grid grid-cols-12">
                 <div className="col-span-2">
                     <NavbarAdmin />
@@ -24,56 +94,71 @@ function DeleteService() {
                         <HeaderAdmin />
                         <p className="font-bold text-[28px]">XÓA DỊCH VỤ</p>
                         <div className="mt-[30px] pl-[30px]">
-                            <form>
+                            <form onSubmit={handleSubmit}>
                                 <div className="grid grid-cols-12 gap-5 ">
                                     <div className="col-span-6 gap-y-4 flex flex-col">
                                         <div>
                                             <label
-                                                htmlFor="name"
+                                                htmlFor="serviceName"
                                                 className="block text-sm font-medium text-gray-700"
                                             >
-                                                Tên dịch vụ
+                                                Tên dịch vụ <span className="text-red-600">*</span>
                                             </label>
                                             <input
                                                 type="text"
-                                                id="name"
+                                                name="serviceName"
+                                                value={form.serviceName}
                                                 placeholder="Tên dịch vụ"
                                                 className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                                                required
+                                                readOnly
                                             />
+                                            <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                                                {errors.serviceName || ""}
+                                            </p>
                                         </div>
                                         <div>
                                             <label
                                                 htmlFor="price"
                                                 className="block text-sm font-medium text-gray-700"
                                             >
-                                                Giá
+                                                Giá <span className="text-red-600">*</span>
                                             </label>
                                             <input
                                                 type="text"
-                                                id="price"
+                                                name="price"
+                                                value={form.price}
                                                 placeholder="Giá dịch vụ"
                                                 className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                                                required
+                                                readOnly
                                             />
+                                            <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+                                                {errors.price || ""}
+                                            </p>
                                         </div>
                                         <div>
                                             <label
-                                                htmlFor="type"
+                                                htmlFor="serviceTypeId"
                                                 className="block text-sm font-medium text-gray-700"
                                             >
-                                                Loại dịch vụ
+                                                Loại dịch vụ <span className="text-red-600">*</span>{" "}
                                             </label>
                                             <select
                                                 type="text"
-                                                id="type"
+                                                name="serviceTypeId"
+                                                value={form.serviceTypeId}
                                                 className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                                                required
+                                                readOnly
                                             >
                                                 <option>-- Chọn loại dịch vụ --</option>
-                                                <option>Combo</option>
-                                                <option>Nước</option>
-                                                <option>Poca</option>
+                                                {serviceTypes.length > 0 ? (
+                                                    serviceTypes.map((service) => (
+                                                        <option key={service.id} value={service.id}>
+                                                            {service.name}
+                                                        </option>
+                                                    ))
+                                                ) : (
+                                                    <option>Không có loại dịch vụ</option>
+                                                )}
                                             </select>
                                         </div>
                                         <div>
@@ -83,17 +168,10 @@ function DeleteService() {
                                             >
                                                 Ảnh dịch vụ
                                             </label>
-                                            <input
-                                                type="file"
-                                                id="image"
-                                                placeholder="image"
-                                                className="bg-[#F9F9F9] rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition w-[404px]"
-                                                onChange={handleImageChange}
-                                            />
-                                            {image && (
+                                            {form.image && (
                                                 <div className="flex items-center justify-center mt-2 w-[404px]">
                                                     <img
-                                                        src={image}
+                                                        src={form.image}
                                                         alt="Preview"
                                                         className="mt-2 w-40 h-40 object-cover rounded-md border"
                                                     />
@@ -110,7 +188,7 @@ function DeleteService() {
                                         </button>
                                     </Link>
                                     <button className="bg-red-500 px-4 py-2 text-white font-bold text-[16px] w-[120px] h-[55px] rounded-[90px] ml-6 cursor-pointer">
-                                        Xóa
+                                        Xoá
                                     </button>
                                 </div>
                             </form>

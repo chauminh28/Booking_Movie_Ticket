@@ -46,6 +46,10 @@ import GenreManager from "./pages/GenreManager/GenreManager";
 import AddGenre from "./pages/GenreManager/AddGenre";
 import EditGender from "./pages/GenreManager/EditGender";
 import DeleteGenre from "./pages/GenreManager/DeleteGenre";
+import ServiceTypeManager from "./pages/ServiceTypeManager/ServiceTypeManager";
+import AddServiceType from "./pages/ServiceTypeManager/AddServiceType";
+import EditServiceType from "./pages/ServiceTypeManager/EditServiceType";
+import DeleteServiceType from "./pages/ServiceTypeManager/DeleteServiceType";
 
 function App() {
   return (
@@ -101,10 +105,10 @@ function App() {
 
         {/* Service Manager */}
         <Route path="/serviceManager" element={<ServiceManager />} />
-        <Route path="/serviceManager/editService" element={<EditService />} />
+        <Route path="/serviceManager/editService/:id" element={<EditService />} />
         <Route path="/serviceManager/addService" element={<AddService />} />
         <Route
-          path="/serviceManager/deleteService"
+          path="/serviceManager/deleteService/:id"
           element={<DeleteService />}
         />
 
@@ -141,6 +145,12 @@ function App() {
         <Route path="/genreManager/addGenre/" element={<AddGenre />} />
         <Route path="/genreManager/editGenre/:id" element={<EditGender />} />
         <Route path="/genreManager/deleteGenre/:id" element={<DeleteGenre />} />
+
+        {/* ServiceTypeManager */}
+        <Route path="/serviceTypeManager" element={<ServiceTypeManager />} />
+        <Route path="/serviceTypeManager/addServiceType/" element={<AddServiceType />} />
+        <Route path="/serviceTypeManager/editServiceType/:id" element={<EditServiceType />} />
+        <Route path="/serviceTypeManager/deleteServiceType/:id" element={<DeleteServiceType />} />
       </Routes>
     </Router>
   );

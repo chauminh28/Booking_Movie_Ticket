@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import NavbarAdmin from '../../components/layouts/NavbarAdmin'
 import HeaderAdmin from '../../components/layouts/HeaderAdmin'
 import { Link } from 'react-router-dom'
-
+import axios from "axios";
 import { FaFilter } from "react-icons/fa6";
 import { IoIosAddCircle } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
@@ -10,6 +10,48 @@ import { MdDelete } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 
 function ServiceManager() {
+    const [services, setServices] = useState([]);
+    const [serviceTypes, setServiceTypes] = useState([]);
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const [searchValue, setSearchValue] = useState("");
+    const size = 5;
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:8080/products", {
+                params: {
+                    page: page,
+                    size: size,
+                    search: searchValue,
+                },
+            })
+            .then((response) => {
+                setServices(response.data.content);
+                setTotalPages(response.data.totalPages);
+            })
+            .catch((error) => {
+                console.error("Lỗi khi tải danh sách diễn viên!", error);
+            });
+    }, [page, searchValue]);
+
+    useEffect(() => {
+        axios
+            .get(`http://localhost:8080/serviceTypes`)
+            .then((response) => {
+                setServiceTypes(response.data.content);
+            })
+            .catch((error) => {
+                console.error("Lỗi fetch api serviceType", error);
+            });
+    }, []);
+
+    const goToPage = (pageNumber) => {
+        if (pageNumber >= 0 && pageNumber < totalPages) {
+            setPage(pageNumber);
+        }
+    };
+
     return (
         <>
             <div className='grid grid-cols-12'>
@@ -54,6 +96,11 @@ function ServiceManager() {
                         <div>
                             <div className='relative w-[576px]'>
                                 <input
+                                    value={searchValue}
+                                    onChange={(e) => {
+                                        setSearchValue(e.target.value);
+                                        setPage(0);
+                                    }}
                                     className='w-[576px] h-[50px] outline-none rounded-xl border-[#BDC5D4] border-[2px] px-3 py-2'
                                     placeholder='Tìm kiếm dịch vụ'
                                 />
@@ -71,35 +118,77 @@ function ServiceManager() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr className="border-t border-[#EEEEEE]">
-                                            <td className="w-36 h-24">
-                                                <img
-                                                    src="/not-available.jpg"
-                                                    alt=""
-                                                    className="w-full h-full"
-                                                />
-                                            </td>
-                                            <td className="px-4 py-2">Combo gấu</td>
-                                            <td className="px-4 py-2">Combo</td>
-                                            <td className="px-4 py-2">95.000VND</td>
+                                        {services.length > 0 ? (
+                                            services.map((service) => (
+                                                <tr className="border-t border-[#EEEEEE]" key={service.id}>
+                                                    <td className="w-36 h-24">
+                                                        <img
+                                                            src={service.image}
+                                                            alt=""
+                                                            className="w-full h-full"
+                                                        />
+                                                    </td>
+                                                    <td className="px-4 py-2">{service.serviceName}</td>
+                                                    <td className="px-4 py-2">{serviceTypes.find(type => type.id === service.serviceTypeId)?.name || 'Không xác định'}</td>
+                                                    <td className="px-4 py-2">{service.price}</td>
 
-                                            <td className="px-4 py-2 h-full">
-                                                <div className="flex justify-start items-center gap-x-4">
-                                                    <Link to="/serviceManager/editService">
-                                                        <button className="text-blue-600 hover:text-blue-800 text-[20px] cursor-pointer">
-                                                            <MdEdit />
-                                                        </button>
-                                                    </Link>
-                                                    <Link to={"/serviceManager/deleteService"}>
-                                                        <button className="text-red-600 hover:text-red-800 text-[20px] cursor-pointer">
-                                                            <MdDelete />
-                                                        </button>
-                                                    </Link>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                    <td className="px-4 py-2 h-full">
+                                                        <div className="flex justify-start items-center gap-x-4">
+                                                            <Link to={`/serviceManager/editService/${service.id}`}>
+                                                                <button className="text-blue-600 hover:text-blue-800 text-[20px] cursor-pointer">
+                                                                    <MdEdit />
+                                                                </button>
+                                                            </Link>
+                                                            <Link to={`/serviceManager/deleteService/${service.id}`}>
+                                                                <button className="text-red-600 hover:text-red-800 text-[20px] cursor-pointer">
+                                                                    <MdDelete />
+                                                                </button>
+                                                            </Link>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td colSpan="7" className="text-center py-4 text-gray-500">
+                                                    Không có dịch vụ nào.
+                                                </td>
+                                            </tr>
+                                        )}
                                     </tbody>
                                 </table>
+                                <div className="flex justify-center mt-4">
+                                    <nav className="inline-flex items-center space-x-1 text-sm">
+                                        <button
+                                            onClick={() => goToPage(page - 1)}
+                                            disabled={page === 0}
+                                            className="px-3 py-2 rounded-l-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white disabled:opacity-50"
+                                        >
+                                            Prev
+                                        </button>
+
+                                        {[...Array(totalPages)].map((_, index) => (
+                                            <button
+                                                key={index}
+                                                onClick={() => goToPage(index)}
+                                                className={`px-3 py-2 border border-gray-300 ${index === page
+                                                    ? "bg-black text-white"
+                                                    : "bg-[#F5F5F5] hover:bg-black hover:text-white"
+                                                    } rounded-md`}
+                                            >
+                                                {index + 1}
+                                            </button>
+                                        ))}
+
+                                        <button
+                                            onClick={() => goToPage(page + 1)}
+                                            disabled={page === totalPages - 1}
+                                            className="px-3 py-2 rounded-r-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white disabled:opacity-50"
+                                        >
+                                            Next
+                                        </button>
+                                    </nav>
+                                </div>
                             </div>
                         </div>
                     </div>

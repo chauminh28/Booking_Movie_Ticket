@@ -89,7 +89,7 @@ export default function Register() {
       setSuccesMessage("Đăng ký thành công")
       setSuccessShowToast(true)
 
-      navigate("/userManager")
+      navigate("/")
     } catch (err) {
       console.log(err)
       setErrorMessage("Lỗi api")
