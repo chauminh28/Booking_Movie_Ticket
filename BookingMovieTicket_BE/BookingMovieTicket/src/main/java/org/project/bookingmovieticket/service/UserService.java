@@ -97,7 +97,6 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         user.setUserName(request.getUserName());
-        user.setPassword(request.getPassword());
         user.setLastName(request.getLastName());
         user.setFirstName(request.getFirstName());
         user.setDob(request.getDob());
