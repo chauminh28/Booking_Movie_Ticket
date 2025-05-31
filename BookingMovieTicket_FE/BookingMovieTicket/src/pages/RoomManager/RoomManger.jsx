@@ -9,6 +9,7 @@ import { IoIosAddCircle } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { CiSearch } from "react-icons/ci";
 import axios from "axios";
 import axiosClient from "../../api/axiosClient";
 
@@ -150,7 +151,18 @@ export default function RoomMangaer() {
             </div>
 
             <div>
-              <Search />
+              <div className='relative w-[576px]'>
+                <input
+                  value={searchValue}
+                  onChange={(e) => {
+                    setSearchValue(e.target.value);
+                    setPage(0);
+                  }}
+                  className='w-[576px] h-[50px] outline-none rounded-xl border-[#BDC5D4] border-[2px] px-3 py-2'
+                  placeholder='Tìm kiếm dịch vụ'
+                />
+                <CiSearch className='absolute top-[16px] right-[20px]' />
+              </div>
               <div className="mt-3">
                 <table className="table-auto w-full text-left text-sm">
                   <thead>

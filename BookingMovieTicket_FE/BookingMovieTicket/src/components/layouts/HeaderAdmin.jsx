@@ -1,8 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
+import { jwtDecode } from 'jwt-decode';
+import { Link, useNavigate } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 
 export default function HeaderAdmin() {
+  const [username, setUsername] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        setUsername(decoded.sub);
+      } catch (err) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("username");
+      }
+    }
+  }, [])
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    setUsername(null);
+
+    navigate("/")
+  };
+
+  const handleChangePassword = () => {
+    navigate("/profile/changePassword")
+  }
+
+  const handleProfile = () => {
+    navigate("/profile")
+  }
+
   return (
     <>
       <div className="flex justify-end items-center w-full">
@@ -13,7 +47,7 @@ export default function HeaderAdmin() {
           type="button"
         >
           <FaUserCircle className="text-[32px]" />
-          <p className="ml-3">Admin</p>
+          <p className="ml-3">{username}</p>
           <svg
             className="w-2.5 h-2.5 ms-3"
             aria-hidden="true"
@@ -42,6 +76,7 @@ export default function HeaderAdmin() {
             <li>
               <a
                 href="#"
+                onClick={handleProfile}
                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
               >
                 Thông tin tài khoản
@@ -50,6 +85,7 @@ export default function HeaderAdmin() {
             <li>
               <a
                 href="#"
+                onClick={handleChangePassword}
                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
               >
                 Đổi mật khẩu
@@ -58,6 +94,7 @@ export default function HeaderAdmin() {
             <li>
               <a
                 href="#"
+                onClick={handleLogout}
                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
               >
                 Đăng xuất

@@ -37,7 +37,11 @@ export default function Login() {
 
                 localStorage.setItem("token", data.token);
                 localStorage.setItem("username", decoded.sub);
-
+                console.log(decoded.scope)
+                if (decoded.scope === "admin" || decoded.scope === "employee") {
+                    navigate("/roomManager")
+                    return
+                }
                 navigate("/")
             }
             else {
@@ -73,7 +77,6 @@ export default function Login() {
                                 onChange={handleChange}
                                 placeholder="Username"
                                 className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                                required
                             />
                         </div>
                         <div className='relative'>
@@ -85,7 +88,6 @@ export default function Login() {
                                 onChange={handleChange}
                                 placeholder="********"
                                 className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                                required
                             />
                             <button
                                 type="button"

@@ -41,7 +41,7 @@ export default function NavbarAdmin() {
 
             <div id="collapseExample" className="hidden">
               <div className="font-medium text-white dark:text-gray-200">
-                <div className="flex items-center w-full ml-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                <div className="flex items-center w-full ml-2">
                   <IoIosTime className="text-white" />
                   <a href="#" className="block px-4 py-1">
                     Theo thời gian
@@ -49,7 +49,7 @@ export default function NavbarAdmin() {
                 </div>
               </div>
               <div className="font-medium text-white dark:text-gray-200">
-                <div className="flex items-center ml-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                <div className="flex items-center ml-2 w-full">
                   <FaCirclePlay className="text-white" />
                   <a href="#" className="block px-4 py-1 ">
                     Theo phim
@@ -87,6 +87,12 @@ export default function NavbarAdmin() {
           <BiCategory className="text-white mx-3" />
           <Link to={"/seatTypeManager"} className="text-white font-medium">
             Loại ghế
+          </Link>
+        </div>
+        <div className="flex items-center">
+          <BiCategory className="text-white mx-3" />
+          <Link to="/serviceTypeManager" className="text-white font-medium">
+            Loại dịch vụ
           </Link>
         </div>
         <div className="flex items-center">
