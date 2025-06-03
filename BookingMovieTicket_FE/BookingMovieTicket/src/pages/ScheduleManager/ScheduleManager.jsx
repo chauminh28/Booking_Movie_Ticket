@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HeaderAdmin from "../../components/layouts/HeaderAdmin";
 import NavbarAdmin from "../../components/layouts/NavbarAdmin";
 import { FaFilter } from "react-icons/fa6";
@@ -8,11 +8,38 @@ import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Search from "../../components/layouts/Search";
 import { CiSearch } from "react-icons/ci";
+import axios from "axios";
 function ScheduleManager() {
   const [scheduleStatus, setScheduleStatus] = useState(false);
-
   const toggleSchedule = () => setScheduleStatus(!scheduleStatus);
-
+  const [schedules, setSchedules] = useState([]);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [searchValue, setSearchValue] = useState("");
+  const size = 5;
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/schedules", {
+        params: {
+          page: page,
+          size: size,
+          search: searchValue,
+        },
+      })
+      .then((response) => {
+        setSchedules(response.data.content);
+        setTotalPages(response.data.totalPages);
+        console.log("Schedules fetched:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching schedules:", error);
+      });
+  }, [page, searchValue]);
+  const goToPage = (pageNumber) => {
+    if (pageNumber >= 0 && pageNumber < totalPages) {
+      setPage(pageNumber);
+    }
+  };
   return (
     <div>
       <div className="grid grid-cols-12">
@@ -120,6 +147,11 @@ function ScheduleManager() {
             <div>
               <div className="relative w-[576px]">
                 <input
+                  value={searchValue}
+                  onChange={(e) => {
+                    setSearchValue(e.target.value);
+                    setPage(0);
+                  }}
                   className="w-[576px] h-[50px] outline-none rounded-xl border-[#BDC5D4] border-[2px] px-3 py-2"
                   placeholder="Tìm kiếm lịch chiếu"
                 />
@@ -137,71 +169,89 @@ function ScheduleManager() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border-t border-[#EEEEEE]">
-                      <td className="px-4 py-2">Biệt đội sấm sét</td>
-                      <td className="px-4 py-2">30/04/2025</td>
-                      <td className="px-4 py-2">Phòng 1</td>
-                      <td className="px-4 py-2">
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={scheduleStatus}
-                            onChange={toggleSchedule}
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-gray-300 peer-checked:bg-black rounded-full transition-colors duration-300"></div>
-                          <div className="absolute w-5 h-5 bg-white rounded-full shadow left-0.5 top-0.5 peer-checked:translate-x-full transition transhtmlForm duration-300"></div>
-                        </label>
-                      </td>
+                    {schedules.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan="5"
+                          className="text-center text-gray-500 py-4"
+                        >
+                          Không có lịch chiếu nào
+                        </td>
+                      </tr>
+                    ) : (
+                      schedules.map((schedule) => (
+                        <tr
+                          className="border-t border-[#EEEEEE]"
+                          key={schedule.id}
+                        >
+                          <td className="px-4 py-2">{schedule.movieName}</td>
+                          <td className="px-4 py-2">{schedule.scheduleDate}</td>
+                          <td className="px-4 py-2">{schedule.roomName}</td>
+                          <td className="px-4 py-2">
+                            <label className="relative inline-flex items-center cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={schedule.status}
+                                onChange={toggleSchedule}
+                                className="sr-only peer"
+                              />
+                              <div className="w-11 h-6 bg-gray-300 peer-checked:bg-black rounded-full transition-colors duration-300"></div>
+                              <div className="absolute w-5 h-5 bg-white rounded-full shadow left-0.5 top-0.5 peer-checked:translate-x-full transition transhtmlForm duration-300"></div>
+                            </label>
+                          </td>
 
-                      <td className="px-4 py-2 flex space-x-4">
-                        <Link to="/scheduleManager/editSchedule">
-                          <button className="text-blue-600 hover:text-blue-800 text-[20px] cursor-pointer">
-                            <MdEdit />
-                          </button>
-                        </Link>
-                        <Link to={"/scheduleManager/deleteSchedule"}>
-                          <button className="text-red-600 hover:text-red-800 text-[20px] cursor-pointer">
-                            <MdDelete />
-                          </button>
-                        </Link>
-                      </td>
-                    </tr>
+                          <td className="px-4 py-2 flex space-x-4">
+                            <Link
+                              to={`/scheduleManager/editSchedule/${schedule.id}`}
+                            >
+                              <button className="text-blue-600 hover:text-blue-800 text-[20px] cursor-pointer">
+                                <MdEdit />
+                              </button>
+                            </Link>
+                            <Link
+                              to={`/scheduleManager/deleteSchedule/${schedule.id}`}
+                            >
+                              <button className="text-red-600 hover:text-red-800 text-[20px] cursor-pointer">
+                                <MdDelete />
+                              </button>
+                            </Link>
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
                 <div className="flex justify-center mt-4">
                   <nav className="inline-flex items-center space-x-1 text-sm">
-                    <a
-                      href="#"
-                      className="px-3 py-2 rounded-l-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white"
+                    <button
+                      onClick={() => goToPage(page - 1)}
+                      disabled={page === 0}
+                      className="px-3 py-2 rounded-l-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white disabled:opacity-50"
                     >
                       Prev
-                    </a>
-                    <a
-                      href="#"
-                      className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md"
+                    </button>
+
+                    {[...Array(totalPages)].map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => goToPage(index)}
+                        className={`px-3 py-2 border border-gray-300 ${
+                          index === page
+                            ? "bg-black text-white"
+                            : "bg-[#F5F5F5] hover:bg-black hover:text-white"
+                        } rounded-md`}
+                      >
+                        {index + 1}
+                      </button>
+                    ))}
+
+                    <button
+                      onClick={() => goToPage(page + 1)}
+                      disabled={page === totalPages - 1}
+                      className="px-3 py-2 rounded-r-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white disabled:opacity-50"
                     >
-                      1
-                    </a>
-                    <a
-                      href="#"
-                      className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md"
-                    >
-                      2
-                    </a>
-                    <a
-                      href="#"
-                      className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md"
-                    >
-                      3
-                    </a>
-                    <a
-                      href="#"
-                      className="px-3 py-2 rounded-r-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white"
-                    >
-                      
                       Next
-                    </a>
+                    </button>
                   </nav>
                 </div>
               </div>

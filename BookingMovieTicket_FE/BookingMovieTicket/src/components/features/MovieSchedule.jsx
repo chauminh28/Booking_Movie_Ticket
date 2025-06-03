@@ -59,27 +59,21 @@ function MovieSchedule() {
               </div>
               <div className="flex flex-col gap-7 text-xl">
                 <p>
-                  <span className="font-bold">Thể loại:</span> Lorem ipsum dolor
-                  sit amet.
+                  <span className="font-bold">Thể loại:</span> Phiêu lưu, Hành
+                  động.
                 </p>
                 <p>
-                  <span className="font-bold">Đạo diễn:</span> Lorem, ipsum
-                  dolor.
+                  <span className="font-bold">Đạo diễn:</span> John Doe.
                 </p>
                 <p>
-                  <span className="font-bold">Diễn viên:</span> Lorem ipsum,
-                  dolor sit amet consectetur adipisicing elit. Distinctio,
-                  asperiores.
+                  <span className="font-bold">Diễn viên:</span> Jane Smith,
+                  Robert Brown, Emma Wilson.
                 </p>
                 <p>
-                  <span className="font-bold">Nội dung:</span> Lorem ipsum dolor
-                  sit amet consectetur adipisicing elit. Accusamus, delectus!
-                  Suscipit commodi, molestiae ipsam dolorem praesentium
-                  doloribus cupiditate voluptatem omnis quod saepe, voluptate
-                  unde illo alias porro et nihil, eius tempora laboriosam
-                  impedit fugiat? Provident inventore tempore ducimus nulla aut
-                  consectetur non eligendi tenetur sint doloremque, impedit
-                  quibusdam nam dolores.
+                  <span className="font-bold">Nội dung:</span> Bộ phim kể về
+                  cuộc phiêu lưu đầy kịch tính của một nhóm anh hùng đối mặt với
+                  thử thách vượt ngoài sức tưởng tượng để bảo vệ thế giới khỏi
+                  hiểm họa.
                 </p>
               </div>
               <div className="grid grid-cols-7 gap-4">
@@ -126,27 +120,20 @@ function MovieSchedule() {
               </div>
               <div className="flex flex-col gap-7 text-xl">
                 <p>
-                  <span className="font-bold">Thể loại:</span> Lorem ipsum dolor
-                  sit amet.
+                  <span className="font-bold">Thể loại:</span> Hoạt hình, Phiêu
+                  lưu, Gia đình.
                 </p>
                 <p>
-                  <span className="font-bold">Đạo diễn:</span> Lorem, ipsum
-                  dolor.
+                  <span className="font-bold">Đạo diễn:</span> Takashi Yamazaki.
                 </p>
                 <p>
-                  <span className="font-bold">Diễn viên:</span> Lorem ipsum,
-                  dolor sit amet consectetur adipisicing elit. Distinctio,
-                  asperiores.
+                  <span className="font-bold">Diễn viên:</span> Megumi Ohara,
+                  Nobuyo Oyama, Mari Mashiba.
                 </p>
                 <p>
-                  <span className="font-bold">Nội dung:</span> Lorem ipsum dolor
-                  sit amet consectetur adipisicing elit. Accusamus, delectus!
-                  Suscipit commodi, molestiae ipsam dolorem praesentium
-                  doloribus cupiditate voluptatem omnis quod saepe, voluptate
-                  unde illo alias porro et nihil, eius tempora laboriosam
-                  impedit fugiat? Provident inventore tempore ducimus nulla aut
-                  consectetur non eligendi tenetur sint doloremque, impedit
-                  quibusdam nam dolores.
+                  <span className="font-bold">Nội dung:</span> Shin và nhóm bạn
+                  khám phá bí ẩn tại Học viện Hoa Lệ Tenkasu, nơi những điều kỳ
+                  diệu và phiêu lưu đầy bất ngờ đang chờ đón.
                 </p>
               </div>
               <div className="grid grid-cols-7 gap-4">
