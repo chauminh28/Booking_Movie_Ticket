@@ -46,7 +46,7 @@ public class MovieDetailService {
         }).collect(Collectors.toList());
     }
 
-    public MovieDetail createMovieDetail(MovieDetailCreateRequest request) {
+    public MovieDetailResponse createMovieDetail(MovieDetailCreateRequest request) {
         MovieDetail movieDetail = new MovieDetail();
         movieDetail.setMovie(movieRepository.findById(request.getMovieId()).orElse(null));
         movieDetail.setCountry(request.getCountry());
@@ -56,7 +56,19 @@ public class MovieDetailService {
         movieDetail.setAge(ageRepository.findById(request.getAgeId()).orElse(null));
         movieDetail.setActors(actorRepository.findAllById(request.getActors()));
         movieDetail.setDirectors(directorRepository.findAllById(request.getDirectors()));
-        return movieDetailRepository.save(movieDetail);
-
+        movieDetailRepository.save(movieDetail);
+        MovieDetailResponse movieDetailResponse = new MovieDetailResponse();
+        movieDetailResponse.setId(movieDetail.getId());
+        movieDetailResponse.setMovieId(movieDetail.getMovie().getId());
+        movieDetailResponse.setCountry(movieDetail.getCountry());
+        movieDetailResponse.setDescription(movieDetail.getDescription());
+        movieDetailResponse.setTrailer(movieDetail.getTrailer());
+        movieDetailResponse.setStartDate(movieDetail.getStartDate());
+        movieDetailResponse.setAgeName(movieDetail.getAge().getAgeType());
+        List<Long> actorIds = movieDetail.getActors().stream().map(Actor::getId).toList();
+        movieDetailResponse.setActors(actorIds);
+        List<Long> directorIds = movieDetail.getDirectors().stream().map(Director::getId).toList();
+        movieDetailResponse.setDirectors(directorIds);
+        return movieDetailResponse;
     }
 }

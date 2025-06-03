@@ -19,5 +19,5 @@ public class MovieCreateRequest {
     private boolean status;
     private String movieImage;
     private List<Long> genres;
-    private boolean movieStatus;
+    private int movieStatus;
 }
