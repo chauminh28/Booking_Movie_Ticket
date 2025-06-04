@@ -48,18 +48,6 @@ function ProfileInfo() {
               value="28/05/2003"
             />
           </div>
-          <div className="flex gap-4 items-center h-24">
-            <label htmlFor="" className="w-[30%] font-bold h-full">
-              Địa chỉ
-            </label>
-            <textarea
-              type="text"
-              className="border-0 bg-gray-100 text-gray-500 p-2 h-full w-[70%]"
-              placeholder="Nguyen Van Anh"
-              value="Nam Ky Khoi Nghia,Phuong Hoa Hai, Quan Ngu Hanh Son, Da Nang"
-              onChange={() => { }}
-            />
-          </div>
           <div className="flex gap-4 items-center">
             <label htmlFor="" className="font-bold w-[30%]">
               Số điện thoại

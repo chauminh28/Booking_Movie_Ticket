@@ -105,7 +105,10 @@ function App() {
 
         {/* Service Manager */}
         <Route path="/serviceManager" element={<ServiceManager />} />
-        <Route path="/serviceManager/editService/:id" element={<EditService />} />
+        <Route
+          path="/serviceManager/editService/:id"
+          element={<EditService />}
+        />
         <Route path="/serviceManager/addService" element={<AddService />} />
         <Route
           path="/serviceManager/deleteService/:id"
@@ -128,11 +131,11 @@ function App() {
         <Route path="/scheduleManager" element={<ScheduleManager />} />
         <Route path="/scheduleManager/addSchedule" element={<AddSchedule />} />
         <Route
-          path="/scheduleManager/editSchedule"
+          path="/scheduleManager/editSchedule/:id"
           element={<EditSchedule />}
         />
         <Route
-          path="/scheduleManager/deleteSchedule"
+          path="/scheduleManager/deleteSchedule/:id"
           element={<DeleteSchedule />}
         />
 
@@ -148,9 +151,18 @@ function App() {
 
         {/* ServiceTypeManager */}
         <Route path="/serviceTypeManager" element={<ServiceTypeManager />} />
-        <Route path="/serviceTypeManager/addServiceType/" element={<AddServiceType />} />
-        <Route path="/serviceTypeManager/editServiceType/:id" element={<EditServiceType />} />
-        <Route path="/serviceTypeManager/deleteServiceType/:id" element={<DeleteServiceType />} />
+        <Route
+          path="/serviceTypeManager/addServiceType/"
+          element={<AddServiceType />}
+        />
+        <Route
+          path="/serviceTypeManager/editServiceType/:id"
+          element={<EditServiceType />}
+        />
+        <Route
+          path="/serviceTypeManager/deleteServiceType/:id"
+          element={<DeleteServiceType />}
+        />
       </Routes>
     </Router>
   );

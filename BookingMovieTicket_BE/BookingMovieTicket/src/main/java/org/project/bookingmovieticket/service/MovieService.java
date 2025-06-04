@@ -31,15 +31,23 @@ public class MovieService {
         this.movieDetailRepository = movieDetailRepository;
     }
 
-    public Movie createMovie(MovieCreateRequest request) {
+    public MovieResponse createMovie(MovieCreateRequest request) {
         Movie movie = new Movie();
         movie.setMovieName(request.getMovieName());
         movie.setMovieImage(request.getMovieImage());
         movie.setMovieDuration(request.getMovieDuration());
-
+        movie.setMovieStatus(request.getMovieStatus());
         movie.setStatus(request.isStatus());
         movie.setGenres(genreRepository.findAllById(request.getGenres()));
-        return movieRepository.save(movie);
+        movieRepository.save(movie);
+        MovieResponse movieResponse = new MovieResponse();
+        movieResponse.setId(movie.getId());
+        movieResponse.setMovieName(movie.getMovieName());
+        movieResponse.setMovieImage(movie.getMovieImage());
+        movieResponse.setMovieDuration(movie.getMovieDuration());
+        movieResponse.setMovieStatus(movie.getMovieStatus());
+        movieResponse.setGenres(movie.getGenres().stream().map(Genre::getGenreName).collect(Collectors.toList()));
+        return movieResponse;
     }
 
     public Page<MovieFullResponse> gettAllMovies(String searchValue, Pageable pageable) {
@@ -138,6 +146,7 @@ public class MovieService {
 
 
         MovieFullUpdateRequest movieFullUpdateRequest = new MovieFullUpdateRequest();
+        movieFullUpdateRequest.setId(movie.getId());
         movieFullUpdateRequest.setMovieId(movie.getId());
         movieFullUpdateRequest.setMovieName(request.getMovieName());
         movieFullUpdateRequest.setMovieDuration(request.getMovieDuration());
