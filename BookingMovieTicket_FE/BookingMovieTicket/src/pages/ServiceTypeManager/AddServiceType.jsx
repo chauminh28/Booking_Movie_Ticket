@@ -21,7 +21,7 @@ function AddServiceType() {
         const newErrors = {};
 
         if (!name.trim()) {
-            newErrors.userName = "Vui lòng nhập tên loại dịch vụ"
+            newErrors.name = "Vui lòng nhập tên loại dịch vụ"
         }
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -40,10 +40,19 @@ function AddServiceType() {
                 navigate("/serviceTypeManager")
             }, 1500);
         } catch (err) {
-            console.log(err)
-            setErrorMessage("Lỗi api")
-            setErrorShowToast(true)
+            if (err.response && err.response.status === 400) {
+                newErrors.name = err.response.data.name
+            } else {
+                setErrorMessage("Lỗi API không xác định");
+                setErrorShowToast(true);
+            }
         }
+        console.log(newErrors)
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+        setErrors({});
     }
 
     return (
@@ -88,16 +97,16 @@ function AddServiceType() {
                                                 placeholder="Tên loại dịch vụ"
                                                 className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                             />
-                                            {errors.genreName && (
+                                            {errors.name && (
                                                 <p className="text-red-600 text-sm mt-1">
-                                                    {errors.genreName}
+                                                    {errors.name}
                                                 </p>
                                             )}
                                         </div>
                                     </div>
                                 </div>
                                 <div className="mt-[56px]">
-                                    <Link to={"/genreManager"}>
+                                    <Link to={"/serviceTypeManager"}>
                                         <button className="bg-white px-4 py-2 text-black border-1 border-black font-bold text-[16px] w-[120px] h-[55px] rounded-[90px] cursor-pointer">
                                             Huỷ
                                         </button>

@@ -20,6 +20,7 @@ function AddActor() {
   const [errorMessage, setErrorMessage] = useState("");
   const [showErrorToast, setErrorShowToast] = useState(false);
   const [successMessage, setSuccesMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [showSuccessToast, setSuccessShowToast] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -82,6 +83,7 @@ function AddActor() {
 
     // Upload lên Cloudinary
     try {
+      setIsLoading(true);
       const url = await uploadToCloudinary(file, MediaType.ACTOR_IMAGE);
       setForm((prev) => ({
         ...prev,
@@ -89,6 +91,8 @@ function AddActor() {
       }));
     } catch (err) {
       console.error("Lỗi khi upload ảnh:", err);
+    } finally {
+      setIsLoading(false)
     }
   };
 
@@ -114,6 +118,9 @@ function AddActor() {
 
     try {
       console.log(form);
+      if (form.gender === "") {
+        form.gender = null;
+      }
       // eslint-disable-next-line no-unused-vars
       const res = await axiosClient.post("/actors", form);
       setSuccesMessage("Thêm diễn viên thành công");
@@ -123,10 +130,21 @@ function AddActor() {
         navigate("/actorManager");
       }, 1500);
     } catch (err) {
-      console.log(err);
-      setErrorMessage("Lỗi api");
-      setErrorShowToast(true);
+      if (err.response && err.response.status === 400) {
+        newErrors.actorName = err.response.data.actorName
+        newErrors.gender = err.response.data.gender
+        newErrors.country = err.response.data.country
+
+      } else {
+        setErrorMessage("Lỗi API không xác định");
+        setErrorShowToast(true);
+      }
     }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    setErrors({});
   };
 
   return (
@@ -257,7 +275,12 @@ function AddActor() {
                         className="bg-[#F9F9F9] rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition w-[404px]"
                         onChange={handleImageChange}
                       />
-                      {image && (
+                      {isLoading && (
+                        <p className="text-blue-500 mt-2">
+                          Đang tải avatar, vui lòng chờ...
+                        </p>
+                      )}
+                      {image && !isLoading && (
                         <div className="flex items-center justify-center mt-2 w-[404px]">
                           <img
                             src={image}

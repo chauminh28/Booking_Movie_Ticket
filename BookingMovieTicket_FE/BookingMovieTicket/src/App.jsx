@@ -67,7 +67,7 @@ function App() {
           element={<ProfileChangePassword />}
         />
         <Route path="/movie" element={<MoviePage />} />
-        <Route path="/movie/detail" element={<MovieDetailPage />} />
+        <Route path="/movie/detail/:id" element={<MovieDetailPage />} />
         {/* Page Admin */}
 
         {/* Room Manager */}

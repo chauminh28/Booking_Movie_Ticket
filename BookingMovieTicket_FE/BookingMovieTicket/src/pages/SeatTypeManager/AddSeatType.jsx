@@ -47,6 +47,13 @@ function AddSeatType() {
 
     try {
       // eslint-disable-next-line no-unused-vars
+      const priceValue = parseFloat(form.price);
+
+      if (isNaN(priceValue)) {
+        newErrors.price = "Giá phải là số hợp lệ"
+        setErrors(newErrors)
+        return;
+      }
       const res = await axiosClient.post("/seatTypes", form);
       setSuccesMessage("Tạo loại ghế thành công");
       setSuccessShowToast(true);
@@ -55,10 +62,20 @@ function AddSeatType() {
         navigate("/seatTypeManager");
       }, 1500);
     } catch (err) {
-      console.log(err);
-      setErrorMessage("Lỗi api");
-      setErrorShowToast(true);
+      if (err.response && err.response.status === 400) {
+        newErrors.seatTypeName = err.response.data.seatTypeName
+        newErrors.price = err.response.data.price
+      } else {
+        setErrorMessage("Lỗi API không xác định");
+        setErrorShowToast(true);
+      }
     }
+    console.log(newErrors)
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    setErrors({});
   };
 
   return (

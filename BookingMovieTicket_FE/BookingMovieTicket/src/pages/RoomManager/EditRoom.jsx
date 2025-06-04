@@ -82,7 +82,7 @@ export default function EditRoom() {
     if (!String(form.rows).trim()) {
       newErrors.rows = "Vui lòng nhập số hàng";
     }
-    if (!form.cols.trim()) {
+    if (!String(form.cols).trim()) {
       newErrors.cols = "Vui lòng nhập số cột";
     }
     if (Object.keys(newErrors).length > 0) {
@@ -92,7 +92,7 @@ export default function EditRoom() {
     setErrors({});
 
     try {
-      axiosClient.put(`/rooms/${id}`, form);
+      await axiosClient.put(`/rooms/${id}`, form);
       setSuccesMessage("Sửa phòng chiếu thành công");
       setSuccessShowToast(true);
 
@@ -100,10 +100,25 @@ export default function EditRoom() {
         navigate("/roomManager");
       }, 1500);
     } catch (err) {
-      console.log(err);
-      setErrorMessage("Lỗi api");
-      setErrorShowToast(true);
+      if (err.response && err.response.status === 400) {
+        newErrors.createAt = err.response.data.createAt
+        newErrors.roomName = err.response.data.roomName
+        newErrors.monitor = err.response.data.monitor
+        newErrors.soundSystem = err.response.data.soundSystem
+        newErrors.projector = err.response.data.projector
+        newErrors.rows = err.response.data.rows
+        newErrors.cols = err.response.data.cols
+      } else {
+        setErrorMessage("Lỗi API không xác định");
+        setErrorShowToast(true);
+      }
     }
+    console.log(newErrors)
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    setErrors({});
   };
 
   return (

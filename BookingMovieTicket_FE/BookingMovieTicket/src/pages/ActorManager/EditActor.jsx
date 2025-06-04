@@ -18,6 +18,7 @@ function EditActor() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [image, setImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const MediaType = {
     MOVIE_IMAGE: "MOVIE_IMAGE",
@@ -102,6 +103,7 @@ function EditActor() {
 
     // Upload lên Cloudinary
     try {
+      setIsLoading(true)
       const url = await uploadToCloudinary(file, MediaType.ACTOR_IMAGE);
       setForm((prev) => ({
         ...prev,
@@ -109,6 +111,8 @@ function EditActor() {
       }));
     } catch (err) {
       console.error("Lỗi khi upload ảnh:", err);
+    } finally {
+      setIsLoading(false)
     }
   };
 
@@ -142,10 +146,21 @@ function EditActor() {
         navigate("/actorManager")
       }, 1500);
     } catch (err) {
-      console.log(err)
-      setErrorMessage("Lỗi api")
-      setErrorShowToast(true)
+      if (err.response && err.response.status === 400) {
+        newErrors.actorName = err.response.data.actorName
+        newErrors.gender = err.response.data.gender
+        newErrors.country = err.response.data.country
+
+      } else {
+        setErrorMessage("Lỗi API không xác định");
+        setErrorShowToast(true);
+      }
     }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    setErrors({});
   }
 
   return (
@@ -276,7 +291,12 @@ function EditActor() {
                         className="bg-[#F9F9F9] rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition w-[404px]"
                         onChange={handleImageChange}
                       />
-                      {image && (
+                      {isLoading && (
+                        <p className="text-blue-500 mt-2">
+                          Đang tải avatar, vui lòng chờ...
+                        </p>
+                      )}
+                      {image && !isLoading && (
                         <div className="flex items-center justify-center mt-2 w-[404px]">
                           <img
                             src={image}

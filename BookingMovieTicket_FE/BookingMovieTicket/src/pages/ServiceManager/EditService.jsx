@@ -20,6 +20,7 @@ function EditService() {
     const [showErrorToast, setErrorShowToast] = useState(false);
     const [successMessage, setSuccesMessage] = useState('');
     const [showSuccessToast, setSuccessShowToast] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState({});
 
     const navigate = useNavigate();
@@ -89,6 +90,7 @@ function EditService() {
 
         // Upload lên Cloudinary
         try {
+            setIsLoading(true)
             const url = await uploadToCloudinary(file, MediaType.MOVIE_IMAGE);
             setForm((prev) => ({
                 ...prev,
@@ -96,6 +98,8 @@ function EditService() {
             }));
         } catch (err) {
             console.error("Lỗi khi upload ảnh:", err);
+        } finally {
+            setIsLoading(false)
         }
     };
 
@@ -137,10 +141,20 @@ function EditService() {
                 navigate("/serviceManager")
             }, 1500);
         } catch (err) {
-            console.log(err)
-            setErrorMessage("Lỗi api")
-            setErrorShowToast(true)
+            if (err.response && err.response.status === 400) {
+                newErrors.actorName = err.response.data.actorName
+                newErrors.price = err.response.data.price
+                newErrors.serviceTypeId = err.response.data.serviceTypeId
+            } else {
+                setErrorMessage("Lỗi API không xác định");
+                setErrorShowToast(true);
+            }
         }
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+        setErrors({});
     }
 
     return (
@@ -254,7 +268,12 @@ function EditService() {
                                                 className="bg-[#F9F9F9] rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition w-[404px]"
                                                 onChange={handleImageChange}
                                             />
-                                            {form.image && (
+                                            {isLoading && (
+                                                <p className="text-blue-500 mt-2">
+                                                    Đang tải avatar, vui lòng chờ...
+                                                </p>
+                                            )}
+                                            {form.image && !isLoading && (
                                                 <div className="flex items-center justify-center mt-2 w-[404px]">
                                                     <img
                                                         src={form.image}

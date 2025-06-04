@@ -19,6 +19,7 @@ function AddService() {
     const [errorMessage, setErrorMessage] = useState('');
     const [showErrorToast, setErrorShowToast] = useState(false);
     const [successMessage, setSuccesMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const [showSuccessToast, setSuccessShowToast] = useState(false);
     const [errors, setErrors] = useState({});
 
@@ -72,6 +73,7 @@ function AddService() {
 
         // Upload lên Cloudinary
         try {
+            setIsLoading(true)
             const url = await uploadToCloudinary(file, MediaType.MOVIE_IMAGE);
             setForm((prev) => ({
                 ...prev,
@@ -79,6 +81,8 @@ function AddService() {
             }));
         } catch (err) {
             console.error("Lỗi khi upload ảnh:", err);
+        } finally {
+            setIsLoading(false)
         }
     };
 
@@ -113,6 +117,13 @@ function AddService() {
 
         try {
             console.log(form)
+            const priceValue = parseFloat(form.price);
+
+            if (isNaN(priceValue)) {
+                newErrors.price = "Giá phải là số hợp lệ"
+                setErrors(newErrors)
+                return;
+            }
             const res = await axiosClient.post("/products", form)
             setSuccesMessage("Thêm dịch vụ thành công")
             setSuccessShowToast(true)
@@ -121,10 +132,21 @@ function AddService() {
                 navigate("/serviceManager")
             }, 1500);
         } catch (err) {
-            console.log(err)
-            setErrorMessage("Lỗi api")
-            setErrorShowToast(true)
+            if (err.response && err.response.status === 400) {
+                newErrors.actorName = err.response.data.actorName
+                newErrors.price = err.response.data.price
+                newErrors.serviceTypeId = err.response.data.serviceTypeId
+            } else {
+                setErrorMessage("Lỗi API không xác định");
+                setErrorShowToast(true);
+            }
         }
+        console.log(newErrors)
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+        setErrors({});
     }
 
     return (
@@ -237,7 +259,12 @@ function AddService() {
                                                 className="bg-[#F9F9F9] rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition w-[404px]"
                                                 onChange={handleImageChange}
                                             />
-                                            {imageReview && (
+                                            {isLoading && (
+                                                <p className="text-blue-500 mt-2">
+                                                    Đang tải avatar, vui lòng chờ...
+                                                </p>
+                                            )}
+                                            {imageReview && !isLoading && (
                                                 <div className="flex items-center justify-center mt-2 w-[404px]">
                                                     <img
                                                         src={imageReview}

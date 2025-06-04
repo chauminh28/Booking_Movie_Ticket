@@ -104,10 +104,26 @@ function EditUser() {
         navigate("/userManager")
       }, 1500);
     } catch (err) {
-      console.log(err)
-      setErrorMessage("Lỗi api")
-      setErrorShowToast(true)
+      if (err.response && err.response.status === 400) {
+        newErrors.userName = err.response.data.userName
+        newErrors.lastName = err.response.data.lastName
+        newErrors.firstName = err.response.data.firstName
+        newErrors.dob = err.response.data.dob
+        newErrors.gender = err.response.data.gender
+        newErrors.phone = err.response.data.phone
+        newErrors.email = err.response.data.email
+        newErrors.roleId = err.response.data.roleId
+
+      } else {
+        setErrorMessage("Lỗi API không xác định");
+        setErrorShowToast(true);
+      }
     }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    setErrors({});
   }
 
   return (
