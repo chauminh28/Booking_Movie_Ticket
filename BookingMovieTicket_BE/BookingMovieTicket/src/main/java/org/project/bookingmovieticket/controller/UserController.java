@@ -8,8 +8,11 @@ import org.project.bookingmovieticket.dto.request.user.UserUpdateRequest;
 import org.project.bookingmovieticket.entity.User;
 import org.project.bookingmovieticket.service.UserService;
 //import org.springframework.security.core.context.SecurityContextHolder;
+import org.project.bookingmovieticket.validate.OnAdminCreate;
+import org.project.bookingmovieticket.validate.OnRegister;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,8 +27,15 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Validated(OnRegister.class)
     @PostMapping
-    User createUser(@RequestBody UserCreateRequest request) {
+    User createUser(@RequestBody @Validated(OnRegister.class) UserCreateRequest request) {
+        return userService.createUser(request);
+    }
+
+    @Validated(OnAdminCreate.class)
+    @PostMapping("/admin")
+    User createUserAdmin(@RequestBody @Validated(OnAdminCreate.class) UserCreateRequest request) {
         return userService.createUser(request);
     }
 
@@ -44,9 +54,10 @@ public class UserController {
         return userService.getUser(id);
     }
 
+    @Validated(OnAdminCreate.class)
     @PutMapping("/{userId}")
     User updateUser(@PathVariable("userId") Long id,
-                    @RequestBody UserUpdateRequest request) {
+                    @RequestBody @Validated(OnAdminCreate.class) UserUpdateRequest request) {
         return userService.updateUser(id, request);
     }
 

@@ -1,5 +1,6 @@
 package org.project.bookingmovieticket.controller;
 
+import jakarta.validation.Valid;
 import org.project.bookingmovieticket.dto.request.actor.ActorCreateRequest;
 import org.project.bookingmovieticket.dto.request.actor.ActorResponse;
 import org.project.bookingmovieticket.dto.request.actor.ActorUpdateRequest;
@@ -19,7 +20,7 @@ public class ActorController {
     }
 
     @PostMapping
-    Actor createActor(@RequestBody ActorCreateRequest request) {
+    Actor createActor(@RequestBody @Valid ActorCreateRequest request) {
         System.out.println("Avatar:" + request.getAvatar());
         return actorService.createActor(request);
     }
@@ -35,7 +36,7 @@ public class ActorController {
     }
 
     @PutMapping("/{actorId}")
-    Actor updateActor(@PathVariable("actorId") Long id, @RequestBody ActorUpdateRequest request) {
+    Actor updateActor(@PathVariable("actorId") Long id, @RequestBody @Valid ActorUpdateRequest request) {
         return actorService.updateActor(id, request);
     }
 

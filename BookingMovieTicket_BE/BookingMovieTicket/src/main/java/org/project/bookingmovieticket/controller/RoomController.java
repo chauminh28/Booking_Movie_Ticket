@@ -1,5 +1,6 @@
 package org.project.bookingmovieticket.controller;
 
+import jakarta.validation.Valid;
 import org.project.bookingmovieticket.dto.request.room.RoomCreateRequest;
 import org.project.bookingmovieticket.dto.request.room.RoomResponse;
 import org.project.bookingmovieticket.dto.request.room.RoomUpdateRequest;
@@ -19,7 +20,7 @@ public class RoomController {
     }
 
     @PostMapping
-    Room createRoom(@RequestBody RoomCreateRequest request) {
+    Room createRoom(@RequestBody @Valid RoomCreateRequest request) {
         return roomService.createRoom(request);
     }
 
@@ -34,7 +35,7 @@ public class RoomController {
     }
 
     @PutMapping("/{roomId}")
-    Room updateRoom(@PathVariable("roomId") Long id, @RequestBody RoomUpdateRequest request) {
+    Room updateRoom(@PathVariable("roomId") Long id, @RequestBody @Valid RoomUpdateRequest request) {
         return roomService.updateRoom(id, request);
     }
 

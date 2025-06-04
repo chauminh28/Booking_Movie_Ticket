@@ -25,6 +25,10 @@ public class Booking {
     @JoinColumn(name = "seatId")
     private Seat seat;
 
+    @ManyToOne
+    @JoinColumn(name = "roomId")
+    private Room room;
+
     private LocalDateTime bookingTime;
     private int paymentStatus;
 

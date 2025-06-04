@@ -1,5 +1,6 @@
 package org.project.bookingmovieticket.controller;
 
+import jakarta.validation.Valid;
 import org.project.bookingmovieticket.dto.request.servicetype.ServiceTypeCreateRequest;
 import org.project.bookingmovieticket.dto.request.servicetype.ServiceTypeResponse;
 import org.project.bookingmovieticket.dto.request.servicetype.ServiceTypeUpdateRequest;
@@ -19,7 +20,7 @@ public class ServiceTypeController {
     }
 
     @PostMapping
-    public ServiceType createServiceType(@RequestBody ServiceTypeCreateRequest request) {
+    public ServiceType createServiceType(@RequestBody @Valid ServiceTypeCreateRequest request) {
         return serviceTypeService.createServiceType(request);
     }
 
@@ -34,7 +35,7 @@ public class ServiceTypeController {
     }
 
     @PutMapping("/{serviceTypeId}")
-    public ServiceType updateServiceType(@PathVariable("serviceTypeId") Long id, @RequestBody ServiceTypeUpdateRequest request) {
+    public ServiceType updateServiceType(@PathVariable("serviceTypeId") Long id, @RequestBody @Valid ServiceTypeUpdateRequest request) {
         return serviceTypeService.updateServiceType(id, request);
     }
 
