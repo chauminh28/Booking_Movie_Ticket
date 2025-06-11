@@ -26,7 +26,7 @@ function AddMovie() {
   const tomSelectInstance = useRef(null);
   const [loadingTrailer, setLoadingTrailer] = useState(false);
   const [toast, setToast] = useState(null);
-
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const [form, setForm] = useState({
     movieName: "",
@@ -182,51 +182,89 @@ function AddMovie() {
       setLoadingTrailer(false);
     }
   };
+  // const [form, setForm] = useState({
+  //   movieName: "",
+  //   movieDuration: "",
+  //   movieImage: "",
+  //   trailer: "",
+  //   ageId: "",
+  //   movieStatus: "",
+  //   country: "",
+  //   movieGenres: [],
+  //   startDate: "",
+  //   status: true,
+  // });
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const newErrors = {};
 
-    try {
-      // 1. Gửi yêu cầu tạo Movie
-      const moviePayload = {
-        movieName: form.movieName,
-        movieDuration: parseInt(form.movieDuration),
-        movieImage: form.movieImage,
-        movieStatus: parseInt(form.movieStatus),
-        status: form.status,
-        genres: form.movieGenres,
-      };
-
-      const movieRes = await axios.post(
-        "http://localhost:8080/movies",
-        moviePayload
-      );
-      const movieId = movieRes.data.id;
-
-      // 2. Gửi yêu cầu tạo MovieDetail
-      const movieDetailPayload = {
-        movieId: movieId,
-        country: form.country,
-        description: "", // điền nếu có
-        trailer: form.trailer,
-        startDate: form.startDate,
-        ageId: parseInt(form.ageId),
-        actors: [], // điền nếu có
-        directors: [], // điền nếu có
-      };
-
-      await axios.post(
-        "http://localhost:8080/movies/details",
-        movieDetailPayload
-      );
-      setToast({ message: "Thêm phim thành công!" });
-      setTimeout(() => {
-        navigate(`/movieManager/editMovie/${movieId}`); // Chuyển hướng về trang quản lý phim
-      }, 1500);
-    } catch (error) {
-      console.error("Lỗi khi tạo phim:", error);
-      alert("Có lỗi xảy ra khi tạo phim");
+    // 1. Kiểm tra đầu vào
+    if (!form.movieName.trim()) {
+      newErrors.movieName = "Tên phim không được để trống";
     }
+    if (!form.movieDuration.trim()) {
+      newErrors.movieDuration = "Thời lượng phim không được để trống";
+    }
+    if (!form.ageId.trim()) {
+      newErrors.ageId = "Độ tuổi giới hạn không được để trống";
+    }
+    if (!form.movieStatus.trim()) {
+      newErrors.movieStatus = "Trạng thái phim không được để trống";
+    }
+    if (!form.country.trim()) {
+      newErrors.country = "Quốc gia không được để trống";
+    }
+    if (!form.movieGenres || form.movieGenres.length === 0) {
+      newErrors.movieGenres = "Thể loại phim không được để trống";
+    }
+    if (!form.startDate.trim()) {
+      newErrors.startDate = "Ngày khởi chiếu không được để trống";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    }
+
+    setErrors({});
+    let movieId;
+
+    // 2. Gửi API Movie
+    try {
+      // const moviePayload = {
+      //   movieName: form.movieName,
+      //   movieDuration: parseInt(form.movieDuration),
+      //   movieImage: form.movieImage,
+      //   movieStatus: parseInt(form.movieStatus),
+      //   status: form.status,
+      //   genres: form.movieGenres,
+      // };
+
+      const resData = await axios.post("http://localhost:8080/movies", form);
+      movieId = resData.data.id; // Lấy ID của phim mới tạo
+      console.log(resData.data);
+    } catch (err) {
+      if (err.response && err.response.status === 400) {
+        Object.assign(newErrors, err.response.data);
+        console.log(newErrors);
+      } else {
+        console.error("Lỗi khi thêm phim:", err);
+      }
+    }
+
+    // 4. Nếu có lỗi từ 1 trong 2 API
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors); // Trả về UI toàn bộ lỗi từ cả 2 API
+      return;
+    }
+
+    // 5. Thành công
+    setErrors({});
+    setToast({ message: "Thêm phim thành công!" });
+    setTimeout(() => {
+      navigate(`/movieManager/editMovie/${movieId}`);
+    }, 1500);
   };
+
   return (
     <div className="grid grid-cols-12">
       {toast && (
@@ -257,8 +295,12 @@ function AddMovie() {
                       onChange={handleChange}
                       placeholder="Tên phim"
                       className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                      required
                     />
+                    {errors.movieName && (
+                      <p className="text-red-600 text-sm mt-1">
+                        {errors.movieName}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label
@@ -274,8 +316,12 @@ function AddMovie() {
                       onChange={handleChange}
                       placeholder="Thời lượng (phút)"
                       className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                      required
                     />
+                    {errors.movieDuration && (
+                      <p className="text-red-600 text-sm mt-1">
+                        {errors.movieDuration}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label
@@ -292,6 +338,11 @@ function AddMovie() {
                       placeholder="dd/MM/yyyy"
                       className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                     />
+                    {errors.startDate && (
+                      <p className="text-red-600 text-sm mt-1">
+                        {errors.startDate}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label
@@ -307,8 +358,8 @@ function AddMovie() {
                       onChange={handleChange}
                       placeholder="your@email.com"
                       className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                      required
                     >
+                      <option value="">Chọn độ tuổi giới hạn</option>
                       {ages.length > 0 ? (
                         ages.map((age) => (
                           <option key={age.id} value={age.id}>
@@ -319,6 +370,11 @@ function AddMovie() {
                         <option>N/A</option>
                       )}
                     </select>
+                    {errors.ageId && (
+                      <p className="text-red-600 text-sm mt-1">
+                        {errors.ageId}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label
@@ -334,12 +390,17 @@ function AddMovie() {
                       onChange={handleChange}
                       placeholder="your@email.com"
                       className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                      required
                     >
+                      <option value="">Chọn trạng thái phim</option>
                       <option value={MOVIE_STATUS.STOPPED}>Ngừng chiếu</option>
                       <option value={MOVIE_STATUS.UPCOMING}>Sắp chiếu</option>
                       <option value={MOVIE_STATUS.SHOWING}>Đang chiếu</option>
                     </select>
+                    {errors.movieStatus && (
+                      <p className="text-red-600 text-sm mt-1">
+                        {errors.movieStatus}
+                      </p>
+                    )}
                   </div>
 
                   {/* Button submit */}
@@ -372,7 +433,6 @@ function AddMovie() {
                       onChange={handleTrailerChange}
                       placeholder="Mô tả phim"
                       className="bg-[#F9F9F9] rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition w-[404px]"
-                      required
                     />
                     {loadingTrailer && (
                       <p className="text-blue-500 mt-2">
@@ -394,12 +454,12 @@ function AddMovie() {
                     >
                       Thể loại <span className="text-red-600">*</span>
                     </label>
-                    <select
-                      ref={selectRef}
-                      id="movieGenres"
-                      required
-                      multiple
-                    ></select>
+                    <select ref={selectRef} id="movieGenres" multiple></select>
+                    {errors.movieGenres && (
+                      <p className="text-red-600 text-sm mt-1">
+                        {errors.movieGenres}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label
@@ -415,8 +475,8 @@ function AddMovie() {
                       onChange={handleChange}
                       placeholder="your@email.com"
                       className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                      required
                     >
+                      <option value="">Chọn quốc gia</option>
                       {countriesList.length > 0 ? (
                         countriesList.map((country) => (
                           <option key={country.code} value={country.name}>
@@ -427,6 +487,11 @@ function AddMovie() {
                         <option>Không có quốc gia</option>
                       )}
                     </select>
+                    {errors.country && (
+                      <p className="text-red-600 text-sm mt-1">
+                        {errors.country}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label

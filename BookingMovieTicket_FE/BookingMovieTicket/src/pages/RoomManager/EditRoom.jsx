@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 
 import { Link, useNavigate, useParams } from "react-router-dom";
 import NavbarAdmin from "../../components/layouts/NavbarAdmin";
@@ -17,9 +17,15 @@ export default function EditRoom() {
   const [showErrorToast, setErrorShowToast] = useState(false);
   const [successMessage, setSuccesMessage] = useState("");
   const [showSuccessToast, setSuccessShowToast] = useState(false);
+  const [duration, setDuration] = useState(3000);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-
+  const [seats, setSeats] = useState([]);
+  const [seatType, setSeatType] = useState([]);
+  const [selectedSeat, setSelectedSeat] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [maxColumn, setMaxColumn] = useState(0);
+  const [seatMaps, setSeatMaps] = useState({});
   const [form, setForm] = useState({
     createAt: "",
     roomName: "",
@@ -51,6 +57,27 @@ export default function EditRoom() {
         console.error("Lỗi fetch api user", error);
       });
   }, [id]);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/seats/${id}`)
+      .then((response) => {
+        setSeats(response.data);
+      })
+      .catch((error) => {
+        console.error("Lỗi fetch api seats", error);
+      });
+  }, [id]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/seatTypes")
+      .then((response) => {
+        setSeatType(response.data.content);
+      })
+      .catch((error) => {
+        console.error("Lỗi fetch api seat types", error);
+      });
+  }, []);
 
   const handleChange = (e) => {
     setForm({
@@ -101,24 +128,91 @@ export default function EditRoom() {
       }, 1500);
     } catch (err) {
       if (err.response && err.response.status === 400) {
-        newErrors.createAt = err.response.data.createAt
-        newErrors.roomName = err.response.data.roomName
-        newErrors.monitor = err.response.data.monitor
-        newErrors.soundSystem = err.response.data.soundSystem
-        newErrors.projector = err.response.data.projector
-        newErrors.rows = err.response.data.rows
-        newErrors.cols = err.response.data.cols
+        newErrors.createAt = err.response.data.createAt;
+        newErrors.roomName = err.response.data.roomName;
+        newErrors.monitor = err.response.data.monitor;
+        newErrors.soundSystem = err.response.data.soundSystem;
+        newErrors.projector = err.response.data.projector;
+        newErrors.rows = err.response.data.rows;
+        newErrors.cols = err.response.data.cols;
       } else {
         setErrorMessage("Lỗi API không xác định");
         setErrorShowToast(true);
       }
     }
-    console.log(newErrors)
+    console.log(newErrors);
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
     setErrors({});
+  };
+  useEffect(() => {
+    const seatMap = {};
+    let maxCol = 0;
+    seats.forEach((seat) => {
+      const row = seat.seatRow;
+      const column = seat.seatCol;
+      if (!seatMap[row]) {
+        seatMap[row] = [];
+      }
+      seatMap[row][column - 1] = seat;
+      if (column > maxCol) {
+        maxCol = column;
+      }
+    });
+    console.log("Seat Map:", seatMap);
+    console.log("Seats:", seats);
+    setSeatMaps(seatMap);
+    setMaxColumn(maxCol);
+  }, [seats]);
+  const getSeatColor = (type) => {
+    switch (type) {
+      case "VIP":
+        return "bg-yellow-400";
+      case "Standard":
+        return "bg-blue-300";
+      case "Couple":
+        return "bg-pink-400";
+      default:
+        return "bg-gray-300"; // Mặc định nếu không có loại
+    }
+  };
+  const handleSeatClick = (seat) => {
+    setSelectedSeat(seat);
+    setIsModalOpen(true);
+  };
+  const renderSeat = () => {
+    const rows = Object.keys(seatMaps).sort(); // A → H
+
+    return rows.map((row) => {
+      const columns = seatMaps[row];
+      return (
+        <div key={row} className="flex items-center mb-2">
+          <div className="w-6 mr-2">{row}</div>
+          {Array.from({ length: maxColumn }).map((_, colIndex) => {
+            const seat = columns[colIndex];
+
+            return seat ? (
+              <div
+                key={seat.seatId}
+                className={`w-10 h-10 m-1 flex items-center justify-center rounded ${getSeatColor(
+                  seat.seatTypeName
+                )} text-white cursor-pointer`}
+                onClick={() => handleSeatClick(seat)}
+              >
+                {seat.seatNumber}
+              </div>
+            ) : (
+              <div
+                key={`empty-${row}-${colIndex}`}
+                className="w-10 h-10 m-1 bg-transparent"
+              ></div>
+            );
+          })}
+        </div>
+      );
+    });
   };
 
   return (
@@ -126,7 +220,11 @@ export default function EditRoom() {
       {showSuccessToast && (
         <SuccessToast
           message={successMessage}
-          onClose={() => setSuccessShowToast(false)}
+          onClose={() => {
+            setSuccessShowToast(false);
+            setDuration(3000);
+          }}
+          duration={duration}
         />
       )}
 
@@ -198,7 +296,7 @@ export default function EditRoom() {
                       <input
                         type="text"
                         id="total"
-                        value={form.cols * form.rows}
+                        value={seats.length}
                         placeholder="Sức chứa"
                         className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                         readOnly
@@ -354,251 +452,177 @@ export default function EditRoom() {
               </div>
               <div id="collapseActor" className="hidden">
                 <div className="font-medium  dark:text-gray-200">
-                  <div className="flex items-center w-full">
-                    <table className="table-auto w-full text-left text-sm">
-                      <thead>
-                        <tr className="font-semibold text-[15px] text-[#A2A2A6]">
-                          <th className="px-4 py-2">Tên ghế</th>
-                          <th className="px-4 py-2">Hàng ghế</th>
-                          <th className="px-4 py-2">Loại ghế</th>
-                          <th className="px-4 py-2 flex items-end justify-end">
-                            <button
-                              data-modal-target="crud-modal"
-                              data-modal-toggle="crud-modal"
-                            >
-                              <IoMdAddCircle className="w-8 h-8 cursor-pointer text-blue-600 hover:text-blue-800" />
-                            </button>
-                            <div
-                              id="crud-modal"
-                              tabIndex="-1"
-                              aria-hidden="true"
-                              className="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
-                            >
-                              <div className="relative p-4 w-full max-w-md max-h-full">
-                                <div className="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
-                                  <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                      Thêm ghế
-                                    </h3>
-                                    <button
-                                      type="button"
-                                      className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                      data-modal-toggle="crud-modal"
-                                    >
-                                      <svg
-                                        className="w-3 h-3"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 14 14"
-                                      >
-                                        <path
-                                          stroke="currentColor"
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth="2"
-                                          d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                                        />
-                                      </svg>
-                                      <span className="sr-only">
-                                        Close modal
-                                      </span>
-                                    </button>
-                                  </div>
-                                  <form className="p-4 md:p-5">
-                                    <div className="grid gap-4 mb-4 grid-cols-2">
-                                      <div className="col-span-2">
-                                        <label
-                                          htmlFor="actor_name"
-                                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                        >
-                                          Tên ghế
-                                        </label>
-                                        <div className="flex justify-around">
-                                          <div className="col-span-1">
-                                            <label
-                                              htmlFor="row"
-                                              className="block text-sm font-medium text-gray-700"
-                                            >
-                                              Tên hàng
-                                            </label>
-                                            <input
-                                              type="text"
-                                              id="row"
-                                              placeholder="Tên hàng"
-                                              className="bg-[#F9F9F9] mt-1 block w-[125px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                                              required
-                                            />
-                                          </div>
-                                          <div className="col-span-1">
-                                            <label
-                                              htmlFor="column"
-                                              className="block text-sm font-medium text-gray-700"
-                                            >
-                                              Số cột
-                                            </label>
-                                            <input
-                                              type="text"
-                                              id="column"
-                                              placeholder="Số cột"
-                                              className="bg-[#F9F9F9] mt-1 block w-[125px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                                              required
-                                            />
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <button
-                                      type="submit"
-                                      className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                    >
-                                      <svg
-                                        className="me-1 -ms-1 w-5 h-5"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <path
-                                          fillRule="evenodd"
-                                          d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                          clipRule="evenodd"
-                                        ></path>
-                                      </svg>
-                                      Thêm
-                                    </button>
-                                  </form>
+                  <div className="flex items-center w-full flex-col">
+                    <div className="flex items-center justify-center flex-col">
+                      {isModalOpen &&
+                        selectedSeat &&
+                        (console.log(selectedSeat),
+                        console.log(seatType),
+                        (
+                          <div
+                            id="seat-edit-modal"
+                            tabIndex="-1"
+                            className="fixed top-0 right-0 left-0 z-50 flex justify-center items-center w-full inset-0 h-full backdrop-brightness-50"
+                          >
+                            <div className="relative p-4 w-full max-w-md">
+                              <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                <div className="flex items-center justify-between p-4 border-b rounded-t dark:border-gray-600">
+                                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                                    Chỉnh sửa loại ghế
+                                  </h3>
+                                  <button
+                                    onClick={() => setIsModalOpen(false)}
+                                    className="text-gray-400 hover:text-gray-900"
+                                  >
+                                    ✕
+                                  </button>
                                 </div>
-                              </div>
-                            </div>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr className="border-t border-[#EEEEEE]">
-                          <td className="px-4 py-2">A1</td>
-                          <td className="px-4 py-2">A</td>
-                          <td className="px-4 py-2">Thường</td>
+                                <form
+                                  className="p-4"
+                                  onSubmit={async (e) => {
+                                    e.preventDefault();
+                                    try {
+                                      await axios.put(
+                                        `http://localhost:8080/seats/${selectedSeat.seatId}`,
+                                        {
+                                          seatId: selectedSeat.seatId,
+                                          seatTypeId: seatType.find(
+                                            (type) =>
+                                              type.seatTypeName ===
+                                              selectedSeat.seatTypeName
+                                          )?.id, // cập nhật sau khi chọn
+                                        }
+                                      );
+                                      setSuccesMessage(
+                                        "Cập nhật loại ghế thành công"
+                                      );
+                                      setSuccessShowToast(true);
 
-                          <td className="px-4 py-2 flex space-x-4">
-                            <button
-                              className="text-blue-600 hover:text-blue-800 text-[20px] cursor-pointer"
-                              data-modal-target="crud-modal-edit"
-                              data-modal-toggle="crud-modal-edit"
-                            >
-                              <MdEdit />
-                            </button>
-                            <div
-                              id="crud-modal-edit"
-                              tabIndex="-1"
-                              aria-hidden="true"
-                              className="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
-                            >
-                              <div className="relative p-4 w-full max-w-md max-h-full">
-                                <div className="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
-                                  <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                      Sửa ghế
-                                    </h3>
-                                    <button
-                                      type="button"
-                                      className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                      data-modal-toggle="crud-modal-edit"
-                                    >
-                                      <svg
-                                        className="w-3 h-3"
-                                        aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 14 14"
-                                      >
-                                        <path
-                                          stroke="currentColor"
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth="2"
-                                          d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                                        />
-                                      </svg>
-                                      <span className="sr-only">
-                                        Close modal
-                                      </span>
-                                    </button>
-                                  </div>
-                                  <form className="p-4 md:p-5">
-                                    <div className="grid gap-4 mb-4 grid-cols-2">
-                                      <div className="col-span-2">
-                                        <label
-                                          htmlFor="actor_name"
-                                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                        >
-                                          Sửa ghế
-                                        </label>
-                                        <div className="flex justify-around">
-                                          <div className="col-span-1">
-                                            <label
-                                              htmlFor="row"
-                                              className="block text-sm font-medium text-gray-700"
-                                            >
-                                              Tên hàng
-                                            </label>
-                                            <input
-                                              type="text"
-                                              id="row"
-                                              placeholder="Tên hàng"
-                                              className="bg-[#F9F9F9] mt-1 block w-[125px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                                              required
-                                            />
-                                          </div>
-                                          <div className="col-span-1">
-                                            <label
-                                              htmlFor="column"
-                                              className="block text-sm font-medium text-gray-700"
-                                            >
-                                              Số cột
-                                            </label>
-                                            <input
-                                              type="text"
-                                              id="column"
-                                              placeholder="Số cột"
-                                              className="bg-[#F9F9F9] mt-1 block w-[125px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                                              required
-                                            />
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <button
-                                      type="submit"
-                                      className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                    >
-                                      <svg
-                                        className="me-1 -ms-1 w-5 h-5"
-                                        fill="currentColor"
-                                        viewBox="0 0 20 20"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <path
-                                          fillRule="evenodd"
-                                          d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                          clipRule="evenodd"
-                                        ></path>
-                                      </svg>
-                                      Lưu
-                                    </button>
-                                  </form>
-                                </div>
+                                      // Reload seat data
+                                      setTimeout(async () => {
+                                        const res = await axios.get(
+                                          `http://localhost:8080/seats/${id}`
+                                        );
+                                        setSeats(res.data);
+                                        setIsModalOpen(false);
+                                      }, 300);
+                                    } catch (err) {
+                                      console.log(err);
+                                      setErrorMessage(
+                                        "Lỗi khi cập nhật loại ghế"
+                                      );
+                                      setErrorShowToast(true);
+                                    }
+                                  }}
+                                >
+                                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    Loại ghế
+                                  </label>
+                                  <select
+                                    value={
+                                      seatType.find(
+                                        (type) =>
+                                          type.seatTypeName ===
+                                          selectedSeat.seatTypeName
+                                      )?.id
+                                    }
+                                    onChange={(e) => {
+                                      const selectedType = seatType.find(
+                                        (type) =>
+                                          type.id === parseInt(e.target.value)
+                                      );
+                                      setSelectedSeat({
+                                        ...selectedSeat,
+                                        seatTypeName:
+                                          selectedType?.seatTypeName || "",
+                                      });
+                                      console.log(
+                                        "New select value:",
+                                        selectedType?.seatTypeName
+                                      );
+                                    }}
+                                    className="w-full p-2 border border-gray-300 rounded"
+                                    required
+                                  >
+                                    <option value="" key={"default"}>
+                                      -- Chọn loại ghế --
+                                    </option>
+                                    {seatType.map((type) => (
+                                      <option key={type.id} value={type.id}>
+                                        {type.seatTypeName}
+                                      </option>
+                                    ))}
+                                  </select>
+                                  <button
+                                    type="submit"
+                                    className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+                                  >
+                                    Cập nhật
+                                  </button>
+                                </form>
+                                <button
+                                  type="button"
+                                  onClick={async () => {
+                                    const confirmed = window.confirm(
+                                      "Bạn có chắc chắn muốn xóa ghế này?"
+                                    );
+                                    if (!confirmed) return;
+
+                                    try {
+                                      await axios.delete(
+                                        `http://localhost:8080/seats/${selectedSeat.seatId}`
+                                      );
+                                      setSuccesMessage("Xóa ghế thành công");
+                                      setSuccessShowToast(true);
+
+                                      // Reload seat data
+                                      const res = await axios.get(
+                                        `http://localhost:8080/seats/${id}`
+                                      );
+                                      setSeats(res.data);
+
+                                      setIsModalOpen(false);
+                                    } catch (err) {
+                                      console.log(err);
+                                      setErrorMessage("Lỗi khi xóa ghế");
+                                      setErrorShowToast(true);
+                                    }
+                                  }}
+                                  className="mt-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded w-full"
+                                >
+                                  Xóa ghế
+                                </button>
                               </div>
                             </div>
-                            <button
-                              className="text-red-600 hover:text-red-800 text-[20px] cursor-pointer"
-                              onClick={() => alert("Xóa thành công")}
-                            >
-                              <MdDelete />
-                            </button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                          </div>
+                        ))}
+
+                      <div className="w-[610px] h-[40px] bg-gray-400 flex items-center justify-center mb-4">
+                        MÀN HÌNH
+                      </div>
+
+                      <div>{renderSeat()}</div>
+                      <div className="flex mt-5 gap-[80px] mb-8">
+                        <div className="flex">
+                          <div className="w-10 h-10 flex items-center justify-center rounded-md text-sm cursor-pointer bg-blue-300 mr-2"></div>
+                          <p className="flex justify-center items-center">
+                            Ghế thường
+                          </p>
+                        </div>
+                        <div className="flex">
+                          <div className="w-10 h-10 flex items-center justify-center rounded-md text-sm cursor-pointer bg-pink-400 mr-2"></div>
+                          <p className="flex justify-center items-center">
+                            Ghế đôi
+                          </p>
+                        </div>
+                        <div className="flex">
+                          <div className="w-10 h-10 flex items-center justify-center rounded-md text-sm cursor-pointer bg-yellow-400 mr-2"></div>
+                          <p className="flex justify-center items-center">
+                            Ghế VIP
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

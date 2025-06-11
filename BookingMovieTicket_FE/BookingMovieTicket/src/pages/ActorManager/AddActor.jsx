@@ -92,7 +92,7 @@ function AddActor() {
     } catch (err) {
       console.error("Lỗi khi upload ảnh:", err);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -131,10 +131,9 @@ function AddActor() {
       }, 1500);
     } catch (err) {
       if (err.response && err.response.status === 400) {
-        newErrors.actorName = err.response.data.actorName
-        newErrors.gender = err.response.data.gender
-        newErrors.country = err.response.data.country
-
+        newErrors.actorName = err.response.data.actorName;
+        newErrors.gender = err.response.data.gender;
+        newErrors.country = err.response.data.country;
       } else {
         setErrorMessage("Lỗi API không xác định");
         setErrorShowToast(true);

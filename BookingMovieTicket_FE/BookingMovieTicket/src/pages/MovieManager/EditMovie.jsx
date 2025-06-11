@@ -40,6 +40,7 @@ function EditMovie() {
   const [oldTrailerUrl, setOldTrailerUrl] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({
+    movieId: "",
     movieName: "",
     movieDuration: "",
     movieImage: "",
@@ -270,6 +271,7 @@ function EditMovie() {
       console.log(actors, directors);
       const transformedPayload = {
         ...payload,
+        movieId: id,
         movieGenres: payload.movieGenres.map(Number),
       };
       console.log("Transformed Payload:", transformedPayload);

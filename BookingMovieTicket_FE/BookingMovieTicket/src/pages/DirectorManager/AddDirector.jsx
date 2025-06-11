@@ -122,8 +122,19 @@ function AddDirector() {
         navigate("/directorManager");
       }, 1500);
     } catch (err) {
-      console.log(err);
+      if (err.response && err.response.status === 400) {
+        newErrors.directorName = err.response.data.actorName;
+        newErrors.gender = err.response.data.gender;
+        newErrors.country = err.response.data.country;
+      } else {
+        alert("Lỗi khi thêm đạo diễn:", err);
+      }
     }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    setErrors({});
   };
 
   return (
@@ -198,12 +209,12 @@ function AddDirector() {
                         />
                         Nữ
                       </label>
-                      {errors.gender && (
-                        <p className="text-red-600 text-sm mt-1">
-                          {errors.gender}
-                        </p>
-                      )}
                     </div>
+                    {errors.gender && (
+                      <p className="text-red-600 text-sm mt-1">
+                        {errors.gender}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label

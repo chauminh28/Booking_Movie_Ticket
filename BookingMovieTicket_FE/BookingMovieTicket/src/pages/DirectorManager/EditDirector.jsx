@@ -144,8 +144,19 @@ function EditDirector() {
         navigate("/directorManager");
       }, 1500);
     } catch (err) {
-      console.log(err);
+      if (err.response && err.response.status === 400) {
+        newErrors.directorName = err.response.data.actorName;
+        newErrors.gender = err.response.data.gender;
+        newErrors.country = err.response.data.country;
+      } else {
+        alert("Lỗi khi thêm đạo diễn:", err);
+      }
     }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    setErrors({});
   };
 
   return (
@@ -298,7 +309,7 @@ function EditDirector() {
                   <div className="col-span-6 gap-y-4 flex flex-col"></div>
                 </div>
                 <div className="mt-[56px]">
-                  <Link to={"/actorManager"}>
+                  <Link to={"/directorManager"}>
                     <button className="bg-white px-4 py-2 text-black border-1 border-black font-bold text-[16px] w-[120px] h-[55px] rounded-[90px] cursor-pointer">
                       Huỷ
                     </button>
