@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SeatTypeRepository extends JpaRepository<SeatType, Long> {
     Page<SeatType> findBySeatTypeNameContainingIgnoreCase(String seatTypeName, Pageable pageable);
+    SeatType findBySeatTypeName(String name);
 }

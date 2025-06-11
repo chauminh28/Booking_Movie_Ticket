@@ -1,5 +1,6 @@
 package org.project.bookingmovieticket.controller;
 
+import jakarta.validation.Valid;
 import org.project.bookingmovieticket.dto.request.director.DirectorCreateRequest;
 import org.project.bookingmovieticket.dto.request.director.DirectorResponse;
 import org.project.bookingmovieticket.dto.request.director.DirectorUpdateRequest;
@@ -20,7 +21,7 @@ public class DirectorController {
     }
 
     @PostMapping
-    public Director createDirector(@RequestBody DirectorCreateRequest request) {
+    public Director createDirector(@RequestBody @Valid DirectorCreateRequest request) {
         return directorService.createDirector(request);
     }
 
@@ -35,7 +36,7 @@ public class DirectorController {
     }
 
     @PutMapping("{directorId}")
-    public Director updateDirector(@PathVariable Long directorId, @RequestBody DirectorUpdateRequest request) {
+    public Director updateDirector(@PathVariable Long directorId, @RequestBody @Valid DirectorUpdateRequest request) {
         return directorService.updateDirector(directorId, request);
     }
 

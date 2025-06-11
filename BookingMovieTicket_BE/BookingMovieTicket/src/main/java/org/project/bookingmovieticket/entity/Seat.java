@@ -1,19 +1,26 @@
 package org.project.bookingmovieticket.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(columnDefinition = "nvarchar(255)")
     private String seatNumber;
+    private int seatStatus;
+    private int seatCol;
     @Column(columnDefinition = "nvarchar(255)")
-    private String seatStatus;
-    private int seatRow;
-    @Column(columnDefinition = "nvarchar(255)")
-    private String seatCol;
+    private String seatRow;
 
     @ManyToOne
     @JoinColumn(name = "roomId")

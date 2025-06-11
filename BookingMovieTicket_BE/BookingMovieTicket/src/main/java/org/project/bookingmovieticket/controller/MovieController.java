@@ -1,9 +1,7 @@
 package org.project.bookingmovieticket.controller;
 
-import org.project.bookingmovieticket.dto.request.movie.MovieCreateRequest;
-import org.project.bookingmovieticket.dto.request.movie.MovieFullResponse;
-import org.project.bookingmovieticket.dto.request.movie.MovieFullUpdateRequest;
-import org.project.bookingmovieticket.dto.request.movie.MovieResponse;
+import jakarta.validation.Valid;
+import org.project.bookingmovieticket.dto.request.movie.*;
 import org.project.bookingmovieticket.dto.request.moviedetail.MovieDetailCreateRequest;
 import org.project.bookingmovieticket.dto.request.moviedetail.MovieDetailResponse;
 import org.project.bookingmovieticket.entity.Movie;
@@ -29,12 +27,12 @@ public class MovieController {
     }
 
     @PostMapping
-    public MovieResponse createMovie(@RequestBody MovieCreateRequest request) {
+    public MovieResponse createMovie(@RequestBody @Valid MovieFullCreateRequest request) {
         return movieService.createMovie(request);
     }
 
     @PostMapping("/details")
-    public MovieDetailResponse createMovieDetail(@RequestBody MovieDetailCreateRequest request) {
+    public MovieDetailResponse createMovieDetail(@RequestBody @Valid MovieDetailCreateRequest request) {
         return movieDetailService.createMovieDetail(request);
     }
 
@@ -49,7 +47,7 @@ public class MovieController {
     }
 
     @PutMapping("/details/{movieId}")
-    public MovieFullUpdateRequest updateMovie(@PathVariable("movieId") Long movieId, @RequestBody MovieFullUpdateRequest request) {
+    public MovieFullUpdateRequest updateMovie(@PathVariable("movieId") Long movieId, @RequestBody @Valid MovieFullUpdateRequest request) {
         return movieService.updateMovie(movieId, request);
 
     }

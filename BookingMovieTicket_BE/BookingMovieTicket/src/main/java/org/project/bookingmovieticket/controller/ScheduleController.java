@@ -1,5 +1,6 @@
 package org.project.bookingmovieticket.controller;
 
+import jakarta.validation.Valid;
 import org.project.bookingmovieticket.dto.request.schedule.ScheduleCreateRequest;
 import org.project.bookingmovieticket.dto.request.schedule.ScheduleResponse;
 import org.project.bookingmovieticket.dto.request.schedule.ScheduleUpdateRequest;
@@ -22,7 +23,7 @@ public class ScheduleController {
     }
 
     @PostMapping
-    public ScheduleResponse createSchedule(@RequestBody ScheduleCreateRequest request) {
+    public ScheduleResponse createSchedule(@RequestBody @Valid ScheduleCreateRequest request) {
         return scheduleService.createSchedule(request);
     }
 
@@ -42,7 +43,7 @@ public class ScheduleController {
     }
 
     @PutMapping("/{scheduleId}")
-    public ScheduleResponse updateSchedule(@PathVariable Long scheduleId, @RequestBody ScheduleUpdateRequest request) {
+    public ScheduleResponse updateSchedule(@PathVariable Long scheduleId, @RequestBody @Valid ScheduleUpdateRequest request) {
         return scheduleService.updateSchedule(scheduleId, request);
     }
 
