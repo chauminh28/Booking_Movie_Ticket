@@ -1,5 +1,6 @@
 package org.project.bookingmovieticket.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,5 +33,6 @@ public class Room {
     private int cols;
 
     @OneToMany(mappedBy = "room")
+    @JsonIgnore
     private List<Schedule> scheduleDetails;
 }

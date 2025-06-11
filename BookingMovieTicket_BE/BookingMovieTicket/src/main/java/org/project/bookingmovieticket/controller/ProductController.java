@@ -1,5 +1,6 @@
 package org.project.bookingmovieticket.controller;
 
+import jakarta.validation.Valid;
 import org.project.bookingmovieticket.dto.request.product.ProductCreateRequest;
 import org.project.bookingmovieticket.dto.request.product.ProductResponse;
 import org.project.bookingmovieticket.dto.request.product.ProductUpdateRequest;
@@ -19,7 +20,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public Product createProduct(@RequestBody ProductCreateRequest request) {
+    public Product createProduct(@RequestBody @Valid ProductCreateRequest request) {
         return productService.createProduct(request);
     }
 
@@ -34,7 +35,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    public Product updateProduct(@PathVariable("productId") Long id, @RequestBody ProductUpdateRequest request) {
+    public Product updateProduct(@PathVariable("productId") Long id, @RequestBody @Valid ProductUpdateRequest request) {
         return productService.updateProduct(id, request);
     }
 

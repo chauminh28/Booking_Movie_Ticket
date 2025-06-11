@@ -1,5 +1,6 @@
 package org.project.bookingmovieticket.controller;
 
+import jakarta.validation.Valid;
 import org.project.bookingmovieticket.dto.request.seattype.SeatTypeCreateRequest;
 import org.project.bookingmovieticket.dto.request.seattype.SeatTypeResponse;
 import org.project.bookingmovieticket.dto.request.seattype.SeatTypeUpdateRequest;
@@ -19,7 +20,7 @@ public class SeatTypeController {
     }
 
     @PostMapping
-    SeatType createSeatType(@RequestBody SeatTypeCreateRequest request) {
+    SeatType createSeatType(@RequestBody @Valid SeatTypeCreateRequest request) {
         return seatTypeService.createSeatType(request);
     }
 
@@ -34,7 +35,7 @@ public class SeatTypeController {
     }
 
     @PutMapping("/{seatTypeId}")
-    SeatType updateSeatType(@PathVariable("seatTypeId") Long id, @RequestBody SeatTypeUpdateRequest request) {
+    SeatType updateSeatType(@PathVariable("seatTypeId") Long id, @RequestBody @Valid SeatTypeUpdateRequest request) {
         return seatTypeService.updateSeatType(id, request);
     }
 

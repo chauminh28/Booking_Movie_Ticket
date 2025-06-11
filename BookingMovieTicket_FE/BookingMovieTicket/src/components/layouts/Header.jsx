@@ -7,6 +7,7 @@ import { jwtDecode } from "jwt-decode";
 
 function Header() {
   const [username, setUsername] = useState(null);
+  const [role, setRole] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -16,6 +17,7 @@ function Header() {
       try {
         const decoded = jwtDecode(token);
         setUsername(decoded.sub);
+        setRole(decoded.scope)
       } catch (err) {
         localStorage.removeItem("token");
         localStorage.removeItem("username");
@@ -60,6 +62,13 @@ function Header() {
                 Lịch chiếu
               </li>
             </Link>
+            {(role === "admin" || role === "employee") && (
+              <Link to={"/dashboard"}>
+                <li className="text-[24px] cursor-pointer hover:border-b-2 hover:border-black h-full w-36 items-center flex justify-center">
+                  Trang Admin
+                </li>
+              </Link>
+            )}
           </ul>
         </div>
 

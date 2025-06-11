@@ -1,5 +1,6 @@
 package org.project.bookingmovieticket.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,5 +21,6 @@ public class ShowTime {
     private LocalTime time;
 
     @OneToMany(mappedBy = "showTime", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<ScheduleDetail> scheduleDetails;
 }

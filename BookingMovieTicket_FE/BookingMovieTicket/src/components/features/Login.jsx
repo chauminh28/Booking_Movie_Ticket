@@ -39,13 +39,13 @@ export default function Login() {
                 localStorage.setItem("username", decoded.sub);
                 console.log(decoded.scope)
                 if (decoded.scope === "admin" || decoded.scope === "employee") {
-                    navigate("/roomManager")
+                    navigate("/dashboard")
                     return
                 }
                 navigate("/")
             }
             else {
-                setErrorMessage("Thông tin ko đúng")
+                setErrorMessage("Thông tin không đúng")
                 setErrorShowToast(true)
             }
         } catch (err) {

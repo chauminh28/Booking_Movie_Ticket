@@ -1,5 +1,6 @@
 package org.project.bookingmovieticket.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,8 +33,10 @@ public class Movie {
     private List<Genre> genres;
 
     @OneToOne(mappedBy = "movie", cascade = CascadeType.ALL)
+    @JsonIgnore
     private MovieDetail movieDetail;
 
     @OneToMany(mappedBy = "movie")
+    @JsonIgnore
     private List<Schedule> schedules;
 }

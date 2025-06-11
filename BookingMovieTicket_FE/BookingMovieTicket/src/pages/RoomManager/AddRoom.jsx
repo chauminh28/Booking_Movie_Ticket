@@ -16,7 +16,7 @@ export default function AddRoom() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
-    createAt: "",
+    createAt: new Date().toISOString().split('T')[0],
     roomName: "",
     monitor: "",
     soundSystem: "",
@@ -66,6 +66,20 @@ export default function AddRoom() {
     setErrors({});
 
     try {
+      const colsValue = parseInt(form.cols);
+      const rowsValue = parseInt(form.rows);
+
+      if (isNaN(colsValue) || isNaN(rowsValue)) {
+        if (isNaN(colsValue)) {
+          newErrors.cols = "Cột phải là số hợp lệ"
+          setErrors(newErrors)
+          return;
+        } else {
+          newErrors.rows = "Hàng phải là số hợp lệ"
+          setErrors(newErrors)
+          return;
+        }
+      }
       // eslint-disable-next-line no-unused-vars
       const res = await axiosClient.post("/rooms", form);
       setSuccesMessage("Tạo phòng chiếu thành công");
@@ -75,10 +89,24 @@ export default function AddRoom() {
         navigate("/roomManager");
       }, 1500);
     } catch (err) {
-      console.log(err);
-      setErrorMessage("Lỗi api");
-      setErrorShowToast(true);
+      if (err.response && err.response.status === 400) {
+        newErrors.createAt = err.response.data.createAt
+        newErrors.roomName = err.response.data.roomName
+        newErrors.monitor = err.response.data.monitor
+        newErrors.soundSystem = err.response.data.soundSystem
+        newErrors.projector = err.response.data.projector
+        newErrors.rows = err.response.data.rows
+        newErrors.cols = err.response.data.cols
+      } else {
+        setErrorMessage("Lỗi API không xác định");
+        setErrorShowToast(true);
+      }
     }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    setErrors({});
   };
 
   return (
@@ -109,25 +137,6 @@ export default function AddRoom() {
               <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-12 gap-5 ">
                   <div className="col-span-6 gap-y-4 flex flex-col">
-                    <div>
-                      <label
-                        htmlFor="createAt"
-                        className="block text-sm font-bold text-gray-700"
-                      >
-                        Ngày tạo phòng
-                      </label>
-                      <input
-                        type="date"
-                        id="createAt"
-                        value={form.createAt}
-                        onChange={handleChange}
-                        placeholder="dd/MM/yyyy"
-                        className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                      />
-                      <p className="text-red-600 text-sm mt-1 min-h-[20px]">
-                        {errors.createAt || ""}
-                      </p>
-                    </div>
                     <div>
                       <label
                         htmlFor="roomName"
