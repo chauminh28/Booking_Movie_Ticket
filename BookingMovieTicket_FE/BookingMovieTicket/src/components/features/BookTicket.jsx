@@ -79,6 +79,7 @@ function BookTicket(props) {
 
     const renderSeats = () => {
         const seats = []
+        selectedSeats.sort()
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < cols; j++) {
                 const seatID = `${alphabet[i]}${j + 1}`
@@ -200,7 +201,7 @@ function BookTicket(props) {
             <div className="bg-[#0f172a] text-white mt-6 p-4 flex justify-between items-center rounded-md">
                 <div>
                     <p className="text-lg text-white font-bold mb-1">{props.movie.movie.movieName}</p>
-                    <p>{props.schedule.date + " | " + props.schedule.showtimes[props.showtime]}</p>
+                    <p>{props.schedule.scheduleDate + " | " + props.schedule.showtimes[props.showtime]}</p>
                     <p className="text-sm">Vé đã chọn: {selectedSeats.join(", ")}</p>
                     <p className='text-sm'>Dịch vụ đã chọn:</p>
                     {Object.entries(quantities)

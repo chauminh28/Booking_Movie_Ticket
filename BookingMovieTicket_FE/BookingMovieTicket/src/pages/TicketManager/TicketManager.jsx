@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import NavbarAdmin from "../../components/layouts/NavbarAdmin";
 import HeaderAdmin from "../../components/layouts/HeaderAdmin";
 import { Link } from "react-router-dom";
-
+import axios from "axios";
 import { FaFilter } from "react-icons/fa6";
 import { IoIosAddCircle } from "react-icons/io";
 import { MdEdit } from "react-icons/md";
@@ -10,6 +10,41 @@ import { IoReorderThreeOutline } from "react-icons/io5";
 import { CiSearch } from "react-icons/ci";
 
 function TicketManager() {
+    const [booking, setBooking] = useState({});
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const [searchValue, setSearchValue] = useState("");
+    const size = 5;
+    const ticketStatus = {
+        1: 'Chưa sử dụng',
+        2: 'Đã sử dụng',
+        3: 'Đã hết hạn'
+    };
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:8080/bookings", {
+                params: {
+                    page: page,
+                    size: size,
+                    search: searchValue,
+                },
+            })
+            .then((response) => {
+                setBooking(response.data.content);
+                setTotalPages(response.data.totalPages);
+            })
+            .catch((error) => {
+                console.error("Lỗi khi tải danh sách đặt vé!", error);
+            });
+    }, [page, searchValue]);
+
+    const goToPage = (pageNumber) => {
+        if (pageNumber >= 0 && pageNumber < totalPages) {
+            setPage(pageNumber);
+        }
+    };
+
     return (
         <>
             <div className="grid grid-cols-12">
@@ -99,6 +134,11 @@ function TicketManager() {
                         <div>
                             <div className="relative w-[576px]">
                                 <input
+                                    value={searchValue}
+                                    onChange={(e) => {
+                                        setSearchValue(e.target.value);
+                                        setPage(0);
+                                    }}
                                     className="w-[576px] h-[50px] outline-none rounded-xl border-[#BDC5D4] border-[2px] px-3 py-2"
                                     placeholder="Tìm kiếm người dùng"
                                 />
@@ -117,58 +157,67 @@ function TicketManager() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr className="border-t border-[#EEEEEE]">
-                                            <td className="px-4 py-2">GD102032</td>
-                                            <td className="px-4 py-2">Huỳnh Ngọc Trình</td>
-                                            <td className="px-4 py-2">0123456789</td>
-                                            <td className="px-4 py-2">12/12/2002</td>
-                                            <td className="px-4 py-2">
-                                                Đã sử dụng
-                                            </td>
-                                            <td className="px-4 py-2 flex space-x-4">
-                                                <Link to={"/ticketManager/detail"}>
-                                                    <button className="text-black hover:text-gray-800 text-[25px] cursor-pointer">
-                                                        <IoReorderThreeOutline />
-                                                    </button>
-                                                </Link>
-                                            </td>
-                                        </tr>
+                                        {booking.length > 0 ? (
+                                            booking.map(b => (
+                                                <tr className="border-t border-[#EEEEEE]">
+                                                    <td className="px-4 py-2">{b.id}</td>
+                                                    <td className="px-4 py-2">{b.username}</td>
+                                                    <td className="px-4 py-2">{b.phone}</td>
+                                                    <td className="px-4 py-2">{b.bookingTime}</td>
+                                                    <td className="px-4 py-2">
+                                                        {ticketStatus[b.ticketStatus]}
+                                                    </td>
+                                                    <td className="px-4 py-2 flex space-x-4">
+                                                        <Link to={`/ticketManager/detail/${b.id}`}>
+                                                            <button className="text-black hover:text-gray-800 text-[25px] cursor-pointer">
+                                                                <IoReorderThreeOutline />
+                                                            </button>
+                                                        </Link>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td
+                                                    colSpan="7"
+                                                    className="text-center py-4 text-gray-500"
+                                                >
+                                                    Không có vé nào.
+                                                </td>
+                                            </tr>
+                                        )}
                                     </tbody>
                                 </table>
                                 <div className="flex justify-center mt-4">
                                     <nav className="inline-flex items-center space-x-1 text-sm">
-                                        <a
-                                            href="#"
-                                            className="px-3 py-2 rounded-l-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white"
+                                        <button
+                                            onClick={() => goToPage(page - 1)}
+                                            disabled={page === 0}
+                                            className="px-3 py-2 rounded-l-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white disabled:opacity-50"
                                         >
-                                            {" "}
-                                            Prev{" "}
-                                        </a>
-                                        <a
-                                            href="#"
-                                            className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md"
+                                            Prev
+                                        </button>
+
+                                        {[...Array(totalPages)].map((_, index) => (
+                                            <button
+                                                key={index}
+                                                onClick={() => goToPage(index)}
+                                                className={`px-3 py-2 border border-gray-300 ${index === page
+                                                    ? "bg-black text-white"
+                                                    : "bg-[#F5F5F5] hover:bg-black hover:text-white"
+                                                    } rounded-md`}
+                                            >
+                                                {index + 1}
+                                            </button>
+                                        ))}
+
+                                        <button
+                                            onClick={() => goToPage(page + 1)}
+                                            disabled={page === totalPages - 1}
+                                            className="px-3 py-2 rounded-r-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white disabled:opacity-50"
                                         >
-                                            1
-                                        </a>
-                                        <a
-                                            href="#"
-                                            className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md"
-                                        >
-                                            2
-                                        </a>
-                                        <a
-                                            href="#"
-                                            className="px-3 py-2 bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white rounded-md"
-                                        >
-                                            3
-                                        </a>
-                                        <a
-                                            href="#"
-                                            className="px-3 py-2 rounded-r-md bg-[#F5F5F5] border border-gray-300 hover:bg-black hover:text-white"
-                                        >
-                                            {" "}
-                                            Next{" "}
-                                        </a>
+                                            Next
+                                        </button>
                                     </nav>
                                 </div>
                             </div>

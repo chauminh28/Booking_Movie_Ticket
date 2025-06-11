@@ -66,6 +66,20 @@ export default function AddRoom() {
     setErrors({});
 
     try {
+      const colsValue = parseInt(form.cols);
+      const rowsValue = parseInt(form.rows);
+
+      if (isNaN(colsValue) || isNaN(rowsValue)) {
+        if (isNaN(colsValue)) {
+          newErrors.cols = "Cột phải là số hợp lệ"
+          setErrors(newErrors)
+          return;
+        } else {
+          newErrors.rows = "Hàng phải là số hợp lệ"
+          setErrors(newErrors)
+          return;
+        }
+      }
       // eslint-disable-next-line no-unused-vars
       const res = await axiosClient.post("/rooms", form);
       setSuccesMessage("Tạo phòng chiếu thành công");
