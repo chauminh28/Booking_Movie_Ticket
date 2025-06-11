@@ -10,8 +10,7 @@ public class ProductCreateRequest {
     private String serviceName;
 
     @NotNull(message = "Giá không được để trống")
-    @DecimalMin(value = "0.01", message = "Giá phải lớn hơn 0")
-    @Digits(integer = 10, fraction = 2, message = "Giá chỉ được tối đa 2 chữ số thập phân")
+    @Positive
     private double price;
 
     private String image;
