@@ -50,6 +50,7 @@ import ServiceTypeManager from "./pages/ServiceTypeManager/ServiceTypeManager";
 import AddServiceType from "./pages/ServiceTypeManager/AddServiceType";
 import EditServiceType from "./pages/ServiceTypeManager/EditServiceType";
 import DeleteServiceType from "./pages/ServiceTypeManager/DeleteServiceType";
+import Dashboard from "./pages/Dashboard/Dashboard";
 
 function App() {
   return (
@@ -141,7 +142,7 @@ function App() {
 
         {/* TicketManger */}
         <Route path="/ticketManager" element={<TicketManager />} />
-        <Route path="/ticketManager/detail" element={<DetailTicket />} />
+        <Route path="/ticketManager/detail/:id" element={<DetailTicket />} />
 
         {/* GenreManager */}
         <Route path="/genreManager" element={<GenreManager />} />
@@ -163,6 +164,9 @@ function App() {
           path="/serviceTypeManager/deleteServiceType/:id"
           element={<DeleteServiceType />}
         />
+
+        {/* Dashboard */}
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );

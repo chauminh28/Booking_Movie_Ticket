@@ -151,11 +151,10 @@ function ActorManager() {
                         <button
                           key={index}
                           onClick={() => goToPage(index)}
-                          className={`px-3 py-2 border border-gray-300 ${
-                            index === page
+                          className={`px-3 py-2 border border-gray-300 ${index === page
                               ? "bg-black text-white"
                               : "bg-[#F5F5F5] hover:bg-black hover:text-white"
-                          } rounded-md`}
+                            } rounded-md`}
                         >
                           {index + 1}
                         </button>

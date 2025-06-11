@@ -31,7 +31,7 @@ public class MovieService {
         this.movieDetailRepository = movieDetailRepository;
     }
 
-    public MovieResponse createMovie(MovieCreateRequest request) {
+    public MovieResponse createMovie(MovieFullCreateRequest request) {
         Movie movie = new Movie();
         movie.setMovieName(request.getMovieName());
         movie.setMovieImage(request.getMovieImage());
@@ -40,6 +40,8 @@ public class MovieService {
         movie.setStatus(request.isStatus());
         movie.setGenres(genreRepository.findAllById(request.getGenres()));
         movieRepository.save(movie);
+
+
         MovieResponse movieResponse = new MovieResponse();
         movieResponse.setId(movie.getId());
         movieResponse.setMovieName(movie.getMovieName());

@@ -17,27 +17,10 @@ function MovieDetail() {
   const [showTime, setShowTime] = useState();
   const { id } = useParams();
 
-  const [schedules, setSchedules] = useState([
-    {
-      id: 1,
-      date: "2025-06-01",
-      showtimes: ["09:00", "13:30", "18:00"],
-      roomId: 3,
-      movieId: 6
-    },
-    {
-      id: 2,
-      date: "2025-06-02",
-      showtimes: ["10:00", "14:00", "21:00"],
-      roomId: 4,
-      movieId: 6
-    }
-  ]);
+  const [schedules, setSchedules] = useState([]);
 
-  const [selectedDate, setSelectedDate] = useState("2025-06-01");
-  const selectedSchedule = schedules.find(s => s.date === selectedDate);
-
-
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedSchedule, setSelectedSchedule] = useState({});
 
   useEffect(() => {
     axios
@@ -63,9 +46,22 @@ function MovieDetail() {
       });
   }, []);
 
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/schedules`)
+      .then((response) => {
+        const data = response.data.content
+        setSchedules(data);
+      })
+      .catch((error) => {
+        console.error("Lỗi fetch api schedule", error);
+      });
+  }, []);
+
   const handleClick = (index) => {
     setShowTime(index)
     setShowTicket(true)
+    console.log(selectedDate)
   }
 
   return (
@@ -119,7 +115,7 @@ function MovieDetail() {
             </div>
             <div className='flex gap-6 items-center justify-center'>
               {schedules.map((schedule) => {
-                const date = new Date(schedule.date);
+                const date = new Date(schedule.scheduleDate);
                 const day = date.getDate().toString().padStart(2, '0');
                 const month = (date.getMonth() + 1).toString().padStart(2, '0');
                 const year = date.getFullYear();
@@ -129,9 +125,9 @@ function MovieDetail() {
                 return (
                   <button
                     key={schedule.id}
-                    onClick={() => setSelectedDate(schedule.date)}
+                    onClick={() => { setSelectedDate(schedule.scheduleDate); setSelectedSchedule(schedule) }}
                     className={`border border-black w-[150px] rounded-2xl font-bold text-[20px] cursor-pointer px-4 py-4
-                  ${selectedDate === schedule.date ? "bg-black text-white" : "bg-white hover:bg-black hover:text-white"}`}
+                  ${selectedDate === schedule.scheduleDate ? "bg-black text-white" : "bg-white hover:bg-black hover:text-white"}`}
                   >
                     <div>
                       <p>{formattedDate}</p>
@@ -142,7 +138,7 @@ function MovieDetail() {
               })}
             </div>
             <div className="grid grid-cols-7 gap-4 mt-[20px] mb-8">
-              {schedules.find(s => s.date === selectedDate)?.showtimes.map((time, index) => (
+              {schedules.find(s => s.scheduleDate === selectedDate)?.showtimes.map((time, index) => (
                 <button
                   key={index}
                   className="bg-[#BDBDBD] text-white rounded-md px-3 py-3 text-center cursor-pointer hover:bg-black"

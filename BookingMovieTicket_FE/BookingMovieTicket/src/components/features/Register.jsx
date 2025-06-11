@@ -89,12 +89,27 @@ export default function Register() {
       setSuccesMessage("Đăng ký thành công")
       setSuccessShowToast(true)
 
-      navigate("/")
+      navigate("/login")
     } catch (err) {
-      console.log(err)
-      setErrorMessage("Lỗi api")
-      setErrorShowToast(true)
+      if (err.response && err.response.status === 400) {
+        newErrors.userName = err.response.data.userName
+        newErrors.lastName = err.response.data.lastName
+        newErrors.firstName = err.response.data.firstName
+        newErrors.dob = err.response.data.dob
+        newErrors.gender = err.response.data.gender
+        newErrors.phone = err.response.data.phone
+        newErrors.email = err.response.data.email
+
+      } else {
+        setErrorMessage("Lỗi API không xác định");
+        setErrorShowToast(true);
+      }
     }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    setErrors({});
   }
 
   useEffect(() => {

@@ -22,10 +22,10 @@ public class UserCreateRequest {
     @NotBlank(message = "Mật khẩu không được để trống", groups = OnRegister.class)
     private String password;
 
-    @Size(min = 2, max = 10, message = "Họ người dùng phải có ít nhất 2 kí tự và nhiều nhất 10 kí tự", groups = {OnRegister.class, OnAdminCreate.class})
+    @Size(min = 3, max = 20, message = "Họ người dùng phải có ít nhất 3 kí tự và nhiều nhất 20 kí tự", groups = {OnRegister.class, OnAdminCreate.class})
     private String lastName;
 
-    @Size(min = 1, max = 12, message = "Tên người dùng phải có ít nhất 2 kí tự và nhiều nhất 10 kí tự", groups = {OnRegister.class, OnAdminCreate.class})
+    @Size(min = 1, max = 12, message = "Tên người dùng phải có ít nhất 1 kí tự và nhiều nhất 12 kí tự", groups = {OnRegister.class, OnAdminCreate.class})
     private String firstName;
 
     @NotNull(message = "Ngày sinh người dùng không được để trống", groups = {OnRegister.class, OnAdminCreate.class})

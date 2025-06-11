@@ -429,11 +429,10 @@ function EditMovie() {
                     type="submit"
                     disabled={loadingTrailer || isSubmitting || loadingImage}
                     className={`bg-black text-white font-bold w-[120px] h-[55px] rounded-[90px] ml-6 cursor-pointer
-    ${
-      isSubmitting || loadingTrailer || loadingImage
-        ? "opacity-50 cursor-not-allowed"
-        : "hover:bg-gray-800"
-    }`}
+    ${isSubmitting || loadingTrailer || loadingImage
+                        ? "opacity-50 cursor-not-allowed"
+                        : "hover:bg-gray-800"
+                      }`}
                   >
                     Lưu
                   </button>

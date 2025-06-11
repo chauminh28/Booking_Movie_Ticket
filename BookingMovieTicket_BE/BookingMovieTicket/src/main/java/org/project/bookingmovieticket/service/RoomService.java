@@ -4,17 +4,24 @@ import org.project.bookingmovieticket.dto.request.room.RoomCreateRequest;
 import org.project.bookingmovieticket.dto.request.room.RoomResponse;
 import org.project.bookingmovieticket.dto.request.room.RoomUpdateRequest;
 import org.project.bookingmovieticket.entity.Room;
+import org.project.bookingmovieticket.entity.Seat;
 import org.project.bookingmovieticket.repository.RoomRepository;
+import org.project.bookingmovieticket.repository.SeatRepository;
+import org.project.bookingmovieticket.repository.SeatTypeRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RoomService {
-    private RoomRepository roomRepository;
+    private final RoomRepository roomRepository;
+    private final SeatTypeRepository seatTypeRepository;
+    private final SeatRepository seatRepository;
 
-    public RoomService(RoomRepository roomRepository) {
+    public RoomService(RoomRepository roomRepository, SeatTypeRepository seatTypeRepository, SeatRepository seatRepository) {
         this.roomRepository = roomRepository;
+        this.seatTypeRepository = seatTypeRepository;
+        this.seatRepository = seatRepository;
     }
 
     public Room createRoom(RoomCreateRequest request) {
@@ -28,8 +35,24 @@ public class RoomService {
                 .cols(request.getCols())
                 .status(request.isStatus())
                 .build();
-
-        return roomRepository.save(room);
+        roomRepository.save(room);
+        int rows = room.getRows();
+        int cols = room.getCols();
+        for (int i = 0; i < rows; i++) {
+            char rowChar = (char) ('A' + i);
+            for (int j = 1; j <= cols; j++) {
+                Seat seat = Seat.builder()
+                        .seatRow(String.valueOf(rowChar))
+                        .seatCol(j)
+                        .seatNumber(String.valueOf(rowChar) + String.valueOf(j))
+                        .seatType(seatTypeRepository.findBySeatTypeName("Standard"))
+                        .room(roomRepository.findById(room.getId()).orElse(null))
+                        .seatStatus(1)
+                        .build();
+                seatRepository.save(seat);
+            }
+        }
+        return room;
     }
 
     public Page<RoomResponse> getRooms(String searchValue, Pageable pageable) {
