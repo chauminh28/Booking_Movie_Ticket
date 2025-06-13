@@ -51,6 +51,7 @@ import AddServiceType from "./pages/ServiceTypeManager/AddServiceType";
 import EditServiceType from "./pages/ServiceTypeManager/EditServiceType";
 import DeleteServiceType from "./pages/ServiceTypeManager/DeleteServiceType";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import Checkout from "./pages/public/Checkout";
 
 function App() {
   return (
@@ -167,6 +168,9 @@ function App() {
 
         {/* Dashboard */}
         <Route path="/dashboard" element={<Dashboard />} />
+
+        {/* Checkout */}
+        <Route path="/checkout" element={<Checkout />} />
       </Routes>
     </Router>
   );

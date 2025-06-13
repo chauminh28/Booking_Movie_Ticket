@@ -130,7 +130,7 @@ function ServiceManager() {
                                                     </td>
                                                     <td className="px-4 py-2">{service.serviceName}</td>
                                                     <td className="px-4 py-2">{serviceTypes.find(type => type.id === service.serviceTypeId)?.name || 'Không xác định'}</td>
-                                                    <td className="px-4 py-2">{service.price}</td>
+                                                    <td className="px-4 py-2">{service.price.toLocaleString()}</td>
 
                                                     <td className="px-4 py-2 h-full">
                                                         <div className="flex justify-start items-center gap-x-4">

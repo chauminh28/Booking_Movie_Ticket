@@ -1,5 +1,6 @@
 package org.project.bookingmovieticket.controller;
 
+import org.project.bookingmovieticket.dto.request.booking.BookingCreateRequest;
 import org.project.bookingmovieticket.dto.request.booking.BookingResponse;
 import org.project.bookingmovieticket.dto.request.bookingproduct.BookingProductCreateRequest;
 import org.project.bookingmovieticket.entity.Booking;
@@ -40,5 +41,10 @@ public class BookingController {
     public Booking updateStatus(@PathVariable("id") long id, @RequestParam Integer status) {
         System.out.println(status);
         return bService.updateBooking(id, status);
+    }
+
+    @PostMapping
+    public Booking createBooking(@RequestBody BookingCreateRequest request) {
+        return bService.createBooking(request);
     }
 }

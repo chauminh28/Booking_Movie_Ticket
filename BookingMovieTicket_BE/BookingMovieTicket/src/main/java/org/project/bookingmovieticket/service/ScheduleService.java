@@ -40,6 +40,16 @@ public class ScheduleService {
         }).collect(Collectors.toList());
     }
 
+    public ShowtimeResponse getShowtimeById(Long id) {
+        ShowTime showTime =  showtimeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Showtime not found!"));
+
+        return ShowtimeResponse.builder()
+                .id(showTime.getId())
+                .time(showTime.getTime())
+                .build();
+    }
+
     public Page<ScheduleResponse> getAllSchedules(String searchValue, Pageable pageable) {
         Page<Schedule> schedules;
         if (searchValue == null || searchValue.isEmpty()) {
@@ -59,7 +69,11 @@ public class ScheduleService {
                     scheduleResponse.setStatus(schedule.isStatus());
                     scheduleResponse.setScheduleDate(schedule.getScheduleDate());
                     scheduleResponse.setShowtimes(schedule.getScheduleDetails().stream()
-                            .map(detail -> detail.getShowTime().getTime().toString()).toList());
+                            .map(detail -> new ShowtimeResponse(
+                                    detail.getShowTime().getId(),
+                                    detail.getShowTime().getTime()
+                            ))
+                            .collect(Collectors.toList()));
                     return scheduleResponse;
                 }
         );
@@ -76,7 +90,11 @@ public class ScheduleService {
         scheduleResponse.setStatus(schedule.isStatus());
         scheduleResponse.setScheduleDate(schedule.getScheduleDate());
         scheduleResponse.setShowtimes(schedule.getScheduleDetails().stream()
-                .map(detail -> detail.getShowTime().getTime().toString()).toList());
+                .map(detail -> new ShowtimeResponse(
+                        detail.getShowTime().getId(),
+                        detail.getShowTime().getTime()
+                ))
+                .collect(Collectors.toList()));
         return scheduleResponse;
     }
 
@@ -105,7 +123,11 @@ public class ScheduleService {
         scheduleResponse.setStatus(schedule.isStatus());
         scheduleResponse.setScheduleDate(schedule.getScheduleDate());
         scheduleResponse.setShowtimes(schedule.getScheduleDetails().stream()
-                .map(detail -> detail.getShowTime().getTime().toString()).toList());
+                .map(detail -> new ShowtimeResponse(
+                        detail.getShowTime().getId(),
+                        detail.getShowTime().getTime()
+                ))
+                .collect(Collectors.toList()));
         return scheduleResponse;
     }
 
@@ -137,7 +159,11 @@ public class ScheduleService {
         scheduleResponse.setStatus(schedule.isStatus());
         scheduleResponse.setScheduleDate(schedule.getScheduleDate());
         scheduleResponse.setShowtimes(schedule.getScheduleDetails().stream()
-                .map(detail -> detail.getShowTime().getTime().toString()).toList());
+                .map(detail -> new ShowtimeResponse(
+                        detail.getShowTime().getId(),
+                        detail.getShowTime().getTime()
+                ))
+                .collect(Collectors.toList()));
         return scheduleResponse;
     }
 
