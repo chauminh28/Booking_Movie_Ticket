@@ -3,7 +3,7 @@ import HeaderAdmin from "../../components/layouts/HeaderAdmin";
 import NavbarAdmin from "../../components/layouts/NavbarAdmin";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { LuListCollapse } from "react-icons/lu";
-import { initFlowbite } from "flowbite";
+import { initFlowbite, Modal } from "flowbite";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { IoMdAddCircle } from "react-icons/io";
 import axios from "axios";
@@ -28,8 +28,19 @@ function EditMovie() {
   const [countriesList, setCountriesList] = useState([]);
   const [ages, setAges] = useState([]);
   const [genres, setGenres] = useState([]);
+  const [actors, setActors] = useState([]);
+  const [directors, setDirectors] = useState([]);
+  const [selectedDirectors, setSelectedDirectors] = useState([]);
+  const [selectedActors, setSelectedActors] = useState([]);
+
   const selectRef = useRef(null);
-  const tomSelectInstance = useRef(null);
+  const selectRefActor = useRef(null);
+  const selectRefDirector = useRef(null);
+
+  const tsInstanceGenre = useRef();
+  const tsInstanceActor = useRef();
+  const tsInstanceDirector = useRef();
+
   const [loadingTrailer, setLoadingTrailer] = useState(false);
   const [loadingImage, setLoadingImage] = useState(false);
   const { id } = useParams();
@@ -55,14 +66,16 @@ function EditMovie() {
     actors: [],
     description: "",
   });
+  const [currentSelectActor, setCurrentSelectActor] = useState([]);
+  const [currentSelectDirector, setCurrentSelectDirector] = useState([]);
   useEffect(() => {
     initFlowbite();
   }, []);
   //Tạo tham chiếu đến TomSelect để sử dụng trong useEffect
   useEffect(() => {
     // Khởi tạo TomSelect 1 lần duy nhất
-    if (selectRef.current && !tomSelectInstance.current) {
-      tomSelectInstance.current = new TomSelect(selectRef.current, {
+    if (selectRef.current && !tsInstanceGenre.current) {
+      tsInstanceGenre.current = new TomSelect(selectRef.current, {
         maxItems: null,
         plugins: ["remove_button"],
         placeholder: "Chọn thể loại phim",
@@ -75,16 +88,16 @@ function EditMovie() {
       });
 
       // Tùy chỉnh css nếu cần
-      const container = tomSelectInstance.current.wrapper;
+      const container = tsInstanceGenre.current.wrapper;
       container.classList.add("w-[404px]", "transition", "h-[50px]");
       const control = container.querySelector(".ts-control");
       control.classList.add("h-full");
     }
 
     return () => {
-      if (tomSelectInstance.current) {
-        tomSelectInstance.current.destroy();
-        tomSelectInstance.current = null;
+      if (tsInstanceGenre.current) {
+        tsInstanceGenre.current.destroy();
+        tsInstanceGenre.current = null;
       }
     };
   }, []);
@@ -96,16 +109,16 @@ function EditMovie() {
         const response = await axios.get("http://localhost:8080/genres/list");
         const fetchedGenres = response.data;
         setGenres(fetchedGenres);
-        if (tomSelectInstance.current) {
-          tomSelectInstance.current.clearOptions(); // xóa dữ liệu cũ nếu có
+        if (tsInstanceGenre.current) {
+          tsInstanceGenre.current.clearOptions(); // xóa dữ liệu cũ nếu có
 
           fetchedGenres.forEach((genre) => {
-            tomSelectInstance.current.addOption({
+            tsInstanceGenre.current.addOption({
               value: genre.id,
               text: genre.genreName,
             });
           });
-          tomSelectInstance.current.refreshOptions(false);
+          tsInstanceGenre.current.refreshOptions(false);
         }
       } catch (error) {
         console.error("There was an error fetching genres!", error);
@@ -134,6 +147,111 @@ function EditMovie() {
 
     fetchAges();
   }, []);
+
+  // Lấy danh sách đạo diễn từ server
+  useEffect(() => {
+    // Khởi tạo TomSelect 1 lần duy nhất
+    if (selectRefDirector.current && !tsInstanceDirector.current) {
+      tsInstanceDirector.current = new TomSelect(selectRefDirector.current, {
+        maxItems: null,
+        plugins: ["remove_button"],
+        placeholder: "Chọn đạo diễn phim",
+        onChange: (values) => {
+          setCurrentSelectDirector(values);
+        },
+      });
+
+      // Tùy chỉnh css nếu cần
+      const container = tsInstanceDirector.current.wrapper;
+      container.classList.add("w-[360px]", "transition", "h-[50px]");
+      const control = container.querySelector(".ts-control");
+      control.classList.add("h-full");
+    }
+
+    return () => {
+      if (tsInstanceDirector.current) {
+        tsInstanceDirector.current.destroy();
+        tsInstanceDirector.current = null;
+      }
+    };
+  }, []);
+  useEffect(() => {
+    const fetchDirectors = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/directors");
+        const fetchedDirectors = response.data.content;
+        setDirectors(fetchedDirectors);
+        if (tsInstanceDirector.current) {
+          tsInstanceDirector.current.clearOptions(); // xóa dữ liệu cũ nếu có
+
+          fetchedDirectors.forEach((director) => {
+            tsInstanceDirector.current.addOption({
+              value: director.id,
+              text: director.directorName,
+            });
+          });
+          tsInstanceDirector.current.refreshOptions(false);
+        }
+      } catch (error) {
+        console.error("There was an error fetching directors!", error);
+      }
+    };
+
+    fetchDirectors();
+  }, []);
+
+  // Lấy danh sách diễn viên từ server
+  useEffect(() => {
+    // Khởi tạo TomSelect 1 lần duy nhất
+    if (selectRefActor.current && !tsInstanceActor.current) {
+      tsInstanceActor.current = new TomSelect(selectRefActor.current, {
+        maxItems: null,
+        plugins: ["remove_button"],
+        placeholder: "Chọn diễn viên phim",
+        onChange: (values) => {
+          setCurrentSelectActor(values);
+        },
+      });
+
+      // Tùy chỉnh css nếu cần
+      const container = tsInstanceActor.current.wrapper;
+      container.classList.add("w-[360px]", "transition", "h-[50px]");
+      const control = container.querySelector(".ts-control");
+      control.classList.add("h-full");
+    }
+
+    return () => {
+      if (tsInstanceDirector.current) {
+        tsInstanceDirector.current.destroy();
+        tsInstanceDirector.current = null;
+      }
+    };
+  }, []);
+  useEffect(() => {
+    const fetchActors = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/actors");
+        const fetchActors = response.data.content;
+        setActors(fetchActors);
+        if (tsInstanceActor.current) {
+          tsInstanceActor.current.clearOptions(); // xóa dữ liệu cũ nếu có
+
+          fetchActors.forEach((actor) => {
+            tsInstanceActor.current.addOption({
+              value: actor.id,
+              text: actor.actorName,
+            });
+          });
+          tsInstanceActor.current.refreshOptions(false);
+        }
+      } catch (error) {
+        console.error("There was an error fetching actors!", error);
+      }
+    };
+
+    fetchActors();
+  }, []);
+
   useEffect(() => {
     try {
       axios
@@ -156,15 +274,14 @@ function EditMovie() {
             startDate: data.detail.startDate || "",
             status: data.movie.status || "",
             description: data.detail.description || "",
-            directors:
-              data.detail.directors.map((director) => director.id) || [],
-            actors: data.detail.actors.map((actor) => actor.id) || [],
+            directors: data.detail.directors,
+            actors: data.detail.actors,
           };
 
           setForm(updatedForm);
           setOldImageUrl(updatedForm.movieImage);
           setOldTrailerUrl(updatedForm.trailer);
-          tomSelectInstance.current.setValue(updatedForm.movieGenres);
+          tsInstanceGenre.current.setValue(updatedForm.movieGenres);
         })
         .catch((error) => {
           console.error("Error fetching movie data:", error);
@@ -292,6 +409,73 @@ function EditMovie() {
       setIsSubmitting(false);
     }
   };
+  const handleSubmitActor = async (e) => {
+    e.preventDefault();
+    setForm((prev) => ({
+      ...prev,
+      actors: [
+        ...prev.actors,
+        ...currentSelectActor.filter((id) => !prev.actors.includes(id)),
+      ],
+    }));
+    console.log("Form submitted", form);
+    const newForm = {
+      movieId: id,
+      actors: form.actors,
+    };
+    console.log("New Form:", newForm);
+    try {
+      const response = await axios.put(
+        "http://localhost:8080/movies/details/updateActor",
+        newForm
+      );
+      console.log("Thêm diễn viên thành công:", response.data);
+      setToast({ message: "Thêm diễn viên thành công!" });
+    } catch (error) {
+      console.error("Lỗi khi thêm diễn viên:", error);
+      alert("Thêm diễn viên thất bại!");
+    }
+  };
+  const handleSubmitDirector = async (e) => {
+    e.preventDefault();
+    setForm((prev) => ({
+      ...prev,
+      directors: [
+        ...prev.directors,
+        ...currentSelectDirector.filter((id) => !prev.directors.includes(id)),
+      ],
+    }));
+    console.log("Form submitted", form);
+    const newForm = {
+      movieId: id,
+      directors: form.directors,
+    };
+    console.log("New Form:", newForm);
+    try {
+      const response = await axios.put(
+        "http://localhost:8080/movies/details/updateDirector",
+        newForm
+      );
+      console.log("Thêm đạo diễn thành công:", response.data);
+      setToast({ message: "Thêm đạo diễn thành công!" });
+    } catch (error) {
+      console.error("Lỗi khi thêm đạo diễn:", error);
+      alert("Thêm đạo diễn thất bại!");
+    }
+  };
+
+  useEffect(() => {
+    // Map từ form.directors (array of ID) sang object đầy đủ từ directors (list đạo diễn từ server)
+    const mapped = directors.filter((d) => form.directors.includes(d.id));
+    setSelectedDirectors(mapped);
+  }, [form.directors, directors]);
+
+  useEffect(() => {
+    // Map từ form.directors (array of ID) sang object đầy đủ từ directors (list đạo diễn từ server)
+    const mapped = actors.filter((d) => form.actors.includes(d.id));
+    setSelectedActors(mapped);
+  }, [form.actors, actors]);
+
   return (
     <div className="grid grid-cols-12">
       {toast && (
@@ -429,10 +613,11 @@ function EditMovie() {
                     type="submit"
                     disabled={loadingTrailer || isSubmitting || loadingImage}
                     className={`bg-black text-white font-bold w-[120px] h-[55px] rounded-[90px] ml-6 cursor-pointer
-    ${isSubmitting || loadingTrailer || loadingImage
-                        ? "opacity-50 cursor-not-allowed"
-                        : "hover:bg-gray-800"
-                      }`}
+    ${
+      isSubmitting || loadingTrailer || loadingImage
+        ? "opacity-50 cursor-not-allowed"
+        : "hover:bg-gray-800"
+    }`}
                   >
                     Lưu
                   </button>
@@ -556,15 +741,14 @@ function EditMovie() {
                     <th className="px-4 py-2">Tên đạo diễn</th>
                     <th className="px-4 py-2 flex items-end justify-end">
                       <button
-                        data-modal-target="crud-modal"
-                        data-modal-toggle="crud-modal"
+                        data-modal-target="crud-modal-director"
+                        data-modal-toggle="crud-modal-director"
                       >
                         <IoMdAddCircle className="w-8 h-8 cursor-pointer text-blue-600 hover:text-blue-800" />
                       </button>
                       <div
-                        id="crud-modal"
+                        id="crud-modal-director"
                         tabIndex="-1"
-                        aria-hidden="true"
                         className="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
                       >
                         <div className="relative p-4 w-full max-w-md max-h-full">
@@ -576,11 +760,10 @@ function EditMovie() {
                               <button
                                 type="button"
                                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                data-modal-toggle="crud-modal"
+                                data-modal-toggle="crud-modal-director"
                               >
                                 <svg
                                   className="w-3 h-3"
-                                  aria-hidden="true"
                                   xmlns="http://www.w3.org/2000/svg"
                                   fill="none"
                                   viewBox="0 0 14 14"
@@ -596,31 +779,30 @@ function EditMovie() {
                                 <span className="sr-only">Close modal</span>
                               </button>
                             </div>
-                            <form className="p-4 md:p-5">
+                            <form
+                              className="p-4 md:p-5"
+                              onSubmit={handleSubmitDirector}
+                            >
                               <div className="grid gap-4 mb-4 grid-cols-2">
                                 <div className="col-span-2">
                                   <label
-                                    htmlFor="director_name"
+                                    htmlFor="director"
                                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                   >
                                     Tên đạo diễn
                                   </label>
                                   <select
+                                    ref={selectRefDirector}
                                     type="text"
-                                    id="director_name"
-                                    className="bg-[#F9F9F9] mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                    id="director"
                                     required
-                                  >
-                                    <option>-- Chọn đạo diễn --</option>
-                                    <option>Trấn Thành</option>
-                                    <option>Trấn Thành 1</option>
-                                    <option>Trấn Thành 2</option>
-                                  </select>
+                                  ></select>
                                 </div>
                               </div>
                               <button
                                 type="submit"
                                 className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                data-modal-hide="crud-modal-director"
                               >
                                 <svg
                                   className="me-1 -ms-1 w-5 h-5"
@@ -644,18 +826,40 @@ function EditMovie() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-t border-[#EEEEEE]">
-                    <td className="px-4 py-2">Biệt đội sấm sét</td>
-
-                    <td className="px-4 py-2 flex space-x-4">
-                      <button
-                        className="text-red-600 hover:text-red-800 text-[20px] cursor-pointer"
-                        onClick={() => alert("Xóa thành công")}
+                  {selectedDirectors.length > 0 ? (
+                    selectedDirectors.map((director) => (
+                      <tr
+                        key={director.id}
+                        className="border-t border-[#EEEEEE]"
                       >
-                        <MdDelete />
-                      </button>
-                    </td>
-                  </tr>
+                        <td className="px-4 py-2">{director.directorName}</td>
+                        <td className="px-4 py-2">
+                          <button
+                            className="text-red-600 hover:text-red-800 text-[20px]"
+                            onClick={() => {
+                              setForm((prev) => ({
+                                ...prev,
+                                directors: prev.directors.filter(
+                                  (id) => id !== director.id
+                                ),
+                              }));
+                            }}
+                          >
+                            <MdDelete />
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr className="border-t border-[#EEEEEE]">
+                      <td
+                        colSpan={2}
+                        className="px-4 py-4 text-center text-gray-500"
+                      >
+                        Không có dữ liệu
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -688,7 +892,6 @@ function EditMovie() {
                       <div
                         id="crud-modal"
                         tabIndex="-1"
-                        aria-hidden="true"
                         className="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
                       >
                         <div className="relative p-4 w-full max-w-md max-h-full">
@@ -704,7 +907,6 @@ function EditMovie() {
                               >
                                 <svg
                                   className="w-3 h-3"
-                                  aria-hidden="true"
                                   xmlns="http://www.w3.org/2000/svg"
                                   fill="none"
                                   viewBox="0 0 14 14"
@@ -720,31 +922,30 @@ function EditMovie() {
                                 <span className="sr-only">Close modal</span>
                               </button>
                             </div>
-                            <form className="p-4 md:p-5">
+                            <form
+                              className="p-4 md:p-5"
+                              onSubmit={handleSubmitActor}
+                            >
                               <div className="grid gap-4 mb-4 grid-cols-2">
                                 <div className="col-span-2">
                                   <label
-                                    htmlFor="actor_name"
+                                    htmlFor="actor"
                                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                   >
                                     Tên diễn viên
                                   </label>
                                   <select
+                                    ref={selectRefActor}
                                     type="text"
-                                    id="actor_name"
-                                    className="bg-[#F9F9F9] mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                    id="actor"
                                     required
-                                  >
-                                    <option>-- Chọn diễn viên --</option>
-                                    <option>Trấn Thành</option>
-                                    <option>Trấn Thành 1</option>
-                                    <option>Trấn Thành 2</option>
-                                  </select>
+                                  ></select>
                                 </div>
                               </div>
                               <button
                                 type="submit"
                                 className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                data-modal-hide="crud-modal"
                               >
                                 <svg
                                   className="me-1 -ms-1 w-5 h-5"
@@ -768,18 +969,37 @@ function EditMovie() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-t border-[#EEEEEE]">
-                    <td className="px-4 py-2">Biệt đội sấm sét</td>
-
-                    <td className="px-4 py-2 flex space-x-4">
-                      <button
-                        className="text-red-600 hover:text-red-800 text-[20px] cursor-pointer"
-                        onClick={() => alert("Xóa thành công")}
+                  {selectedActors.length > 0 ? (
+                    selectedActors.map((actor) => (
+                      <tr key={actor.id} className="border-t border-[#EEEEEE]">
+                        <td className="px-4 py-2">{actor.actorName}</td>
+                        <td className="px-4 py-2">
+                          <button
+                            className="text-red-600 hover:text-red-800 text-[20px]"
+                            onClick={() => {
+                              setForm((prev) => ({
+                                ...prev,
+                                actors: prev.actors.filter(
+                                  (id) => id !== actor.id
+                                ),
+                              }));
+                            }}
+                          >
+                            <MdDelete />
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr className="border-t border-[#EEEEEE]">
+                      <td
+                        colSpan={2}
+                        className="px-4 py-4 text-center text-gray-500"
                       >
-                        <MdDelete />
-                      </button>
-                    </td>
-                  </tr>
+                        Không có dữ liệu
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>

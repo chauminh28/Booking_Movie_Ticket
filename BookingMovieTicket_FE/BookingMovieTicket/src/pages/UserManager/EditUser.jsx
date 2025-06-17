@@ -2,49 +2,49 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import NavbarAdmin from "../../components/layouts/NavbarAdmin";
 import HeaderAdmin from "../../components/layouts/HeaderAdmin";
-import SuccessToast from '../../components/toasts/SuccessToast';
-import ErrorToast from '../../components/toasts/ErrorToast';
-import axiosClient from '../../api/axiosClient'
+import SuccessToast from "../../components/toasts/SuccessToast";
+import ErrorToast from "../../components/toasts/ErrorToast";
+import axiosClient from "../../api/axiosClient";
 import axios from "axios";
 
 function EditUser() {
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const [showErrorToast, setErrorShowToast] = useState(false);
-  const [successMessage, setSuccesMessage] = useState('');
+  const [successMessage, setSuccesMessage] = useState("");
   const [showSuccessToast, setSuccessShowToast] = useState(false);
   const [errors, setErrors] = useState({});
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
-    userName: '',
-    lastName: '',
-    firstName: '',
-    dob: '',
-    gender: '',
-    phone: '',
-    email: '',
-    password: '',
+    userName: "",
+    lastName: "",
+    firstName: "",
+    dob: "",
+    gender: "",
+    phone: "",
+    email: "",
+    password: "",
     status: true,
-    roleId: ''
-  })
+    roleId: "",
+  });
 
   useEffect(() => {
     axios
       .get(`http://localhost:8080/users/${id}`)
       .then((response) => {
-        const data = response.data
+        const data = response.data;
         setForm({
-          userName: data.userName || '',
-          lastName: data.lastName || '',
-          firstName: data.firstName || '',
-          dob: data.dob || '',
-          gender: data.gender || '',
-          phone: data.phone || '',
-          email: data.email || '',
-          password: '',
+          userName: data.userName || "",
+          lastName: data.lastName || "",
+          firstName: data.firstName || "",
+          dob: data.dob || "",
+          gender: data.gender || "",
+          phone: data.phone || "",
+          email: data.email || "",
+          password: "",
           status: data.status,
-          roleId: data.roleId || ''
+          roleId: data.roleId || "",
         });
       })
       .catch((error) => {
@@ -56,38 +56,38 @@ function EditUser() {
     const { name, value } = e.target;
     setForm({
       ...form,
-      [name]: value
+      [name]: value,
     });
-    console.log(form)
-  }
+    console.log(form);
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const newErrors = {};
 
     if (!form.userName.trim()) {
-      newErrors.userName = "Vui lòng nhập tên đăng nhập"
+      newErrors.userName = "Vui lòng nhập tên đăng nhập";
     }
     if (!form.lastName.trim()) {
-      newErrors.lastName = "Vui lòng nhập họ đệm"
+      newErrors.lastName = "Vui lòng nhập họ đệm";
     }
     if (!form.firstName.trim()) {
-      newErrors.firstName = "Vui lòng nhập tên"
+      newErrors.firstName = "Vui lòng nhập tên";
     }
     if (!form.dob.trim()) {
-      newErrors.dob = "Vui lòng nhập ngày sinh"
+      newErrors.dob = "Vui lòng nhập ngày sinh";
     }
     if (!form.gender.trim()) {
-      newErrors.gender = "Vui lòng nhập giới tính"
+      newErrors.gender = "Vui lòng nhập giới tính";
     }
     if (!form.phone.trim()) {
-      newErrors.phone = "Vui lòng nhập số điện thoại"
+      newErrors.phone = "Vui lòng nhập số điện thoại";
     }
     if (!form.email.trim()) {
-      newErrors.email = "Vui lòng nhập email"
+      newErrors.email = "Vui lòng nhập email";
     }
     if (form.roleId == 0) {
-      newErrors.roleId = "Vui lòng chọn role"
+      newErrors.roleId = "Vui lòng chọn role";
     }
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -96,24 +96,23 @@ function EditUser() {
     setErrors({});
 
     try {
-      const res = await axiosClient.put(`/users/${id}`, form)
-      setSuccesMessage("Sửa người dùng thành công")
-      setSuccessShowToast(true)
+      const res = await axiosClient.put(`/users/${id}`, form);
+      setSuccesMessage("Sửa người dùng thành công");
+      setSuccessShowToast(true);
 
       setTimeout(() => {
-        navigate("/userManager")
+        navigate("/userManager");
       }, 1500);
     } catch (err) {
       if (err.response && err.response.status === 400) {
-        newErrors.userName = err.response.data.userName
-        newErrors.lastName = err.response.data.lastName
-        newErrors.firstName = err.response.data.firstName
-        newErrors.dob = err.response.data.dob
-        newErrors.gender = err.response.data.gender
-        newErrors.phone = err.response.data.phone
-        newErrors.email = err.response.data.email
-        newErrors.roleId = err.response.data.roleId
-
+        newErrors.userName = err.response.data.userName;
+        newErrors.lastName = err.response.data.lastName;
+        newErrors.firstName = err.response.data.firstName;
+        newErrors.dob = err.response.data.dob;
+        newErrors.gender = err.response.data.gender;
+        newErrors.phone = err.response.data.phone;
+        newErrors.email = err.response.data.email;
+        newErrors.roleId = err.response.data.roleId;
       } else {
         setErrorMessage("Lỗi API không xác định");
         setErrorShowToast(true);
@@ -124,7 +123,7 @@ function EditUser() {
       return;
     }
     setErrors({});
-  }
+  };
 
   return (
     <>
@@ -164,7 +163,7 @@ function EditUser() {
                       <input
                         type="text"
                         id="userName"
-                        name='userName'
+                        name="userName"
                         value={form.userName}
                         onChange={handleChange}
                         placeholder="Username"
@@ -175,8 +174,8 @@ function EditUser() {
                         {errors.userName || ""}
                       </p>
                     </div>
-                    <div className='grid grid-cols-7 gap-12'>
-                      <div className='col-span-2'>
+                    <div className="grid grid-cols-7 gap-12">
+                      <div className="col-span-2">
                         <label
                           htmlFor="lastName"
                           className="block text-sm font-medium text-gray-700"
@@ -186,7 +185,7 @@ function EditUser() {
                         <input
                           type="text"
                           id="lastName"
-                          name='lastName'
+                          name="lastName"
                           value={form.lastName}
                           onChange={handleChange}
                           placeholder="Họ"
@@ -197,7 +196,7 @@ function EditUser() {
                           {errors.lastName || ""}
                         </p>
                       </div>
-                      <div className='col-span-2'>
+                      <div className="col-span-2">
                         <label
                           htmlFor="firstName"
                           className="block text-sm font-medium text-gray-700"
@@ -207,7 +206,7 @@ function EditUser() {
                         <input
                           type="text"
                           id="firstName"
-                          name='firstName'
+                          name="firstName"
                           value={form.firstName}
                           onChange={handleChange}
                           placeholder="Tên"
@@ -264,7 +263,7 @@ function EditUser() {
                       <input
                         type="date"
                         id="dob"
-                        name='dob'
+                        name="dob"
                         value={form.dob}
                         onChange={handleChange}
                         className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
@@ -277,14 +276,19 @@ function EditUser() {
                   </div>
                   <div className="col-span-6 gap-y-4 flex flex-col">
                     <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email <span className="text-red-600">*</span></label>
+                      <label
+                        htmlFor="email"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Email <span className="text-red-600">*</span>
+                      </label>
                       <input
                         type="text"
                         id="email"
-                        name='email'
+                        name="email"
                         value={form.email}
                         onChange={handleChange}
-                        placeholder='Email'
+                        placeholder="Email"
                         className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                         required
                       />
@@ -293,14 +297,19 @@ function EditUser() {
                       </p>
                     </div>
                     <div>
-                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Số điện thoại <span className="text-red-600">*</span></label>
+                      <label
+                        htmlFor="phone"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Số điện thoại <span className="text-red-600">*</span>
+                      </label>
                       <input
                         type="text"
                         id="phone"
-                        name='phone'
+                        name="phone"
                         value={form.phone}
                         onChange={handleChange}
-                        placeholder='Số điện thoại'
+                        placeholder="Số điện thoại"
                         className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                         required
                       />
@@ -318,7 +327,7 @@ function EditUser() {
                       <select
                         type="text"
                         id="roleId"
-                        name='roleId'
+                        name="roleId"
                         value={form.roleId}
                         onChange={handleChange}
                         className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
