@@ -3,6 +3,7 @@ package org.project.bookingmovieticket.dto.request.schedule;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.project.bookingmovieticket.dto.request.showtime.ShowtimeResponse;
 import org.project.bookingmovieticket.entity.Movie;
 import org.project.bookingmovieticket.entity.Room;
 import org.project.bookingmovieticket.entity.ScheduleDetail;
@@ -21,5 +22,5 @@ public class ScheduleResponse {
     private String roomName;
     private LocalDate scheduleDate;
     private boolean status;
-    private List<String> showtimes;
+    private List<ShowtimeResponse> showtimes;
 }

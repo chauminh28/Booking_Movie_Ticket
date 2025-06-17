@@ -58,8 +58,8 @@ function MovieDetail() {
       });
   }, []);
 
-  const handleClick = (index) => {
-    setShowTime(index)
+  const handleClick = (showtime) => {
+    setShowTime(showtime)
     setShowTicket(true)
     console.log(selectedDate)
   }
@@ -138,15 +138,19 @@ function MovieDetail() {
               })}
             </div>
             <div className="grid grid-cols-7 gap-4 mt-[20px] mb-8">
-              {schedules.find(s => s.scheduleDate === selectedDate)?.showtimes.map((time, index) => (
-                <button
-                  key={index}
-                  className="bg-[#BDBDBD] text-white rounded-md px-3 py-3 text-center cursor-pointer hover:bg-black"
-                  onClick={() => handleClick(index)}
-                >
-                  {time}
-                </button>
-              )) || <p className="col-span-7 text-center text-gray-500">Không có suất chiếu</p>}
+              {selectedSchedule?.showtimes?.length > 0 ? (
+                selectedSchedule.showtimes.map((showtime) => (
+                  <button
+                    key={showtime.id}
+                    onClick={() => handleClick(showtime)}
+                    className="bg-[#BDBDBD] text-white rounded-md px-3 py-3 text-center cursor-pointer hover:bg-black"
+                  >
+                    {showtime.time}
+                  </button>
+                ))
+              ) : (
+                <p className="col-span-7 text-center text-gray-500">Không có suất chiếu</p>
+              )}
             </div>
           </div>
 

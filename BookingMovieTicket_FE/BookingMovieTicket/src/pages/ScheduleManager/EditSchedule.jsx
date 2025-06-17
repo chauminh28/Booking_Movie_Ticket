@@ -29,7 +29,7 @@ export default function EditSchedule() {
     movieName: "",
     roomId: "",
     roomName: "",
-    showtimes: [],
+    showtimes: {},
     scheduleDate: "",
   });
   useEffect(() => {
@@ -120,38 +120,43 @@ export default function EditSchedule() {
   }, [movies, rooms, showtimes]);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8080/schedules/${id}`)
-      .then((response) => {
-        const data = response.data;
-        setForm({
-          movieId: data.movieId,
-          movieName: data.movieName,
-          roomId: data.roomId,
-          roomName: data.roomName,
-          showtimes: data.showtimes,
-          scheduleDate: data.scheduleDate,
+    if (movies.length && rooms.length && showtimes.length) {
+      axios
+        .get(`http://localhost:8080/schedules/${id}`)
+        .then((response) => {
+          const data = response.data;
+
+          setForm({
+            movieId: data.movieId,
+            movieName: data.movieName,
+            roomId: data.roomId,
+            roomName: data.roomName,
+            showtimes: data.showtimes,
+            scheduleDate: data.scheduleDate,
+          });
+
+          const showtimeIds = data.showtimes.map((showtime) => showtime.id);
+
+          console.log("Schedule data fetched:", data.showtimes);
+
+          if (selectRef1.current) {
+            selectRef1.current.tomselect.setValue(data.movieId);
+          }
+
+          if (selectRef2.current) {
+            selectRef2.current.tomselect.setValue(data.roomId);
+          }
+
+          if (selectRef3.current) {
+            selectRef3.current.tomselect.setValue(showtimeIds);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching schedule:", error);
         });
-        const showtimeIds = data.showtimes.map(
-          (showtime) => showtimes.find((s) => s.time === showtime)?.id
-        );
-        console.log("Schedule data fetched:", data.showTimes);
-        if (selectRef1.current) {
-          selectRef1.current.tomselect.setValue(data.movieId);
-        }
+    }
+  }, [movies, rooms, showtimes]);
 
-        if (selectRef2.current) {
-          selectRef2.current.tomselect.setValue(data.roomId);
-        }
-
-        if (selectRef3.current) {
-          selectRef3.current.tomselect.setValue(showtimeIds); // Nếu là multiple
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching schedule:", error);
-      });
-  }, [id, showtimes]);
   const handleChange = (e) => {
     setForm({
       ...form,

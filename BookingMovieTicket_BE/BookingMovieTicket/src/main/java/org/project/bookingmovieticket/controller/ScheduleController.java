@@ -42,6 +42,11 @@ public class ScheduleController {
         return scheduleService.getAllShowtimes();
     }
 
+    @GetMapping("/showtimes/{showtimeId}")
+    public ShowtimeResponse getShowTime(@PathVariable("showtimeId") Long id) {
+        return scheduleService.getShowtimeById(id);
+    }
+
     @PutMapping("/{scheduleId}")
     public ScheduleResponse updateSchedule(@PathVariable Long scheduleId, @RequestBody @Valid ScheduleUpdateRequest request) {
         return scheduleService.updateSchedule(scheduleId, request);

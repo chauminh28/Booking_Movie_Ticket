@@ -110,7 +110,7 @@ function SeatTypeManager() {
                                             seatTypes.map((seatType) => (
                                                 <tr className="border-t border-[#EEEEEE]">
                                                     <td className="px-4 py-2">{seatType.seatTypeName}</td>
-                                                    <td className="px-4 py-2">{seatType.price}</td>
+                                                    <td className="px-4 py-2">{seatType.price.toLocaleString()}</td>
                                                     <td className="px-4 py-2">{seatType.description}</td>
 
                                                     <td className="px-4 py-2 h-full">

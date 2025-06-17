@@ -159,14 +159,22 @@ function TicketManager() {
                                     <tbody>
                                         {booking.length > 0 ? (
                                             booking.map(b => (
-                                                <tr className="border-t border-[#EEEEEE]">
+                                                <tr className="border-t border-[#EEEEEE]" key={b.id}>
                                                     <td className="px-4 py-2">{b.id}</td>
                                                     <td className="px-4 py-2">{b.username}</td>
                                                     <td className="px-4 py-2">{b.phone}</td>
-                                                    <td className="px-4 py-2">{b.bookingTime}</td>
                                                     <td className="px-4 py-2">
-                                                        {ticketStatus[b.ticketStatus]}
+                                                        {new Date(b.bookingTime).toLocaleString("vi-VN", {
+                                                            day: "2-digit",
+                                                            month: "2-digit",
+                                                            year: "numeric",
+                                                            hour: "2-digit",
+                                                            minute: "2-digit",
+                                                            second: "2-digit",
+                                                            hour12: false,
+                                                        })}
                                                     </td>
+                                                    <td className="px-4 py-2">{ticketStatus[b.ticketStatus]}</td>
                                                     <td className="px-4 py-2 flex space-x-4">
                                                         <Link to={`/ticketManager/detail/${b.id}`}>
                                                             <button className="text-black hover:text-gray-800 text-[25px] cursor-pointer">
@@ -178,10 +186,7 @@ function TicketManager() {
                                             ))
                                         ) : (
                                             <tr>
-                                                <td
-                                                    colSpan="7"
-                                                    className="text-center py-4 text-gray-500"
-                                                >
+                                                <td colSpan="7" className="text-center py-4 text-gray-500">
                                                     Không có vé nào.
                                                 </td>
                                             </tr>

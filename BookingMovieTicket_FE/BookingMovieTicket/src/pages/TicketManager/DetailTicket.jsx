@@ -138,8 +138,8 @@ function DetailTicket() {
                                     className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                     required
                                 >
-                                    <option value={1}>Chưa sử dụng</option>
-                                    <option value={2}>Đã sử dụng</option>
+                                    <option value={1} disabled={booking.ticketStatus === 2 || booking.ticketStatus === 3}>Chưa sử dụng</option>
+                                    <option value={2} disabled={booking.ticketStatus === 3}>Đã sử dụng</option>
                                     <option value={3}>Đã hết hạn</option>
                                 </select>
 
@@ -210,7 +210,16 @@ function DetailTicket() {
                                         </label>
                                         <input
                                             type="text"
-                                            value={booking?.bookingTime || ''}
+                                            value={
+                                                new Date(booking?.bookingTime).toLocaleString("vi-VN", {
+                                                    day: "2-digit",
+                                                    month: "2-digit",
+                                                    year: "numeric",
+                                                    hour: "2-digit",
+                                                    minute: "2-digit",
+                                                    second: "2-digit",
+                                                    hour12: false,
+                                                })}
                                             id="schedule"
                                             placeholder="Tên người dùng"
                                             className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
@@ -441,8 +450,8 @@ function DetailTicket() {
                                                 booking.bookingServices.map((b, index) => (
                                                     <tr className="border-t border-[#EEEEEE]" key={index}>
                                                         <td className="px-4 py-2">{b.serviceName}</td>
-                                                        <td className="px-4 py-2">{b.price}</td>
-                                                        <td className="px-4 py-2">{b.price * b.quantity}</td>
+                                                        <td className="px-4 py-2">{b.quantity}</td>
+                                                        <td className="px-4 py-2">{(b.price * b.quantity).toLocaleString()}</td>
                                                     </tr>
                                                 ))
                                             ) : (
