@@ -55,19 +55,18 @@ public class SeatService {
         return seatResponse;
     }
 
-    public SeatResponse createSeat(Long roomId, SeatCreateRequest request) {
+    public SeatResponse createSeat(SeatCreateRequest request) {
         Seat seat = new Seat();
-        seat.setRoom(roomRepository.findById(roomId).orElseThrow(()->new RuntimeException("Room Not Found")));
+        seat.setRoom(roomRepository.findById(request.getRoomId()).orElseThrow(() -> new RuntimeException("Room Not Found")));
         seat.setSeatRow(request.getSeatRow());
         seat.setSeatCol(request.getSeatCol());
         seat.setSeatStatus(1);
         seat.setSeatNumber(request.getSeatNumber());
-        seat.setSeatType(seatTypeRepository.findById(request.getSeatTypeId()).orElseThrow(()->new RuntimeException("Seat Type Not Found")));
+        seat.setSeatType(seatTypeRepository.findById(request.getSeatTypeId()).orElseThrow(() -> new RuntimeException("Seat Type Not Found")));
         seatRepository.save(seat);
-
         SeatResponse seatResponse = new SeatResponse();
         seatResponse.setSeatId(seat.getId());
-        seatResponse.setRoomId(roomId);
+        seatResponse.setRoomId(request.getRoomId());
         seatResponse.setSeatNumber(seat.getSeatNumber());
         seatResponse.setSeatCol(seat.getSeatCol());
         seatResponse.setSeatRow(seat.getSeatRow());

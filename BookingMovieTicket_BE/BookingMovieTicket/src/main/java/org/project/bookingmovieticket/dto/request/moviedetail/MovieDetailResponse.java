@@ -3,6 +3,8 @@ package org.project.bookingmovieticket.dto.request.moviedetail;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.project.bookingmovieticket.dto.request.actor.ActorResponse;
+import org.project.bookingmovieticket.dto.request.director.DirectorResponse;
 
 import java.time.LocalDate;
 import java.util.List;

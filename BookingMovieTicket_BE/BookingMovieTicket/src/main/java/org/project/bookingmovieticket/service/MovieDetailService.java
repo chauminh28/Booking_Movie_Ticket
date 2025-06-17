@@ -2,6 +2,8 @@ package org.project.bookingmovieticket.service;
 
 import org.project.bookingmovieticket.dto.request.moviedetail.MovieDetailCreateRequest;
 import org.project.bookingmovieticket.dto.request.moviedetail.MovieDetailResponse;
+import org.project.bookingmovieticket.dto.request.moviedetail.MovieDetailUpdateActorRequest;
+import org.project.bookingmovieticket.dto.request.moviedetail.MovieDetailUpdateDirectorRequest;
 import org.project.bookingmovieticket.entity.Actor;
 import org.project.bookingmovieticket.entity.Director;
 import org.project.bookingmovieticket.entity.Movie;
@@ -55,6 +57,46 @@ public class MovieDetailService {
         movieDetail.setStartDate(request.getStartDate());
         movieDetail.setAge(ageRepository.findById(request.getAgeId()).orElse(null));
         movieDetail.setActors(actorRepository.findAllById(request.getActors()));
+        movieDetail.setDirectors(directorRepository.findAllById(request.getDirectors()));
+        movieDetailRepository.save(movieDetail);
+        MovieDetailResponse movieDetailResponse = new MovieDetailResponse();
+        movieDetailResponse.setId(movieDetail.getId());
+        movieDetailResponse.setMovieId(movieDetail.getMovie().getId());
+        movieDetailResponse.setCountry(movieDetail.getCountry());
+        movieDetailResponse.setDescription(movieDetail.getDescription());
+        movieDetailResponse.setTrailer(movieDetail.getTrailer());
+        movieDetailResponse.setStartDate(movieDetail.getStartDate());
+        movieDetailResponse.setAgeName(movieDetail.getAge().getAgeType());
+        List<Long> actorIds = movieDetail.getActors().stream().map(Actor::getId).toList();
+        movieDetailResponse.setActors(actorIds);
+        List<Long> directorIds = movieDetail.getDirectors().stream().map(Director::getId).toList();
+        movieDetailResponse.setDirectors(directorIds);
+        return movieDetailResponse;
+    }
+
+    public MovieDetailResponse updateActors(MovieDetailUpdateActorRequest request) {
+        Movie movie = movieRepository.findById(request.getMovieId()).orElse(null);
+        MovieDetail movieDetail = movie.getMovieDetail();
+        movieDetail.setActors(actorRepository.findAllById(request.getActors()));
+        movieDetailRepository.save(movieDetail);
+        MovieDetailResponse movieDetailResponse = new MovieDetailResponse();
+        movieDetailResponse.setId(movieDetail.getId());
+        movieDetailResponse.setMovieId(movieDetail.getMovie().getId());
+        movieDetailResponse.setCountry(movieDetail.getCountry());
+        movieDetailResponse.setDescription(movieDetail.getDescription());
+        movieDetailResponse.setTrailer(movieDetail.getTrailer());
+        movieDetailResponse.setStartDate(movieDetail.getStartDate());
+        movieDetailResponse.setAgeName(movieDetail.getAge().getAgeType());
+        List<Long> actorIds = movieDetail.getActors().stream().map(Actor::getId).toList();
+        movieDetailResponse.setActors(actorIds);
+        List<Long> directorIds = movieDetail.getDirectors().stream().map(Director::getId).toList();
+        movieDetailResponse.setDirectors(directorIds);
+        return movieDetailResponse;
+    }
+
+    public MovieDetailResponse updateDirector(MovieDetailUpdateDirectorRequest request) {
+        Movie movie = movieRepository.findById(request.getMovieId()).orElse(null);
+        MovieDetail movieDetail = movie.getMovieDetail();
         movieDetail.setDirectors(directorRepository.findAllById(request.getDirectors()));
         movieDetailRepository.save(movieDetail);
         MovieDetailResponse movieDetailResponse = new MovieDetailResponse();

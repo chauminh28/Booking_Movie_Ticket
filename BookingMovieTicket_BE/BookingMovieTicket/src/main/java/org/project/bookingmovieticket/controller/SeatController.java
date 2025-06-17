@@ -1,5 +1,6 @@
 package org.project.bookingmovieticket.controller;
 
+import org.project.bookingmovieticket.dto.request.seat.SeatCreateRequest;
 import org.project.bookingmovieticket.dto.request.seat.SeatResponse;
 import org.project.bookingmovieticket.dto.request.seat.SeatUpdateRequest;
 import org.project.bookingmovieticket.service.SeatService;
@@ -15,6 +16,11 @@ public class SeatController {
     private final SeatService seatService;
     public SeatController(SeatService seatService) {
         this.seatService = seatService;
+    }
+
+    @PostMapping
+    public SeatResponse createSeat(@RequestBody SeatCreateRequest request) {
+        return seatService.createSeat(request);
     }
 
     @GetMapping("/{roomId}")

@@ -4,16 +4,13 @@ import jakarta.validation.Valid;
 import org.project.bookingmovieticket.dto.request.movie.*;
 import org.project.bookingmovieticket.dto.request.moviedetail.MovieDetailCreateRequest;
 import org.project.bookingmovieticket.dto.request.moviedetail.MovieDetailResponse;
-import org.project.bookingmovieticket.entity.Movie;
-import org.project.bookingmovieticket.entity.MovieDetail;
+import org.project.bookingmovieticket.dto.request.moviedetail.MovieDetailUpdateActorRequest;
+import org.project.bookingmovieticket.dto.request.moviedetail.MovieDetailUpdateDirectorRequest;
 import org.project.bookingmovieticket.service.MovieDetailService;
 import org.project.bookingmovieticket.service.MovieService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/movies")
@@ -49,8 +46,18 @@ public class MovieController {
     @PutMapping("/details/{movieId}")
     public MovieFullUpdateRequest updateMovie(@PathVariable("movieId") Long movieId, @RequestBody @Valid MovieFullUpdateRequest request) {
         return movieService.updateMovie(movieId, request);
-
     }
+
+    @PutMapping("/details/updateActor")
+    public MovieDetailResponse updateMovieDetailActor(@RequestBody @Valid MovieDetailUpdateActorRequest request) {
+        return movieDetailService.updateActors(request);
+    }
+
+    @PutMapping("/details/updateDirector")
+    public MovieDetailResponse updateMovieDetailDirector(@RequestBody @Valid MovieDetailUpdateDirectorRequest request) {
+        return movieDetailService.updateDirector(request);
+    }
+
 
     @DeleteMapping("{movieId}")
     public String deleteMovie(@PathVariable("movieId") Long movieId) {

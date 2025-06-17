@@ -13,4 +13,6 @@ import java.util.List;
 public interface SeatRepository extends JpaRepository<Seat, Long> {
     Page<Seat> findByRoomIdAndSeatRowContainingIgnoreCase(Long roomId, String seatRow, Pageable pageable);
     List<Seat> findByRoomId(Long roomId);
+
+    Seat findSetBySeatRowAndRoomId(String seatRow, Long roomId);
 }
