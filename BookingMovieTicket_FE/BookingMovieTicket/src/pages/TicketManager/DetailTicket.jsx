@@ -308,6 +308,22 @@ function DetailTicket() {
                                             readOnly
                                         />
                                     </div>
+                                    <div>
+                                        <label
+                                            htmlFor="total"
+                                            className="block text-sm font-medium text-gray-700"
+                                        >
+                                            Tổng tiền
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={booking?.totalMoney.toLocaleString() || ''}
+                                            id="total"
+                                            placeholder="Tổng tiền"
+                                            className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                            readOnly
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -416,7 +432,7 @@ function DetailTicket() {
                                                                                 className="bg-[#F9F9F9] mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                                                                             />
                                                                             <p className="text-red-600 text-sm mt-1 min-h-[20px]">
-                                                                                {errors.actorName || ""}
+                                                                                {errors.quantity || ""}
                                                                             </p>
                                                                         </div>
                                                                     </div>

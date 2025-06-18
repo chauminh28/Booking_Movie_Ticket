@@ -12,6 +12,7 @@ import { CiSearch } from "react-icons/ci";
 function TicketManager() {
     const [booking, setBooking] = useState({});
     const [page, setPage] = useState(0);
+    const [filterStatus, setFilterStatus] = useState(null);
     const [totalPages, setTotalPages] = useState(0);
     const [searchValue, setSearchValue] = useState("");
     const size = 5;
@@ -28,6 +29,7 @@ function TicketManager() {
                     page: page,
                     size: size,
                     search: searchValue,
+                    status: filterStatus !== null ? filterStatus : undefined,
                 },
             })
             .then((response) => {
@@ -37,12 +39,22 @@ function TicketManager() {
             .catch((error) => {
                 console.error("Lỗi khi tải danh sách đặt vé!", error);
             });
-    }, [page, searchValue]);
+    }, [page, searchValue, filterStatus]);
 
     const goToPage = (pageNumber) => {
         if (pageNumber >= 0 && pageNumber < totalPages) {
             setPage(pageNumber);
         }
+    };
+
+    const handleFilterChange = (value) => {
+        if (filterStatus === value) {
+            setFilterStatus(null);
+        } else {
+            setFilterStatus(value);
+        }
+
+        setPage(0);
     };
 
     return (
@@ -92,38 +104,50 @@ function TicketManager() {
                                     id="lock"
                                     className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700"
                                 >
-                                    <ul
-                                        className="py-2 text-sm text-gray-700 dark:text-gray-200 pl-2"
-                                        aria-labelledby="dropdownDefaultButton"
-                                    >
+                                    <ul className="py-2 text-sm text-gray-700 dark:text-gray-200 pl-2">
                                         <li>
                                             <input
-                                                id="default-radio-1"
-                                                type="radio"
-                                                value=""
-                                                name="default-radio"
+                                                id="unused"
+                                                type="checkbox"
+                                                checked={filterStatus === 1}
+                                                onChange={() => handleFilterChange(1)}
                                                 className="w-4 h-4 text-gray-500"
                                             />
                                             <label
-                                                htmlFor="default-radio-1"
+                                                htmlFor="unused"
                                                 className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                                             >
-                                                Khoá
+                                                Chưa sử dụng
                                             </label>
                                         </li>
                                         <li>
                                             <input
-                                                id="default-radio-1"
-                                                type="radio"
-                                                value=""
-                                                name="default-radio"
+                                                id="used"
+                                                type="checkbox"
+                                                checked={filterStatus === 2}
+                                                onChange={() => handleFilterChange(2)}
                                                 className="w-4 h-4 text-gray-500"
                                             />
                                             <label
-                                                htmlFor="default-radio-1"
+                                                htmlFor="used"
                                                 className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                                             >
-                                                Mở
+                                                Đã sử dụng
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <input
+                                                id="expired"
+                                                type="checkbox"
+                                                checked={filterStatus === 3}
+                                                onChange={() => handleFilterChange(3)}
+                                                className="w-4 h-4 text-gray-500"
+                                            />
+                                            <label
+                                                htmlFor="expired"
+                                                className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                            >
+                                                Đã hết hạn
                                             </label>
                                         </li>
                                     </ul>

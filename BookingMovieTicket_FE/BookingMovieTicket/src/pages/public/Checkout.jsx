@@ -16,7 +16,8 @@ function Checkout() {
         totalPrice,
         scheduleId,
         showTimeId,
-        roomId
+        roomId,
+        totalMoney
     } = state;
 
     useEffect(() => {
@@ -41,12 +42,13 @@ function Checkout() {
     const form = {
         userId: userId,
         scheduleId: scheduleId,
-        showTimeId: showTimeId,
+        showTimeId: showTimeId.id,
         roomId: roomId,
         seatIds: selectedSeatIds,
         bookingServices: bookingServices,
         paymentStatus: 0,
-        ticketStatus: 1
+        ticketStatus: 1,
+        totalMoney: totalMoney
     };
     const [paymentMethod, setPaymentMethod] = useState('momo');
     const [products, setProducts] = useState([]);

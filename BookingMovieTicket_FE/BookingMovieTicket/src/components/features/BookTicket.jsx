@@ -87,6 +87,7 @@ function BookTicket(props) {
 
 
     const toggleSeat = (seat) => {
+        console.log("adskfdasfads", props.schedule)
         const isSelected = selectedSeats.includes(seat.seatNumber);
         const price = seatType.find(type => type.seatTypeName === seat.seatTypeName)?.price || 0;
 
@@ -135,22 +136,30 @@ function BookTicket(props) {
 
     const renderSeats = () => {
         const rows = Object.keys(seatMaps).sort(); // A → H
+        console.log("rows: ", rows)
 
         return rows.map((row) => {
             const columns = seatMaps[row];
+            console.log("columns: ", columns)
             return (
                 <div key={row} className="flex items-center mb-2">
                     <div className="w-6 mr-2">{row}</div>
                     {Array.from({ length: maxColumn }).map((_, colIndex) => {
                         const seat = columns[colIndex];
-
+                        console.log("seat: ", seat)
                         return seat ? (
                             <div
                                 key={seat.seatId}
-                                className={`w-10 h-10 m-1 flex items-center justify-center rounded 
-                                    ${selectedSeats.includes(seat.seatNumber) ? "bg-green-500" : getSeatColor(seat.seatTypeName)}
-                                    text-white cursor-pointer`}
-                                onClick={() => toggleSeat(seat)}
+                                className={`w-10 h-10 m-1 flex items-center justify-center rounded text-white 
+                                    ${props.occupiedSeats.includes(seat.seatId)
+                                        ? "bg-gray-500 cursor-not-allowed"
+                                        : selectedSeats.includes(seat.seatNumber)
+                                            ? "bg-green-500 cursor-pointer"
+                                            : `${getSeatColor(seat.seatTypeName)} cursor-pointer`
+                                    }`}
+                                onClick={() => {
+                                    if (!props.occupiedSeats.includes(seat.seatId)) toggleSeat(seat);
+                                }}
                             >
                                 {seat.seatNumber}
                             </div>
@@ -269,7 +278,7 @@ function BookTicket(props) {
             <div className="bg-[#0f172a] text-white mt-6 p-4 flex justify-between items-center rounded-md">
                 <div>
                     <p className="text-lg text-white font-bold mb-1">{props.movie.movie.movieName}</p>
-                    <p>{props.schedule.scheduleDate + " | " + props.schedule.showtimes[props.showtime]}</p>
+                    <p>{props.schedule.scheduleDate + " | " + props.showtime.time}</p>
                     <p className="text-sm">Vé đã chọn: {(selectedSeats).join(", ")}</p>
                     <p className='text-sm'>
                         Dịch vụ đã chọn: {
@@ -302,7 +311,8 @@ function BookTicket(props) {
                         totalPrice: total,
                         scheduleId: props.schedule.id,
                         showTimeId: props.showtime,
-                        roomId: props.room.id
+                        roomId: props.room.id,
+                        totalMoney: total
                     }}>
                         <button className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold px-4 py-2 rounded-md cursor-pointer">
                             ĐẶT VÉ

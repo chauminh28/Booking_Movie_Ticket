@@ -15,12 +15,14 @@ function MovieDetail() {
   const [movie, setMovie] = useState(null);
   const [room, setRoom] = useState([]);
   const [showTime, setShowTime] = useState();
+  const [occupiedSeats, setOccupiedSeats] = useState([]);
   const { id } = useParams();
 
   const [schedules, setSchedules] = useState([]);
 
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedSchedule, setSelectedSchedule] = useState({});
+  const [selectedShowtimeId, setSelectedShowtimeId] = useState(null);
 
   useEffect(() => {
     axios
@@ -58,9 +60,27 @@ function MovieDetail() {
       });
   }, []);
 
+  useEffect(() => {
+    axios
+      .get('http://localhost:8080/bookings/booked-seats', {
+        params: {
+          scheduleId: selectedSchedule.id,
+          roomId: selectedSchedule.roomId,
+          showtimeId: selectedShowtimeId
+        }
+      })
+      .then((response) => {
+        setOccupiedSeats(response.data);
+      })
+      .catch((error) => {
+        console.error("Lỗi fetch api schedule", error);
+      });
+  }, [selectedSchedule, selectedShowtimeId]);
+
   const handleClick = (showtime) => {
     setShowTime(showtime)
     setShowTicket(true)
+    setSelectedShowtimeId(showtime.id);
     console.log(selectedDate)
   }
 
@@ -114,28 +134,44 @@ function MovieDetail() {
               </p>
             </div>
             <div className='flex gap-6 items-center justify-center'>
-              {schedules.map((schedule) => {
-                const date = new Date(schedule.scheduleDate);
-                const day = date.getDate().toString().padStart(2, '0');
-                const month = (date.getMonth() + 1).toString().padStart(2, '0');
-                const year = date.getFullYear();
-                const formattedDate = `${day}/${month}/${year}`;
-                const weekday = date.toLocaleDateString("vi-VN", { weekday: 'long' });
+              {schedules
+                .filter(schedule => {
+                  const scheduleDate = new Date(schedule.scheduleDate);
+                  const today = new Date();
+                  const sevenDaysLater = new Date(today);
+                  sevenDaysLater.setDate(today.getDate() + 7);
 
-                return (
-                  <button
-                    key={schedule.id}
-                    onClick={() => { setSelectedDate(schedule.scheduleDate); setSelectedSchedule(schedule) }}
-                    className={`border border-black w-[150px] rounded-2xl font-bold text-[20px] cursor-pointer px-4 py-4
-                  ${selectedDate === schedule.scheduleDate ? "bg-black text-white" : "bg-white hover:bg-black hover:text-white"}`}
-                  >
-                    <div>
-                      <p>{formattedDate}</p>
-                      <p className='capitalize'>{weekday}</p>
-                    </div>
-                  </button>
-                )
-              })}
+                  return (
+                    schedule.movieId === parseInt(id) &&
+                    scheduleDate >= today &&
+                    scheduleDate <= sevenDaysLater
+                  );
+                })
+                .map((schedule) => {
+                  const date = new Date(schedule.scheduleDate);
+                  const day = date.getDate().toString().padStart(2, '0');
+                  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                  const year = date.getFullYear();
+                  const formattedDate = `${day}/${month}/${year}`;
+                  const weekday = date.toLocaleDateString("vi-VN", { weekday: 'long' });
+
+                  return (
+                    <button
+                      key={schedule.id}
+                      onClick={() => {
+                        setSelectedDate(schedule.scheduleDate);
+                        setSelectedSchedule(schedule);
+                      }}
+                      className={`border border-black w-[150px] rounded-2xl font-bold text-[20px] cursor-pointer px-4 py-4
+                        ${selectedDate === schedule.scheduleDate ? "bg-black text-white" : "bg-white hover:bg-black hover:text-white"}`}
+                    >
+                      <div>
+                        <p>{formattedDate}</p>
+                        <p className='capitalize'>{weekday}</p>
+                      </div>
+                    </button>
+                  );
+                })}
             </div>
             <div className="grid grid-cols-7 gap-4 mt-[20px] mb-8">
               {selectedSchedule?.showtimes?.length > 0 ? (
@@ -143,7 +179,10 @@ function MovieDetail() {
                   <button
                     key={showtime.id}
                     onClick={() => handleClick(showtime)}
-                    className="bg-[#BDBDBD] text-white rounded-md px-3 py-3 text-center cursor-pointer hover:bg-black"
+                    className={`rounded-md px-3 py-3 text-center cursor-pointer 
+                      ${selectedShowtimeId === showtime.id
+                        ? "bg-black text-white"
+                        : "bg-[#BDBDBD] text-black hover:bg-black hover:text-white"}`}
                   >
                     {showtime.time}
                   </button>
@@ -156,7 +195,7 @@ function MovieDetail() {
 
           {/* Đặt vé */}
           {showTicket && (
-            <BookTicket room={room.find(r => r.id === selectedSchedule.roomId)} schedule={selectedSchedule} movie={movie} showtime={showTime} />
+            <BookTicket room={room.find(r => r.id === selectedSchedule.roomId)} schedule={selectedSchedule} movie={movie} showtime={showTime} occupiedSeats={occupiedSeats} />
           )}
         </div>
       )}

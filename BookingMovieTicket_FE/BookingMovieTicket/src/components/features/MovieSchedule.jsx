@@ -1,7 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Phim from "../../assets/public/images/phim-1.png";
 import Phim_2 from "../../assets/public/images/phim-2.png";
+import axios from "axios";
+
 function MovieSchedule() {
+  const [schedules, setSchedules] = useState([]);
+  const [selectedDate, setSelectedDate] = useState({});
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/schedules`)
+      .then((response) => {
+        setSchedules(response.data.content)
+      })
+      .catch((error) => {
+        console.error("Lỗi fetch api suất chiếu", error);
+      });
+  }, []);
+
   return (
     <div className="my-12 container mx-auto">
       <div>
@@ -13,30 +29,28 @@ function MovieSchedule() {
           </p>
         </div>
         <div className="px-20 flex justify-around mt-8 font-bold">
-          <div className="border-2 border-black hover:bg-[#031327] hover:text-white flex items-center justify-center flex-col rounded-xl cursor-pointer px-12 py-2 mt-4">
-            <p>Thứ 6</p>
-            <p>16/05/2025</p>
-          </div>
-          <div className="border-2 border-black hover:bg-[#031327] hover:text-white flex items-center justify-center flex-col rounded-xl cursor-pointer px-12 py-2 mt-4">
-            <p>Thứ 6</p>
-            <p>16/05/2025</p>
-          </div>
-          <div className="border-2 border-black hover:bg-[#031327] hover:text-white flex items-center justify-center flex-col rounded-xl cursor-pointer px-12 py-2 mt-4">
-            <p>Thứ 6</p>
-            <p>16/05/2025</p>
-          </div>
-          <div className="border-2 border-black hover:bg-[#031327] hover:text-white flex items-center justify-center flex-col rounded-xl cursor-pointer px-12 py-2 mt-4">
-            <p>Thứ 6</p>
-            <p>16/05/2025</p>
-          </div>
-          <div className="border-2 border-black hover:bg-[#031327] hover:text-white flex items-center justify-center flex-col rounded-xl cursor-pointer px-12 py-2 mt-4">
-            <p>Thứ 6</p>
-            <p>16/05/2025</p>
-          </div>
-          <div className="border-2 border-black hover:bg-[#031327] hover:text-white flex items-center justify-center flex-col rounded-xl cursor-pointer px-12 py-2 mt-4">
-            <p>Thứ 6</p>
-            <p>16/05/2025</p>
-          </div>
+          {schedules.map((schedule) => {
+            const date = new Date(schedule.scheduleDate);
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            const formattedDate = `${day}/${month}/${year}`;
+            const weekday = date.toLocaleDateString("vi-VN", { weekday: 'long' })
+
+            return (
+              <button
+                key={schedule.id}
+                onClick={() => { setSelectedDate(schedule); }}
+                className={`border border-black w-[150px] rounded-2xl font-bold text-[20px] cursor-pointer px-4 py-4
+                  ${selectedDate.scheduleDate === schedule.scheduleDate ? "bg-black text-white" : "bg-white hover:bg-black hover:text-white"}`}
+              >
+                <div>
+                  <p>{formattedDate}</p>
+                  <p className='capitalize'>{weekday}</p>
+                </div>
+              </button>
+            )
+          })}
         </div>
         <div className="mt-20 container mx-auto space-y-[80px]">
           <div className="flex gap-[50px]">
