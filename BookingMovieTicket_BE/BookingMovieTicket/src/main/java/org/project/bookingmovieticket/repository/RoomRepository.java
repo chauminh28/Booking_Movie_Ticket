@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
     Page<Room> findByRoomNameContainingIgnoreCase(String roomName, Pageable pageable);
+    Page<Room> findByStatus(Boolean status, Pageable pageable);
+    Page<Room> findByRoomNameContainingIgnoreCaseAndStatus(String roomName, Boolean status, Pageable pageable);
 }

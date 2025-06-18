@@ -25,6 +25,10 @@ public class UserService {
     }
 
     public User createUser(UserCreateRequest request) {
+        if(existsUser(request.getUserName())) {
+            throw new RuntimeException("Tên đăng nhập đã tồn tại");
+        }
+
         User user = new User();
 
         user.setUserName(request.getUserName());
@@ -47,14 +51,17 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Page<UserResponse> getUsers(String searchValue, Pageable pageable) {
+    public Page<UserResponse> getUsers(String searchValue, Pageable pageable, Boolean status) {
         Page<User> page;
 
-        if (searchValue == null || searchValue.isEmpty()) {
+        if ((searchValue == null || searchValue.isEmpty()) && status == null) {
             page = userRepository.findAll(pageable);
-        }
-        else {
+        } else if ((searchValue == null || searchValue.isEmpty())) {
+            page = userRepository.findByStatus(status, pageable);
+        } else if (status == null) {
             page = userRepository.findByUserNameContainingIgnoreCase(searchValue, pageable);
+        } else {
+            page = userRepository.findByUserNameContainingIgnoreCaseAndStatus(searchValue, status, pageable);
         }
 
         return page.map(user -> {
@@ -114,5 +121,34 @@ public class UserService {
 
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
+    }
+
+    public User updateStatusUser(Long userId, boolean status) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setStatus(status);
+
+        return userRepository.save(user);
+    }
+
+    public boolean existsUser(String username) {
+        System.out.println(username);
+        System.out.println(userRepository.existsByUserNameIgnoreCase(username));
+        return userRepository.existsByUserNameIgnoreCase(username.trim());
+    }
+
+    public User updatePassword(Long userId, String oldPassword, String newPassword) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new RuntimeException("Mật khẩu cũ không chính xác");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        return userRepository.save(user);
     }
 }

@@ -37,14 +37,17 @@ public class BookingServiceService {
         this.bookingProductRepository = bookingProductRepository;
     }
 
-    public Page<BookingResponse> getBookings(String searchValue, Pageable pageable) {
+    public Page<BookingResponse> getBookings(String searchValue, Pageable pageable, Integer status) {
         Page<Booking> page;
 
-        if(searchValue == null || searchValue.isEmpty()) {
+        if ((searchValue == null || searchValue.isEmpty()) && status == null) {
             page = bookingRepository.findAll(pageable);
-        }
-        else {
+        } else if ((searchValue == null || searchValue.isEmpty())) {
+            page = bookingRepository.findByTicketStatus(status, pageable);
+        } else if (status == null) {
             page = bookingRepository.findByUser_UserNameContainingIgnoreCase(searchValue, pageable);
+        } else {
+            page = bookingRepository.findByUser_UserNameContainingIgnoreCaseAndTicketStatus(searchValue, status, pageable);
         }
 
         return page.map(booking -> {
@@ -91,6 +94,7 @@ public class BookingServiceService {
                         .map(Seat::getSeatNumber)
                         .collect(Collectors.toList()))
                 .ticketStatus(booking.getTicketStatus())
+                .totalMoney(booking.getTotalMoney())
                 .bookingServices(
                         booking.getBookingServices().stream()
                                 .map(bs -> BookingServiceResponse.builder()
@@ -128,6 +132,7 @@ public class BookingServiceService {
         booking.setRoom(roomRepository.findById(request.getRoomId()).orElseThrow());
         booking.setBookingTime(LocalDateTime.now());
         booking.setTicketStatus(request.getTicketStatus());
+        booking.setTotalMoney(request.getTotalMoney());
 
         List<Seat> seats = seatRepository.findAllById(request.getSeatIds());
         booking.setSeats(seats);
@@ -146,5 +151,10 @@ public class BookingServiceService {
 
         bookingProductRepository.saveAll(bookingServices);
         return savedBooking;
+    }
+
+    public List<Booking> getBookingSeats(Long scheduleId, Long roomId, Long showTimeId) {
+
+        return bookingRepository.findBookedSeats(scheduleId, roomId, showTimeId);
     }
 }

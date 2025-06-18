@@ -1,5 +1,6 @@
 package org.project.bookingmovieticket.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.project.bookingmovieticket.enums.Gender;
@@ -32,5 +33,6 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "roleId")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Role role;
 }
