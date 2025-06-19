@@ -23,7 +23,13 @@ server:
       charset: UTF-8
       force: true
 
+  port: 8080
 
+vnpay:
+  tmnCode: IP21AIAL
+  hashSecret: L44APGGLO7H328N20SFLRY1ROX4YBBUR
+  payUrl: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+  returnUrl: http://localhost:5173/bookingSuccess
 
 jwt:
   signerKey: "Vz8SbmcFpTpK4iDX65I2q469YpxP1pizxOKcze/SH9g5J+HRuFjkbfcswze5nvdr"
