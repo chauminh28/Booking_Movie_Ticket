@@ -3,6 +3,7 @@ package org.project.bookingmovieticket.service;
 import org.project.bookingmovieticket.dto.request.product.ProductCreateRequest;
 import org.project.bookingmovieticket.dto.request.product.ProductResponse;
 import org.project.bookingmovieticket.dto.request.product.ProductUpdateRequest;
+import org.project.bookingmovieticket.entity.ServiceType;
 import org.project.bookingmovieticket.repository.ProductRepository;
 import org.project.bookingmovieticket.repository.ServiceTypeRepository;
 import org.springframework.data.domain.Page;
@@ -30,25 +31,30 @@ public class ProductService {
                         .build());
     }
 
-    public Page<ProductResponse> getProducts(String searchValue, Pageable pageable) {
+    public Page<ProductResponse> getProducts(String searchValue, Pageable pageable, Long serviceTypeId) {
         Page<Product> page;
 
-        if(searchValue == null || searchValue.isEmpty()) {
+        if ((searchValue == null || searchValue.isEmpty()) && serviceTypeId == null) {
             page = productRepository.findAll(pageable);
-        }
-        else {
+        } else if (searchValue == null || searchValue.isEmpty()) {
+            ServiceType serviceType = serviceTypeRepository.findById(serviceTypeId)
+                    .orElseThrow(() -> new RuntimeException("Service type not found"));
+            page = productRepository.findByServiceType(serviceType, pageable);
+        } else if (serviceTypeId == null) {
             page = productRepository.findByServiceNameContainingIgnoreCase(searchValue, pageable);
+        } else {
+            ServiceType serviceType = serviceTypeRepository.findById(serviceTypeId)
+                    .orElseThrow(() -> new RuntimeException("Service type not found"));
+            page = productRepository.findByServiceNameContainingIgnoreCaseAndServiceType(searchValue, serviceType, pageable);
         }
 
-        return page.map(product -> {
-            return ProductResponse.builder()
-                    .id(product.getId())
-                    .serviceName(product.getServiceName())
-                    .price(product.getPrice())
-                    .image(product.getImage())
-                    .serviceTypeId(product.getServiceType().getId())
-                    .build();
-        });
+        return page.map(product -> ProductResponse.builder()
+                .id(product.getId())
+                .serviceName(product.getServiceName())
+                .price(product.getPrice())
+                .image(product.getImage())
+                .serviceTypeId(product.getServiceType().getId())
+                .build());
     }
 
     public ProductResponse getProduct(Long id) {

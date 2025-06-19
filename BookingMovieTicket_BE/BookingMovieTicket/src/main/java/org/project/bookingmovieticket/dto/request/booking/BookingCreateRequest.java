@@ -23,4 +23,5 @@ public class BookingCreateRequest {
     private List<BookingProductResponse> bookingServices;
     private int paymentStatus;
     private int ticketStatus;
+    private Long totalMoney;
 }

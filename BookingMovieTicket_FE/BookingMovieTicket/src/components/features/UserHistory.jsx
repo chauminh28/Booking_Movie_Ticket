@@ -4,17 +4,23 @@ import React, { useEffect, useState } from "react";
 import { BsTicketDetailedFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 function UserHistory() {
-  const [booking, setBooking] = useState({});
+  const [booking, setBooking] = useState([]);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const size = 10;
   const [userName, setUserName] = useState("");
-
+  const ticketStatus = {
+    1: "Chưa sử dụng",
+    2: "Đã sử dụng",
+    3: "Đã hết hạn",
+  };
   useEffect(() => {
     const token = localStorage.getItem("token");
+    console.log(token);
     if (token) {
       try {
         const decoded = jwtDecode(token);
+        console.log(decoded);
         setUserName(decoded.sub);
       } catch (err) {
         localStorage.removeItem("token");
@@ -39,6 +45,8 @@ function UserHistory() {
         console.error("Lỗi khi tải danh sách đặt vé!", error);
       });
   }, [page, userName]);
+  console.log("Booking:", booking);
+  console.log("Username:", userName);
   const goToPage = (pageNumber) => {
     if (pageNumber >= 0 && pageNumber < totalPages) {
       setPage(pageNumber);
@@ -76,16 +84,29 @@ function UserHistory() {
               <tr className="border-t border-[#EEEEEE]" key={item.id}>
                 <td className="px-4 py-4">{item.movieName}</td>
                 <td className="px-4 py-4">{`${item.scheduleTime} ${item.startTime}`}</td>
-                <td className="px-4 py-4">{item.bookingTime}</td>
-                <td className="px-4 py-4">{item.seatNumber.join(", ")}</td>
-                <td className="px-4 py-4"></td>
-                <td className="px-4 py-4">Thành công</td>
+                <td className="px-4 py-4">
+                  {new Date(item.bookingTime).toLocaleString("vi-VN", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hour12: false,
+                  })}
+                </td>
+                <td className="px-4 py-4">{item.seatNumbers.join(", ")}</td>
+                <td className="px-4 py-4">
+                  {item.totalMoney ? item.totalMoney.toLocaleString() : 0}
+                </td>
+                <td className="px-4 py-4">{ticketStatus[item.ticketStatus]}</td>
                 <td className="px-4 py-4 flex">
                   <button className=" text-[30px] cursor-pointer">
-                    <Link to="/profile/history/detail">
+                    <Link to={`/profile/history/detail/${item.id}`}>
                       <BsTicketDetailedFill />
                     </Link>
                   </button>
+                  {console.log(item.seatNumber)}
                 </td>
               </tr>
             ))

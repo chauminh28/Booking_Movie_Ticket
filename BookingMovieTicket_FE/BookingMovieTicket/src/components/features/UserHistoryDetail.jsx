@@ -1,7 +1,43 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 
 function UserHistoryDetail() {
+  const [booking, setBooking] = useState(null);
+  const { id } = useParams();
+  const [vnpayParams] = useSearchParams();
+  useEffect(() => {
+    if (vnpayParams.get("vnp_ResponseCode") === "00") {
+      axios
+        .put(`http://localhost:8080/bookings/payment/${id}`, null, {
+          params: {
+            status: 1,
+          },
+        })
+        .then((response) => {
+          setBooking(response.data);
+        })
+        .catch((error) => {
+          console.error("Lỗi cập nhật trạng thái thanh toán", error);
+        });
+    }
+  }, [id, vnpayParams]);
+  console.log("VNPAY Params:", vnpayParams);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/bookings/${id}`)
+      .then((response) => {
+        setBooking(response.data);
+      })
+      .catch((error) => {
+        console.error("Lỗi fetch api booking", error);
+      });
+  }, [id]);
+  const paymentStatusName = {
+    0: "Chưa thanh toán",
+    1: "Đã thanh toán",
+  };
   return (
     <div className="container mx-auto ">
       <div className="mb-8">
@@ -17,42 +53,56 @@ function UserHistoryDetail() {
           </p>
           <div className="flex flex-col gap-6 text-lg justify-center">
             <p className="px-6">
-              <span className="font-bold">Phim: </span> Biệt đội sấm sét
+              <span className="font-bold">Phim: </span> {booking?.movieName}
             </p>
             <div className="w-[90%] border-b-2 border-gray-300 ml-6"></div>
             <div className="flex space-x-69 px-6">
               <div className="flex flex-col gap-3">
                 <p>
-                  <span className="font-bold">Ngày giờ chiếu: </span> 30/04/2025
+                  <span className="font-bold">Ngày giờ chiếu: </span>
+                  {booking?.scheduleTime} {booking?.startTime}
                 </p>
                 <p>
-                  <span className="font-bold">Ngày đặt vé: </span> 27/04/2025
+                  <span className="font-bold">Ngày đặt vé: </span>{" "}
+                  {new Date(booking?.bookingTime).toLocaleString("vi-VN", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hour12: false,
+                  })}
                 </p>
                 <p>
-                  <span className="font-bold">Phòng: </span> 01
+                  <span className="font-bold">Phòng: </span> {booking?.roomName}
                 </p>
               </div>
               <div className="flex flex-col gap-3">
                 <p>
-                  <span className="font-bold">Ghế: </span> C5, C6
+                  <span className="font-bold">Ghế: </span>{" "}
+                  {booking?.seatNumbers.join(", ")}
                 </p>
                 <p>
                   <span className="font-bold">Thanh toán qua: </span> VNPAY
                 </p>
 
                 <p>
-                  <span className="font-bold">Số vé: </span> 2
+                  <span className="font-bold">Số vé: </span>{" "}
+                  {booking?.seatNumbers.length}
                 </p>
               </div>
             </div>
             <div className="w-[90%] border-b-2 border-gray-300 ml-6"></div>
 
-            <div className="flex space-x-102 gap-3 px-6">
+            <div className="flex space-x-90 gap-3 px-6">
               <p>
-                <span className="font-bold">Trạng thái: </span> Thành công
+                <span className="font-bold">Trạng thái: </span>{" "}
+                {paymentStatusName[booking?.paymentStatus]}
               </p>
               <p>
-                <span className="font-bold">Tổng tiền: </span> 200.000 VND
+                <span className="font-bold">Tổng tiền: </span>{" "}
+                {booking?.totalMoney.toLocaleString()} VND
               </p>
             </div>
           </div>

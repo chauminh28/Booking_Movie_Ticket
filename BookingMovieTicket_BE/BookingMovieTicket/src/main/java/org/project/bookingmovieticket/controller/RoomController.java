@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("rooms")
@@ -31,8 +32,10 @@ public class RoomController {
     }
 
     @GetMapping
-    Page<RoomResponse> getRooms(@RequestParam(value = "search", required = false) String searchValue, Pageable pageable) {
-        return roomService.getRooms(searchValue, pageable);
+    Page<RoomResponse> getRooms(@RequestParam(value = "search", required = false) String searchValue,
+                                @RequestParam(value = "status", required = false) Boolean statusValue,
+                                Pageable pageable) {
+        return roomService.getRooms(searchValue, pageable, statusValue);
     }
 
     @GetMapping("/{roomId}")
@@ -44,6 +47,14 @@ public class RoomController {
     @PutMapping("/{roomId}")
     Room updateRoom(@PathVariable("roomId") Long id, @RequestBody @Valid RoomUpdateRequest request) {
         return roomService.updateRoom(id, request);
+    }
+
+    @PutMapping("/status/{roomId}")
+    Room updateStatus(@PathVariable("roomId") Long id,
+                      @RequestBody Map<String, Boolean> request) {
+        boolean statusValue = request.get("status");
+
+        return roomService.updateStatus(id, statusValue);
     }
 
     @DeleteMapping("/{roomId}")

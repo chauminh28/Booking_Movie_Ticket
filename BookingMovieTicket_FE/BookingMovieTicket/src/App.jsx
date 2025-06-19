@@ -72,7 +72,7 @@ function App() {
         />
         <Route path="/profile/history" element={<ProfileHistory />} />
         <Route
-          path="/profile/history/detail"
+          path="/profile/history/detail/:id"
           element={<ProfileHistoryDetail />}
         />
         <Route path="/movie" element={<MoviePage />} />

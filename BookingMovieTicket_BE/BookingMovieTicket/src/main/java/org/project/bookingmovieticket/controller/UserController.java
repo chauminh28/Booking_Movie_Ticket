@@ -1,7 +1,9 @@
 package org.project.bookingmovieticket.controller;
 
+import jakarta.validation.Valid;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.project.bookingmovieticket.dto.request.user.ChangePasswordRequest;
 import org.project.bookingmovieticket.dto.request.user.UserCreateRequest;
 import org.project.bookingmovieticket.dto.request.user.UserResponse;
 import org.project.bookingmovieticket.dto.request.user.UserUpdateRequest;
@@ -16,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("users")
@@ -40,13 +43,11 @@ public class UserController {
     }
 
     @GetMapping
-    Page<UserResponse> getUsers(@RequestParam(value = "search", required = false) String searchValue, Pageable pageable) {
-//        var authentication = SecurityContextHolder.getContext().getAuthentication();
-//
-//        log.info("Username: {}", authentication.getName());
-//        log.info("Role: {}", authentication.getAuthorities());
+    Page<UserResponse> getUsers(@RequestParam(value = "search", required = false) String searchValue,
+                                @RequestParam(value = "status", required = false) Boolean statusValue,
+                                Pageable pageable) {
 
-        return userService.getUsers(searchValue, pageable);
+        return userService.getUsers(searchValue, pageable, statusValue);
     }
 
     @GetMapping("/{userId}")
@@ -61,10 +62,32 @@ public class UserController {
         return userService.updateUser(id, request);
     }
 
+    @PutMapping("/status/{userId}")
+    User updateStatusUser(@PathVariable("userId") Long id,
+                    @RequestBody Map<String, Boolean> request) {
+        boolean status = request.get("status");
+
+        return userService.updateStatusUser(id, status);
+    }
+
     @DeleteMapping("/{userId}")
     String deleteUser(@PathVariable("userId") Long id) {
         userService.deleteUser(id);
 
         return "User has been deleted";
+    }
+
+    @GetMapping("/check-username")
+    public Boolean checkUsername(@RequestParam String username) {
+        return userService.existsUser(username.trim());
+    }
+
+    @PutMapping("/change-password/{userId}")
+    public String changePassword(
+            @PathVariable Long userId,
+            @RequestBody @Valid ChangePasswordRequest request) {
+        userService.updatePassword(userId, request.getOldPassword(), request.getNewPassword());
+
+        return "Đổi mật khẩu thành công";
     }
 }

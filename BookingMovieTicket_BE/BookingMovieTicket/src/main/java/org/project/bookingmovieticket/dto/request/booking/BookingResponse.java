@@ -27,5 +27,6 @@ public class BookingResponse {
     private List<String> seatNumbers;
     private String roomName;
     private int ticketStatus;
+    private Long totalMoney;
     private List<BookingServiceResponse> bookingServices;
 }

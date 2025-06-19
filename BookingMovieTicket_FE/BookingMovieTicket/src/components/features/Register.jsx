@@ -7,6 +7,7 @@ import axiosClient from '../../api/axiosClient'
 import { initFlowbite } from 'flowbite'
 import SuccessToast from '../../components/toasts/SuccessToast';
 import ErrorToast from '../../components/toasts/ErrorToast';
+import axios from "axios";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
@@ -81,6 +82,15 @@ export default function Register() {
       return;
     }
     setErrors({});
+
+    const res = await axiosClient.get(`/users/check-username?username=${form.userName}`);
+    if (res.data === true) {
+      newErrors.userName = "Tên đăng nhập đã tồn tại";
+      setErrors(newErrors);
+      setErrorMessage("Tên đăng nhập đã tồn tại");
+      setErrorShowToast(true);
+      return;
+    }
 
     const { rePassword, ...payload } = form
 

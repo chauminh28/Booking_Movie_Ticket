@@ -15,6 +15,7 @@ function UserManager() {
   const [users, setUsers] = useState([])
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [filterStatus, setFilterStatus] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const roleMap = {
     1: 'Admin',
@@ -30,16 +31,18 @@ function UserManager() {
           page: page,
           size: size,
           search: searchValue,
+          status: filterStatus !== null ? filterStatus : undefined,
         },
       })
       .then((response) => {
+        console.log(response.data.content)
         setUsers(response.data.content)
         setTotalPages(response.data.totalPages)
       })
       .catch((error) => {
         console.error("Lỗi fetch api user", error);
       });
-  }, [page, searchValue])
+  }, [page, searchValue, filterStatus])
 
   const goToPage = (pageNumber) => {
     if (pageNumber >= 0 && pageNumber < totalPages) {
@@ -51,19 +54,30 @@ function UserManager() {
     const user = users.find(u => u.id === userId);
     if (!user) return;
 
-    const updatedUser = { ...user, status: !user.status };
-    updatedUser.password = ''
+    const updatedUser = { status: !user.status };
 
     try {
-      const res = await axiosClient.put(`/users/${userId}`, updatedUser)
+      const res = await axiosClient.put(`/users/status/${userId}`, updatedUser)
       setUsers(prevUsers =>
         prevUsers.map(u =>
-          u.id === userId ? updatedUser : u
+          u.id === userId ? { ...u, status: res.data.status } : u
         )
       );
     } catch (err) {
       console.log(err)
     }
+  };
+
+  const handleFilterChange = (value) => {
+    const newValue = value === "active" ? true : false;
+
+    if (filterStatus === newValue) {
+      setFilterStatus(null);
+    } else {
+      setFilterStatus(newValue);
+    }
+
+    setPage(0);
   };
 
   return (
@@ -113,20 +127,17 @@ function UserManager() {
                   id="lock"
                   className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700"
                 >
-                  <ul
-                    className="py-2 text-sm text-gray-700 dark:text-gray-200 pl-2"
-                    aria-labelledby="dropdownDefaultButton"
-                  >
+                  <ul className="py-2 text-sm text-gray-700 dark:text-gray-200 pl-2">
                     <li>
                       <input
-                        id="default-radio-1"
-                        type="radio"
-                        value=""
-                        name="default-radio"
+                        id="locked"
+                        type="checkbox"
+                        checked={filterStatus === false}
+                        onChange={() => handleFilterChange("locked")}
                         className="w-4 h-4 text-gray-500"
                       />
                       <label
-                        htmlFor="default-radio-1"
+                        htmlFor="locked"
                         className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                       >
                         Khoá
@@ -134,14 +145,14 @@ function UserManager() {
                     </li>
                     <li>
                       <input
-                        id="default-radio-1"
-                        type="radio"
-                        value=""
-                        name="default-radio"
+                        id="active"
+                        type="checkbox"
+                        checked={filterStatus === true}
+                        onChange={() => handleFilterChange("active")}
                         className="w-4 h-4 text-gray-500"
                       />
                       <label
-                        htmlFor="default-radio-1"
+                        htmlFor="active"
                         className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                       >
                         Mở

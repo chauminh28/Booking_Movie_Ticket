@@ -50,4 +50,6 @@ public class Booking {
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<BookingService> bookingServices;
+
+    private Long totalMoney;
 }

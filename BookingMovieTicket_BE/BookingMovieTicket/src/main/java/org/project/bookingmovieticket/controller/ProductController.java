@@ -25,8 +25,10 @@ public class ProductController {
     }
 
     @GetMapping
-    public Page<ProductResponse> getProducts(@RequestParam(value = "search", required = false) String searchValue, Pageable pageable) {
-        return productService.getProducts(searchValue, pageable);
+    public Page<ProductResponse> getProducts(@RequestParam(value = "search", required = false) String searchValue,
+                                             @RequestParam(value = "type", required = false) Long type,
+                                             Pageable pageable) {
+        return productService.getProducts(searchValue, pageable, type);
     }
 
     @GetMapping("/{productId}")

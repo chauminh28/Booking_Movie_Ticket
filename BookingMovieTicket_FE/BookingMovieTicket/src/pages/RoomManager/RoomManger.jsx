@@ -16,6 +16,7 @@ import axiosClient from "../../api/axiosClient";
 export default function RoomMangaer() {
   const [rooms, setRooms] = useState([]);
   const [page, setPage] = useState(0);
+  const [filterStatus, setFilterStatus] = useState(null);
   const [totalPages, setTotalPages] = useState(0);
   const [searchValue, setSearchValue] = useState("");
   const size = 5;
@@ -27,16 +28,18 @@ export default function RoomMangaer() {
           page: page,
           size: size,
           search: searchValue,
+          status: filterStatus !== null ? filterStatus : undefined,
         },
       })
       .then((response) => {
+        console.log(response.data.content)
         setRooms(response.data.content);
         setTotalPages(response.data.totalPages);
       })
       .catch((error) => {
         console.error("Lỗi fetch api room", error);
       });
-  }, [page, searchValue]);
+  }, [page, searchValue, filterStatus]);
 
   const goToPage = (pageNumber) => {
     if (pageNumber >= 0 && pageNumber < totalPages) {
@@ -45,20 +48,33 @@ export default function RoomMangaer() {
   };
 
   const toggleRoom = async (roomId) => {
+    console.log("roomId", roomId)
     const room = rooms.find((r) => r.id === roomId);
     if (!room) return;
 
-    const updatedRoom = { ...room, status: !room.status };
+    const updatedRoom = { status: !room.status };
 
     try {
       // eslint-disable-next-line no-unused-vars
-      const res = await axiosClient.put(`/rooms/${roomId}`, updatedRoom);
+      const res = await axiosClient.put(`/rooms/status/${roomId}`, updatedRoom);
       setRooms((prevRooms) =>
-        prevRooms.map((r) => (r.id === roomId ? updatedRoom : r))
-      );
+        prevRooms.map((r => r.id === roomId ? { ...r, status: res.data.status } : r)
+        ));
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const handleFilterChange = (value) => {
+    const newValue = value === "true" ? true : false;
+
+    if (filterStatus === newValue) {
+      setFilterStatus(null);
+    } else {
+      setFilterStatus(newValue);
+    }
+
+    setPage(0);
   };
 
   return (
@@ -108,20 +124,17 @@ export default function RoomMangaer() {
                   id="lock"
                   className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700"
                 >
-                  <ul
-                    className="py-2 text-sm text-gray-700 dark:text-gray-200 pl-2"
-                    aria-labelledby="dropdownDefaultButton"
-                  >
+                  <ul className="py-2 text-sm text-gray-700 dark:text-gray-200 pl-2">
                     <li>
                       <input
-                        id="default-radio-1"
-                        type="radio"
-                        value=""
-                        name="default-radio"
-                        className="w-4 h-4"
+                        id="radio-locked"
+                        type="checkbox"
+                        checked={filterStatus === false}
+                        onChange={() => handleFilterChange("false")}
+                        className="w-4 h-4 text-gray-500"
                       />
                       <label
-                        htmlFor="default-radio-1"
+                        htmlFor="radio-locked"
                         className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                       >
                         Khoá
@@ -129,14 +142,14 @@ export default function RoomMangaer() {
                     </li>
                     <li>
                       <input
-                        id="default-radio-1"
-                        type="radio"
-                        value=""
-                        name="default-radio"
-                        className="w-4 h-4"
+                        id="radio-active"
+                        type="checkbox"
+                        checked={filterStatus === true}
+                        onChange={() => handleFilterChange("true")}
+                        className="w-4 h-4 text-gray-500"
                       />
                       <label
-                        htmlFor="default-radio-1"
+                        htmlFor="radio-active"
                         className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                       >
                         Mở
@@ -235,11 +248,10 @@ export default function RoomMangaer() {
                       <button
                         key={index}
                         onClick={() => goToPage(index)}
-                        className={`px-3 py-2 border border-gray-300 ${
-                          index === page
-                            ? "bg-black text-white"
-                            : "bg-[#F5F5F5] hover:bg-black hover:text-white"
-                        } rounded-md`}
+                        className={`px-3 py-2 border border-gray-300 ${index === page
+                          ? "bg-black text-white"
+                          : "bg-[#F5F5F5] hover:bg-black hover:text-white"
+                          } rounded-md`}
                       >
                         {index + 1}
                       </button>

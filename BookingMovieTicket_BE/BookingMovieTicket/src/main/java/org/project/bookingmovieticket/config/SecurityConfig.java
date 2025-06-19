@@ -3,6 +3,7 @@
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.http.HttpMethod;
+//import org.springframework.security.config.Customizer;
 //import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 //import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 //import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -16,23 +17,19 @@
 //@Configuration
 //@EnableWebSecurity
 //public class SecurityConfig {
+//    private final String[] PUBLIC_ENDPOINTS = {
+//            "/auth/login", "/users"
+//    };
+//
 //    @Bean
 //    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-////        http
-////                .cors()
-////                .and()
-////                .authorizeHttpRequests(request ->
-////                request.requestMatchers(HttpMethod.POST, "/users").permitAll()
-////                        .requestMatchers(HttpMethod.POST, "/auth/token", "/auth/login").permitAll()
-////                        .requestMatchers("/genres/**").permitAll()
-////                        .requestMatchers("/movies/**").permitAll()
-////
-////                        .anyRequest().authenticated());
 //        http
-//                .cors().and()
+//                .cors(Customizer.withDefaults())
 //                .csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(req -> req.anyRequest().permitAll());
-//        http.csrf(AbstractHttpConfigurer::disable);
+//                .authorizeHttpRequests(request -> request
+//                        .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+//                        .anyRequest().authenticated()
+//                );
 //
 //        return http.build();
 //    }

@@ -55,14 +55,17 @@ public class RoomService {
         return room;
     }
 
-    public Page<RoomResponse> getRooms(String searchValue, Pageable pageable) {
+    public Page<RoomResponse> getRooms(String searchValue, Pageable pageable, Boolean status) {
         Page<Room> page;
 
-        if(searchValue == null || searchValue.isEmpty()) {
+        if ((searchValue == null || searchValue.isEmpty()) && status == null) {
             page = roomRepository.findAll(pageable);
-        }
-        else {
+        } else if ((searchValue == null || searchValue.isEmpty())) {
+            page = roomRepository.findByStatus(status, pageable);
+        } else if (status == null) {
             page = roomRepository.findByRoomNameContainingIgnoreCase(searchValue, pageable);
+        } else {
+            page = roomRepository.findByRoomNameContainingIgnoreCaseAndStatus(searchValue, status, pageable);
         }
 
         return page.map(room -> {
@@ -114,5 +117,14 @@ public class RoomService {
 
     public void deleteRoom(Long id) {
         roomRepository.deleteById(id);
+    }
+
+    public Room updateStatus(Long id, boolean status) {
+        Room room = roomRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Room not found"));
+
+        room.setStatus(status);
+
+        return roomRepository.save(room);
     }
 }

@@ -8,9 +8,14 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 function MovieList() {
   const [movies, setMovies] = useState([]);
+  const [status, setStatus] = useState(1);
   useEffect(() => {
     axios
-      .get("http://localhost:8080/movies") // thay bằng endpoint của bạn
+      .get("http://localhost:8080/movies", {
+        params: {
+          status,
+        },
+      }) // thay bằng endpoint của bạn
       .then((response) => {
         setMovies(response.data.content);
         console.log("Danh sách phim:", response.data.content);
@@ -18,7 +23,7 @@ function MovieList() {
       .catch((error) => {
         console.error("Lỗi khi lấy danh sách phim:", error);
       });
-  }, []);
+  }, [status]);
   console.log("Movies:", movies);
   const items = [
     {
@@ -79,10 +84,24 @@ function MovieList() {
     <div className="container flex flex-col items-center mx-auto mb-12">
       {/* Tab chọn phim */}
       <div className="flex w-full mb-8 container mx-auto justify-center space-x-[250px]">
-        <div className="border-2 border-black hover:bg-black hover:text-white rounded-3xl cursor-pointer px-12 py-2">
+        <div
+          className={`border-2 rounded-3xl cursor-pointer px-12 py-2 font-bold ${
+            status === 1
+              ? "bg-black text-white border-black"
+              : "border-black hover:bg-black hover:text-white"
+          }`}
+          onClick={() => setStatus(1)}
+        >
           <p className="font-bold">Phim đang chiếu</p>
         </div>
-        <div className="border-2 border-black hover:bg-black hover:text-white rounded-3xl cursor-pointer px-12 py-2">
+        <div
+          className={`border-2 rounded-3xl cursor-pointer px-12 py-2 font-bold ${
+            status === 0
+              ? "bg-black text-white border-black"
+              : "border-black hover:bg-black hover:text-white"
+          }`}
+          onClick={() => setStatus(0)}
+        >
           <p className="font-bold">Phim sắp chiếu</p>
         </div>
       </div>

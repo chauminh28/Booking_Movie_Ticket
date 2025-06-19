@@ -14,6 +14,7 @@ function ServiceManager() {
     const [serviceTypes, setServiceTypes] = useState([]);
     const [page, setPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const [filterType, setFilterType] = useState(null);
     const [searchValue, setSearchValue] = useState("");
     const size = 5;
 
@@ -24,6 +25,7 @@ function ServiceManager() {
                     page: page,
                     size: size,
                     search: searchValue,
+                    type: filterType !== null ? filterType : undefined,
                 },
             })
             .then((response) => {
@@ -31,9 +33,9 @@ function ServiceManager() {
                 setTotalPages(response.data.totalPages);
             })
             .catch((error) => {
-                console.error("Lỗi khi tải danh sách diễn viên!", error);
+                console.error("Lỗi khi tải danh sách dịch vụ!", error);
             });
-    }, [page, searchValue]);
+    }, [page, searchValue, filterType]);
 
     useEffect(() => {
         axios
@@ -49,6 +51,14 @@ function ServiceManager() {
     const goToPage = (pageNumber) => {
         if (pageNumber >= 0 && pageNumber < totalPages) {
             setPage(pageNumber);
+        }
+    };
+
+    const handleCheckboxChange = (id) => {
+        if (id === filterType) {
+            setFilterType(null);
+        } else {
+            setFilterType(id);
         }
     };
 
@@ -77,16 +87,24 @@ function ServiceManager() {
 
                                 <div id="lock" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
                                     <ul className="py-2 text-sm text-gray-700 dark:text-gray-200 pl-2" aria-labelledby="dropdownDefaultButton">
-                                        <li>
-                                            <input id="default-radio-1" type="radio" value="" name="default-radio" className="w-4 h-4 text-gray-500" />
-                                            <label htmlFor="default-radio-1" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Khoá</label>
-
-                                        </li>
-                                        <li>
-                                            <input id="default-radio-1" type="radio" value="" name="default-radio" className="w-4 h-4 text-gray-500" />
-                                            <label htmlFor="default-radio-1" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Mở</label>
-
-                                        </li>
+                                        {serviceTypes.map((service) => (
+                                            <li key={service.id}>
+                                                <input
+                                                    id={`service-${service.id}`}
+                                                    type="checkbox"
+                                                    value={service.id}
+                                                    checked={filterType === service.id}
+                                                    className="w-4 h-4 text-gray-500"
+                                                    onChange={() => handleCheckboxChange(service.id)}
+                                                />
+                                                <label
+                                                    htmlFor={`service-${service.id}`}
+                                                    className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                                >
+                                                    {service.name}
+                                                </label>
+                                            </li>
+                                        ))}
                                     </ul>
                                 </div>
                                 <Link to={"/serviceManager/addService"}><IoIosAddCircle className='text-[28px]' /></Link>

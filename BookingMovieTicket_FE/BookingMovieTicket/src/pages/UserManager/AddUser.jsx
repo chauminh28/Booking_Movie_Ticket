@@ -70,6 +70,15 @@ function AddUser() {
         }
         setErrors({});
 
+        const res = await axiosClient.get(`/users/check-username?username=${form.userName}`);
+        if (res.data === true) {
+            newErrors.userName = "Tên đăng nhập đã tồn tại";
+            setErrors(newErrors);
+            setErrorMessage("Tên đăng nhập đã tồn tại");
+            setErrorShowToast(true);
+            return;
+        }
+
         try {
             if (form.gender === "") {
                 form.gender = null;

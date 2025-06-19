@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/layouts/Header";
 import Footer from "../../components/layouts/Footer";
 import { Link, useLocation } from "react-router-dom";
-import axiosClient from "../../api/axiosClient";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import AddMovie from "../MovieManager/AddMovie";
@@ -48,6 +47,7 @@ function Checkout() {
     bookingServices: bookingServices,
     paymentStatus: 0,
     ticketStatus: 1,
+    totalMoney: totalPrice,
   };
   const [paymentMethod, setPaymentMethod] = useState("momo");
   const [products, setProducts] = useState([]);
@@ -82,9 +82,22 @@ function Checkout() {
     let bookingId;
     setIsLoadingPaymentUrl(true);
     try {
+      const bookingResponse = await axios.post(
+        "http://localhost:8080/bookings",
+        form
+      );
+      bookingId = bookingResponse.data.id;
+    } catch (error) {
+      console.error("Lỗi khi tạo booking:", error);
+      alert("Đặt vé thất bại. Vui lòng thử lại.");
+      setIsLoadingPaymentUrl(false);
+      return;
+    }
+    try {
       console.log("Booking response:", form);
       const res = await axios.get("http://localhost:8080/create-payment", {
         params: {
+          bookingId: bookingId,
           amount: totalPrice,
         },
       });

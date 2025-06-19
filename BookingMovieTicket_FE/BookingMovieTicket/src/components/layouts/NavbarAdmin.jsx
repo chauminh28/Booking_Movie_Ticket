@@ -22,7 +22,7 @@ export default function NavbarAdmin() {
 
   return (
     <>
-      <div className=" h-[100vh] bg-[#031327] flex gap-y-3 flex-col">
+      <div className="min-h-full bg-[#031327] flex gap-y-3 flex-col">
         <img src={Logo} />
         <div className="flex justify-start items-start mt-2">
           <IoPieChart className="text-white mx-3 flex items-center justify-center mt-1" />
