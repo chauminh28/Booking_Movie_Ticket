@@ -1,11 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Phim from "../../assets/public/images/phim-1.png";
 import Phim_2 from "../../assets/public/images/phim-2.png";
 import Phim_3 from "../../assets/public/images/phim-3.png";
 import Phim_4 from "../../assets/public/images/phim-4.png";
 import PlayButton from "../../assets/public/images/play-button.png";
 import { Link } from "react-router-dom";
+import axios from "axios";
 function MovieList() {
+  const [movies, setMovies] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/movies") // thay bằng endpoint của bạn
+      .then((response) => {
+        setMovies(response.data.content);
+        console.log("Danh sách phim:", response.data.content);
+      })
+      .catch((error) => {
+        console.error("Lỗi khi lấy danh sách phim:", error);
+      });
+  }, []);
+  console.log("Movies:", movies);
   const items = [
     {
       src: Phim,
@@ -44,20 +58,21 @@ function MovieList() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const getVisibleItems = () => {
+    if (!movies || movies.length === 0) return [];
     const visible = [];
     for (let i = 0; i < displayCount; i++) {
-      const index = (currentIndex + i) % items.length;
-      visible.push(items[index]);
+      const index = (currentIndex + i) % movies.length;
+      visible.push(movies[index]);
     }
     return visible;
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % items.length);
+    setCurrentIndex((prev) => (prev + 1) % movies.length);
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
+    setCurrentIndex((prev) => (prev - 1 + movies.length) % movies.length);
   };
 
   return (
@@ -98,46 +113,52 @@ function MovieList() {
             <span className="sr-only">Previous</span>
           </span>
         </button>
-
-        <div className="flex space-x-40">
-          {getVisibleItems().map((src, idx) => (
-            <div key={idx} className="w-[300px] rounded">
-              <div className="w-full h-[400px] rounded relative group">
-                <img
-                  src={src.src}
-                  alt={`Phim ${idx}`}
-                  className="w-full h-full object-contain
+        {movies.length > 0 && (
+          <div className="flex space-x-40">
+            {getVisibleItems().map((movie, index) => (
+              <div
+                key={`${movie.detail.id}-${index}`}
+                className="w-[300px] rounded"
+              >
+                <div className="w-full h-[400px] rounded relative group">
+                  <img
+                    src={movie.movie.movieImage}
+                    alt={`Phim ${movie.movie.movieName}`}
+                    className="w-full h-full object-contain
                   "
-                />
-                <Link to={"/movie/detail"}>
-                  <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out cursor-pointer">
-                    <img
-                      src={PlayButton}
-                      alt="play"
-                      className="w-16 h-16 relative z-20"
-                    />
-                  </div>
-                </Link>
+                  />
+                  <Link to={`/movie/detail/${movie.movie.id}`}>
+                    <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out cursor-pointer">
+                      <img
+                        src={PlayButton}
+                        alt="play"
+                        className="w-16 h-16 relative z-20"
+                      />
+                    </div>
+                  </Link>
+                </div>
+                <div className="flex flex-col justify-center p-4 h-[30%] text-[16px] font-bold">
+                  <p className="mb-6 flex items-center justify-center h-[48px] font">
+                    {movie.movie.movieName}
+                  </p>
+                  <p className="flex items-center justify-center">
+                    {movie.movie.movieDuration}{" "}
+                    <span className="ml-1 h-[60%] flex justify-center items-center border-l-2 border-black" />
+                    <span className="ml-1 text-red-500 font-bold">
+                      {movie.detail.ageName}
+                    </span>
+                  </p>
+                  <p className="flex items-center justify-center">
+                    Khởi chiếu: {movie.detail.startDate}
+                  </p>
+                  <p className="flex items-center justify-center">
+                    Thể loại: {movie.movie.genres.join(", ")}
+                  </p>
+                </div>
               </div>
-              <div className="flex flex-col justify-center p-4 h-[30%] text-[16px] font-bold">
-                <p className="mb-6 flex items-center justify-center h-[48px] font">
-                  {src.title}
-                </p>
-                <p className="flex items-center justify-center">
-                  {src.duration}{" "}
-                  <span className="ml-1 h-[60%] flex justify-center items-center border-l-2 border-black" />
-                  <span className="ml-1 text-red-500 font-bold">{src.age}</span>
-                </p>
-                <p className="flex items-center justify-center">
-                  Khởi chiếu: {src.start}
-                </p>
-                <p className="flex items-center justify-center">
-                  Thể loại: {src.genre}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         <button
           type="button"

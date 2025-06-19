@@ -52,6 +52,8 @@ import EditServiceType from "./pages/ServiceTypeManager/EditServiceType";
 import DeleteServiceType from "./pages/ServiceTypeManager/DeleteServiceType";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Checkout from "./pages/public/Checkout";
+import ProfileHistoryDetail from "./pages/public/ProfileHistoryDetail";
+import ProfileHistory from "./pages/public/ProfileHistory";
 
 function App() {
   return (
@@ -67,6 +69,11 @@ function App() {
         <Route
           path="/profile/changePassword"
           element={<ProfileChangePassword />}
+        />
+        <Route path="/profile/history" element={<ProfileHistory />} />
+        <Route
+          path="/profile/history/detail"
+          element={<ProfileHistoryDetail />}
         />
         <Route path="/movie" element={<MoviePage />} />
         <Route path="/movie/detail/:id" element={<MovieDetailPage />} />

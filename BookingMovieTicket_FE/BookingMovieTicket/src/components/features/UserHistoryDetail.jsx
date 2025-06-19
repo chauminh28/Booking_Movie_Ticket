@@ -10,44 +10,51 @@ function UserHistoryDetail() {
           hóa đơn
         </p>
       </div>
-      <div className="w-[70%] mx-auto border-1 border-black rounded-2xl mb-12 flex items-center gap-[25%]">
-        <div className="py-8">
-          <p className="uppercase px-8 py-4 font-bold text-2xl">
-            nội dung thanh toán
+      <div className="w-[60%] mx-auto border-1 border-black rounded-2xl mb-12 flex items-center gap-[25%]">
+        <div className="py-8 w-full">
+          <p className="uppercase px-4 pb-5 font-bold text-2xl">
+            thông tin hóa đơn
           </p>
-          <div className="px-12 flex flex-col gap-6 text-lg">
-            <p>
+          <div className="flex flex-col gap-6 text-lg justify-center">
+            <p className="px-6">
               <span className="font-bold">Phim: </span> Biệt đội sấm sét
             </p>
-            <p>
-              <span className="font-bold">Ngày giờ chiếu: </span> 30/04/2025
-            </p>
-            <p>
-              <span className="font-bold">Ngày đặt vé: </span> 27/04/2025
-            </p>
-            <p>
-              <span className="font-bold">Phòng: </span> 01
-            </p>
-            <p>
-              <span className="font-bold">Ghế: </span> C5, C6
-            </p>
-            <p>
-              <span className="font-bold">Thanh toán qua: </span> VNPAY
-            </p>
-            <p>
-              <span className="font-bold">Trạng thái: </span> Thành công
-            </p>
-            <p>
-              <span className="font-bold">Số vé: </span> 2
-            </p>
-            <p>
-              <span className="font-bold">Tổng tiền: </span> 200.000 VND
-            </p>
-          </div>
-        </div>
-        <div className="w-[400px] h-[400px] flex items-center justify-center">
-          <div className="w-full h-full bg-gray-500 text-white flex items-center justify-center">
-            QR CODE
+            <div className="w-[90%] border-b-2 border-gray-300 ml-6"></div>
+            <div className="flex space-x-69 px-6">
+              <div className="flex flex-col gap-3">
+                <p>
+                  <span className="font-bold">Ngày giờ chiếu: </span> 30/04/2025
+                </p>
+                <p>
+                  <span className="font-bold">Ngày đặt vé: </span> 27/04/2025
+                </p>
+                <p>
+                  <span className="font-bold">Phòng: </span> 01
+                </p>
+              </div>
+              <div className="flex flex-col gap-3">
+                <p>
+                  <span className="font-bold">Ghế: </span> C5, C6
+                </p>
+                <p>
+                  <span className="font-bold">Thanh toán qua: </span> VNPAY
+                </p>
+
+                <p>
+                  <span className="font-bold">Số vé: </span> 2
+                </p>
+              </div>
+            </div>
+            <div className="w-[90%] border-b-2 border-gray-300 ml-6"></div>
+
+            <div className="flex space-x-102 gap-3 px-6">
+              <p>
+                <span className="font-bold">Trạng thái: </span> Thành công
+              </p>
+              <p>
+                <span className="font-bold">Tổng tiền: </span> 200.000 VND
+              </p>
+            </div>
           </div>
         </div>
       </div>
