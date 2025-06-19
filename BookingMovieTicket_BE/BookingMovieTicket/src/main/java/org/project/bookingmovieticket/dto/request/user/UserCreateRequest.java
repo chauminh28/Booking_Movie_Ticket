@@ -16,9 +16,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserCreateRequest {
-    @Size(min = 6, max = 12, message = "Username phải có ít nhất 6 kí tự và nhiều nhất 20 kí tự", groups = {OnRegister.class, OnAdminCreate.class})
+    @Size(min = 6, max = 12, message = "Username phải có ít nhất 6 kí tự và nhiều nhất 12 kí tự", groups = {OnRegister.class, OnAdminCreate.class})
     private String userName;
 
+    @Size(min = 6, max = 18, message = "Password phải có ít nhất 6 kí tự và nhiều nhất 18 kí tự")
     @NotBlank(message = "Mật khẩu không được để trống", groups = OnRegister.class)
     private String password;
 

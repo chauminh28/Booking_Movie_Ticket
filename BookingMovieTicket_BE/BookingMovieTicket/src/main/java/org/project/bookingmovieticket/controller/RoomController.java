@@ -63,4 +63,9 @@ public class RoomController {
 
         return "Room has been deleted";
     }
+
+    @GetMapping("/status")
+    List<Room> getRoomStatus(@RequestParam(value = "status", required = false) Boolean statusValue) {
+        return roomService.getRoomsByStatus(statusValue);
+    }
 }

@@ -77,6 +77,7 @@ public class AuthenticationService {
                 ))
                 .claim("scope", user.getRole().getRoleName())
                 .claim("userId", user.getId())
+                .claim("status", user.isStatus())
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
