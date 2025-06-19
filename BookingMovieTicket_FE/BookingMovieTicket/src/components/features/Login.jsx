@@ -35,8 +35,15 @@ export default function Login() {
             if (isAuthenticated === true) {
                 const decoded = jwtDecode(data.token)
 
+                if (decoded.status === false) {
+                    setErrorMessage("Tài khoản của bạn đã bị cấm")
+                    setErrorShowToast(true)
+                    return
+                }
+
                 localStorage.setItem("token", data.token);
                 localStorage.setItem("username", decoded.sub);
+                localStorage.setItem("status", decoded.status)
                 console.log(decoded.scope)
                 if (decoded.scope === "admin" || decoded.scope === "employee") {
                     navigate("/dashboard")

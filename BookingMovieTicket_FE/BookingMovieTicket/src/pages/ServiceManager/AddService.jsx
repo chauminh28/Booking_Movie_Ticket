@@ -88,11 +88,19 @@ function AddService() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setForm({
-            ...form,
-            [name]: value
-        });
-        console.log(form)
+
+        if (name === "price") {
+            const raw = value.replace(/\D/g, "");
+            setForm({
+                ...form,
+                price: Number(raw).toLocaleString("vi-VN"),
+            });
+        } else {
+            setForm({
+                ...form,
+                [name]: value,
+            });
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -124,7 +132,13 @@ function AddService() {
                 setErrors(newErrors)
                 return;
             }
-            const res = await axiosClient.post("/products", form)
+
+            const payload = {
+                ...form,
+                price: Number(form.price.replace(/\./g, ""))
+            };
+
+            const res = await axiosClient.post("/products", payload)
             setSuccesMessage("Thêm dịch vụ thành công")
             setSuccessShowToast(true)
 

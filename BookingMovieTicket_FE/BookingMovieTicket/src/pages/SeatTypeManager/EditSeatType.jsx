@@ -39,12 +39,21 @@ function EditSeatType() {
     }, [id])
 
     const handleChange = (e) => {
-        setForm({
-            ...form,
-            [e.target.id]: e.target.value
-        })
-        console.log(form)
-    }
+        const { id, value } = e.target;
+
+        if (id === "price") {
+            const raw = value.replace(/\D/g, "");
+            setForm({
+                ...form,
+                price: Number(raw).toLocaleString("vi-VN"),
+            });
+        } else {
+            setForm({
+                ...form,
+                [id]: value,
+            });
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -70,7 +79,13 @@ function EditSeatType() {
                 setErrors(newErrors)
                 return;
             }
-            const res = await axiosClient.put(`/seatTypes/${id}`, form)
+
+            const payload = {
+                ...form,
+                price: Number(form.price.replace(/\./g, ""))
+            };
+
+            const res = await axiosClient.put(`/seatTypes/${id}`, payload)
             setSuccesMessage("Sửa loại ghế thành công")
             setSuccessShowToast(true)
 

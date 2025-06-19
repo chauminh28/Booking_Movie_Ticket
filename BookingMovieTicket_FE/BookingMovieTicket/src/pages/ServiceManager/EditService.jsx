@@ -105,11 +105,19 @@ function EditService() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setForm({
-            ...form,
-            [name]: value
-        });
-        console.log(form)
+
+        if (name === "price") {
+            const raw = value.replace(/\D/g, "");
+            setForm({
+                ...form,
+                price: Number(raw).toLocaleString("vi-VN"),
+            });
+        } else {
+            setForm({
+                ...form,
+                [name]: value,
+            });
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -133,7 +141,12 @@ function EditService() {
         setErrors({});
 
         try {
-            const res = await axiosClient.put("/products", form)
+            const payload = {
+                ...form,
+                price: Number(form.price.replace(/\./g, ""))
+            };
+
+            const res = await axiosClient.put(`/products/${id}`, payload)
             setSuccesMessage("Sửa dịch vụ thành công")
             setSuccessShowToast(true)
 
@@ -214,7 +227,7 @@ function EditService() {
                                             <input
                                                 type="text"
                                                 name="price"
-                                                value={form.price}
+                                                value={form.price.toLocaleString()}
                                                 onChange={handleChange}
                                                 placeholder="Giá dịch vụ"
                                                 className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"

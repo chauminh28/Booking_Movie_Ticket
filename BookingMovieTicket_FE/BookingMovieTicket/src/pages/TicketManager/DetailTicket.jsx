@@ -140,7 +140,7 @@ function DetailTicket() {
                                 >
                                     <option value={1} disabled={booking.ticketStatus === 2 || booking.ticketStatus === 3}>Chưa sử dụng</option>
                                     <option value={2} disabled={booking.ticketStatus === 3}>Đã sử dụng</option>
-                                    <option value={3}>Đã hết hạn</option>
+                                    <option value={3} disabled={booking.ticketStatus == 2}>Đã hết hạn</option>
                                 </select>
 
                                 <Link to={"/ticketManager"}>
@@ -317,7 +317,7 @@ function DetailTicket() {
                                         </label>
                                         <input
                                             type="text"
-                                            value={booking?.totalMoney.toLocaleString() || ''}
+                                            value={(booking?.totalMoney || 0).toLocaleString()}
                                             id="total"
                                             placeholder="Tổng tiền"
                                             className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"

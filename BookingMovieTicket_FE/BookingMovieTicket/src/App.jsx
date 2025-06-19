@@ -52,6 +52,7 @@ import EditServiceType from "./pages/ServiceTypeManager/EditServiceType";
 import DeleteServiceType from "./pages/ServiceTypeManager/DeleteServiceType";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Checkout from "./pages/public/Checkout";
+import AdminChangePassword from "./pages/public/AdminChangePassword";
 
 function App() {
   return (
@@ -71,6 +72,10 @@ function App() {
         <Route path="/movie" element={<MoviePage />} />
         <Route path="/movie/detail/:id" element={<MovieDetailPage />} />
         {/* Page Admin */}
+        <Route
+          path="/admin/changePassword"
+          element={<AdminChangePassword />}
+        />
 
         {/* Room Manager */}
         <Route path="/roomManager" element={<RoomManger />} />

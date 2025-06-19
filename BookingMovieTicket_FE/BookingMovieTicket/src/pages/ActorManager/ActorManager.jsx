@@ -96,7 +96,7 @@ function ActorManager() {
                           >
                             <td className="w-36 h-24">
                               <img
-                                src={actor.avatar}
+                                src={actor.avatar || "https://res.cloudinary.com/dnpym3szs/image/upload/v1750299782/movies/p0pr2yw9dmcwhhes0hhu.jpg"}
                                 alt=""
                                 className="w-full h-full"
                               />
@@ -152,8 +152,8 @@ function ActorManager() {
                           key={index}
                           onClick={() => goToPage(index)}
                           className={`px-3 py-2 border border-gray-300 ${index === page
-                              ? "bg-black text-white"
-                              : "bg-[#F5F5F5] hover:bg-black hover:text-white"
+                            ? "bg-black text-white"
+                            : "bg-[#F5F5F5] hover:bg-black hover:text-white"
                             } rounded-md`}
                         >
                           {index + 1}
