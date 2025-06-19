@@ -41,6 +41,13 @@ public class MovieService {
         movie.setGenres(genreRepository.findAllById(request.getGenres()));
         movieRepository.save(movie);
 
+        MovieDetail movieDetail = new MovieDetail();
+        movieDetail.setMovie(movie);
+        movieDetail.setStartDate(request.getStartDate());
+        movieDetail.setCountry(request.getCountry());
+        movieDetail.setAge(ageRepository.findById(request.getAgeId()).orElse(null));
+        movieDetail.setTrailer(request.getTrailer());
+        movieDetailRepository.save(movieDetail);
 
         MovieResponse movieResponse = new MovieResponse();
         movieResponse.setId(movie.getId());

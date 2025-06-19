@@ -16,7 +16,6 @@ public class MovieDetailCreateRequest {
     @NotBlank(message = "Quốc gia không hợp lệ hoặc đang để trống")
     private String country;
 
-    @NotBlank(message = "Mô tả không được để trống")
     private String description;
 
 

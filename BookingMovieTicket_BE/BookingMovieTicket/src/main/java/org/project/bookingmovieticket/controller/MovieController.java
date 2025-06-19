@@ -24,7 +24,7 @@ public class MovieController {
     }
 
     @PostMapping
-    public MovieResponse createMovie(@RequestBody @Valid MovieFullCreateRequest request) {
+    public MovieResponse createMovie(@RequestBody MovieFullCreateRequest request) {
         return movieService.createMovie(request);
     }
 

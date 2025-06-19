@@ -20,19 +20,14 @@ public class MovieFullCreateRequest {
 
     private String movieImage;
 
-    @NotNull(message = "Thể loại phim không được để trống")
     private List<Long> genres;
 
     @NotNull(message = "Trạng thái phim không được để trống")
     private int movieStatus;
 
-    @NotNull(message = "Phim không hợp lệ hoặc đang để trống")
-    private Long movieId;
-
     @NotBlank(message = "Quốc gia không hợp lệ hoặc đang để trống")
     private String country;
 
-    @NotBlank(message = "Mô tả không được để trống")
     private String description;
 
 
