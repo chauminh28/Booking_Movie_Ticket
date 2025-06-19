@@ -109,7 +109,7 @@ function MovieManager() {
                   >
                     <td className="px-4 py-2">
                       <img
-                        src={movieItem.movie.movieImage}
+                        src={movieItem.movie.movieImage || "https://res.cloudinary.com/dnpym3szs/image/upload/v1750299782/movies/p0pr2yw9dmcwhhes0hhu.jpg"}
                         alt="Ảnh phim"
                         className="w-[80px] h-auto rounded-md"
                       />
@@ -168,11 +168,10 @@ function MovieManager() {
                 <button
                   key={index}
                   onClick={() => goToPage(index)}
-                  className={`px-3 py-2 border border-gray-300 ${
-                    index === page
-                      ? "bg-black text-white"
-                      : "bg-[#F5F5F5] hover:bg-black hover:text-white"
-                  } rounded-md`}
+                  className={`px-3 py-2 border border-gray-300 ${index === page
+                    ? "bg-black text-white"
+                    : "bg-[#F5F5F5] hover:bg-black hover:text-white"
+                    } rounded-md`}
                 >
                   {index + 1}
                 </button>

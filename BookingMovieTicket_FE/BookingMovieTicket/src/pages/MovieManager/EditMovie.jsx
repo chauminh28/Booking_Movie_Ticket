@@ -45,6 +45,7 @@ function EditMovie() {
   const [loadingImage, setLoadingImage] = useState(false);
   const { id } = useParams();
   const [toast, setToast] = useState(null);
+  const [errors, setErrors] = useState({});
 
   const navigate = useNavigate();
   const [oldImageUrl, setOldImageUrl] = useState(null);
@@ -360,6 +361,7 @@ function EditMovie() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const newErrors = {};
     setIsSubmitting(true);
     if (form.movieImage !== oldImageUrl) {
       try {
@@ -402,12 +404,28 @@ function EditMovie() {
         setIsSubmitting(false);
         navigate(`/movieManager`); // Chuyển hướng về trang quản lý phim
       }, 1500);
-    } catch (error) {
-      console.error("Lỗi khi cập nhật phim:", error);
-      alert("Cập nhật phim thất bại!");
+    } catch (err) {
+      if (err.response && err.response.status === 400) {
+        Object.assign(newErrors, err.response.data);
+        console.log(newErrors);
+      } else {
+        console.error("Lỗi khi sửa phim:", err);
+      }
     } finally {
       setIsSubmitting(false);
     }
+
+    if (Object.keys(newErrors).length > 0) {
+      console.log("aksjdhfdskj", newErrors)
+      setErrors(newErrors); // Trả về UI toàn bộ lỗi từ cả 2 API
+      return;
+    }
+
+    setErrors({});
+    setToast({ message: "Thêm phim thành công!" });
+    setTimeout(() => {
+      navigate(`/movieManager`);
+    }, 1500);
   };
   const handleSubmitActor = async (e) => {
     e.preventDefault();
@@ -506,6 +524,11 @@ function EditMovie() {
                     placeholder="Tên phim"
                     className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                   />
+                  {errors.movieName && (
+                    <p className="text-red-600 text-sm mt-1">
+                      {errors.movieName}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -522,6 +545,11 @@ function EditMovie() {
                     placeholder="Thời lượng (phút)"
                     className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                   />
+                  {errors.movieDuration && (
+                    <p className="text-red-600 text-sm mt-1">
+                      {errors.movieDuration}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -538,6 +566,11 @@ function EditMovie() {
                     placeholder="dd/MM/yyyy"
                     className="bg-[#F9F9F9] mt-1 block w-[404px] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none transition"
                   />
+                  {errors.startDate && (
+                    <p className="text-red-600 text-sm mt-1">
+                      {errors.startDate}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -564,6 +597,11 @@ function EditMovie() {
                       <option>N/A</option>
                     )}
                   </select>
+                  {errors.ageId && (
+                    <p className="text-red-600 text-sm mt-1">
+                      {errors.ageId}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -584,6 +622,11 @@ function EditMovie() {
                     <option value={MOVIE_STATUS.UPCOMING}>Sắp chiếu</option>
                     <option value={MOVIE_STATUS.SHOWING}>Đang chiếu</option>
                   </select>
+                  {errors.movieStatus && (
+                    <p className="text-red-600 text-sm mt-1">
+                      {errors.movieStatus}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label

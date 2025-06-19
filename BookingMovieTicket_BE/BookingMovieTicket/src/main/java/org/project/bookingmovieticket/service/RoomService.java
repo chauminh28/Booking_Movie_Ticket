@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RoomService {
     private final RoomRepository roomRepository;
@@ -126,5 +128,9 @@ public class RoomService {
         room.setStatus(status);
 
         return roomRepository.save(room);
+    }
+
+    public List<Room> getRoomsByStatus(Boolean status) {
+        return roomRepository.findByStatus(status);
     }
 }

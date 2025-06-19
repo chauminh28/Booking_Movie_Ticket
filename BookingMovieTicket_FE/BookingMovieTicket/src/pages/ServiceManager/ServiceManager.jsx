@@ -141,7 +141,7 @@ function ServiceManager() {
                                                 <tr className="border-t border-[#EEEEEE]" key={service.id}>
                                                     <td className="w-36 h-24">
                                                         <img
-                                                            src={service.image}
+                                                            src={service.image || "https://res.cloudinary.com/dnpym3szs/image/upload/v1750299782/movies/p0pr2yw9dmcwhhes0hhu.jpg"}
                                                             alt=""
                                                             className="w-full h-full"
                                                         />

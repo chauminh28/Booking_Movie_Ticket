@@ -51,7 +51,8 @@ function ChangePassword() {
   }, [userId]);
 
   const handleChangePassword = async () => {
-    console.log("adsfds", newPassword)
+    const newErrors = {};
+
     if (newPassword !== confirmPassword) {
       setErrorMessage("Mật khẩu không khớp nhau");
       setErrorShowToast(true);
@@ -76,9 +77,19 @@ function ChangePassword() {
       setNewPassword("");
       setConfirmPassword("");
     } catch (err) {
-      setErrorMessage("Mật khẩu cũ không chính xác");
-      setErrorShowToast(true);
+      if (err.response && err.response.status === 400) {
+        newErrors.newPassword = err.response.data.newPassword
+
+      } else {
+        setErrorMessage("Mật khẩu cũ không chính xác");
+        setErrorShowToast(true);
+      }
     }
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    setErrors({});
   };
 
   return (
@@ -133,6 +144,9 @@ function ChangePassword() {
                 {showCurrent ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
               </button>
             </div>
+            <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+              {""}
+            </p>
             <div className="flex gap-4 items-center relative">
               <label htmlFor="" className="w-[40%] font-bold">
                 Mật khẩu mới
@@ -154,6 +168,9 @@ function ChangePassword() {
                 {showNew ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
               </button>
             </div>
+            <p className="text-red-600 text-sm mt-1 min-h-[20px] pl-[210px]">
+              {errors.newPassword || ""}
+            </p>
             <div className="flex gap-4 items-center relative">
               <label htmlFor="" className="w-[40%] font-bold">
                 Nhập lại mật khẩu mới
@@ -175,6 +192,9 @@ function ChangePassword() {
                 {showConfirm ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
               </button>
             </div>
+            <p className="text-red-600 text-sm mt-1 min-h-[20px]">
+              {""}
+            </p>
           </div>
           <div className="flex justify-end gap-4 items-center w-[500px]">
             <Link to="/">

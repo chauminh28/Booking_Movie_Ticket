@@ -151,7 +151,9 @@ function DetailTicket() {
                   <option value={2} disabled={booking.ticketStatus === 3}>
                     Đã sử dụng
                   </option>
-                  <option value={3}>Đã hết hạn</option>
+                  <option value={3} disabled={booking.ticketStatus == 2}>
+                    Đã hết hạn
+                  </option>
                 </select>
 
                 <Link to={"/ticketManager"}>

@@ -45,7 +45,11 @@ export default function AddSchedule() {
   }, []);
   useEffect(() => {
     axios
-      .get("http://localhost:8080/rooms")
+      .get("http://localhost:8080/rooms", {
+        params: {
+          status: true
+        }
+      })
       .then((response) => {
         setRooms(response.data.content);
       })

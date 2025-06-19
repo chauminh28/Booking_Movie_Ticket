@@ -21,12 +21,20 @@ function AddSeatType() {
   });
 
   const handleChange = (e) => {
-    form.price = form.price.toLocaleString();
-    setForm({
-      ...form,
-      [e.target.id]: e.target.value,
-    });
-    console.log(form);
+    const { id, value } = e.target;
+
+    if (id === "price") {
+      const raw = value.replace(/\D/g, "");
+      setForm({
+        ...form,
+        price: Number(raw).toLocaleString("vi-VN"),
+      });
+    } else {
+      setForm({
+        ...form,
+        [id]: value,
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -54,7 +62,13 @@ function AddSeatType() {
         setErrors(newErrors)
         return;
       }
-      const res = await axiosClient.post("/seatTypes", form);
+
+      const payload = {
+        ...form,
+        price: Number(form.price.replace(/\./g, ""))
+      };
+
+      const res = await axiosClient.post("/seatTypes", payload);
       setSuccesMessage("Tạo loại ghế thành công");
       setSuccessShowToast(true);
 

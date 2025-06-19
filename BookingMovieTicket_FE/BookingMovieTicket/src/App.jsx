@@ -54,6 +54,8 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Checkout from "./pages/public/Checkout";
 import ProfileHistoryDetail from "./pages/public/ProfileHistoryDetail";
 import ProfileHistory from "./pages/public/ProfileHistory";
+import AdminChangePassword from "./pages/public/AdminChangePassword";
+import AdminProfile from "./pages/public/AdminProfile";
 
 function App() {
   return (
@@ -78,6 +80,8 @@ function App() {
         <Route path="/movie" element={<MoviePage />} />
         <Route path="/movie/detail/:id" element={<MovieDetailPage />} />
         {/* Page Admin */}
+        <Route path="/admin/changePassword" element={<AdminChangePassword />} />
+        <Route path="/admin/profile" element={<AdminProfile />} />
 
         {/* Room Manager */}
         <Route path="/roomManager" element={<RoomManger />} />

@@ -22,7 +22,7 @@ function AddUser() {
         gender: '',
         phone: '',
         email: '',
-        password: '',
+        password: '123456',
         status: true,
         roleId: ''
     })
