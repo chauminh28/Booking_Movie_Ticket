@@ -26,7 +26,6 @@ function Dashboard() {
                         </div>
                         {username && (
                             <div>
-                                Xin chào, {username}
                             </div>
                         )}
                     </div>

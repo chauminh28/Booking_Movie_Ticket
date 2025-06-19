@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-
+import { FaPlayCircle } from "react-icons/fa";
 import picture from "../../assets/public/images/phim-1.png"
 import combo from "../../assets/public/images/CNS035_COMBO_GAU.png"
 import axiosClient from '../../api/axiosClient'
@@ -17,6 +17,7 @@ function MovieDetail() {
   const [showTime, setShowTime] = useState();
   const [occupiedSeats, setOccupiedSeats] = useState([]);
   const { id } = useParams();
+  const [showTrailer, setShowTrailer] = useState(false);
 
   const [schedules, setSchedules] = useState([]);
 
@@ -120,6 +121,33 @@ function MovieDetail() {
                 <p>
                   <span className="font-bold">Nội dung:</span> Description
                 </p>
+                <p
+                  className="font-bold cursor-pointer text-black hover:underline flex gap-2 w-[200px]"
+                  onClick={() => setShowTrailer(true)}
+                >
+                  <span className='mt-2'><FaPlayCircle /></span> Xem Trailer
+                </p>
+                {showTrailer && (
+                  <div className="fixed inset-0 z-50 bg-black bg-opacity-70 flex justify-center items-center">
+                    <div className="bg-white rounded-lg overflow-hidden w-[90%] max-w-3xl relative">
+                      <button
+                        className="absolute top-2 right-2 text-white bg-red-500 px-2 py-1 rounded cursor-pointer"
+                        onClick={() => setShowTrailer(false)}
+                      >
+                        X
+                      </button>
+                      <div className="aspect-w-16 aspect-h-9">
+                        <iframe
+                          src={movie.detail.trailer || "https://www.youtube.com/embed/dQw4w9WgXcQ" + "?autoplay=1"}
+                          title="Trailer"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="w-full h-[500px]"
+                        ></iframe>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

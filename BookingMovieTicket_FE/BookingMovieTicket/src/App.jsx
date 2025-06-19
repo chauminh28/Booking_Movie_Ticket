@@ -53,6 +53,7 @@ import DeleteServiceType from "./pages/ServiceTypeManager/DeleteServiceType";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Checkout from "./pages/public/Checkout";
 import AdminChangePassword from "./pages/public/AdminChangePassword";
+import AdminProfile from "./pages/public/AdminProfile";
 
 function App() {
   return (
@@ -75,6 +76,10 @@ function App() {
         <Route
           path="/admin/changePassword"
           element={<AdminChangePassword />}
+        />
+        <Route
+          path="/admin/profile"
+          element={<AdminProfile />}
         />
 
         {/* Room Manager */}
