@@ -51,6 +51,11 @@ public class BookingController {
         return bService.updateBooking(id, status);
     }
 
+    @PutMapping("/payment/{id}")
+    public Booking updatePaymentStatus(@PathVariable("id") long id, @RequestParam Integer status) {
+        return bService.updateBookingPaymentStatus(id, status);
+    }
+
     @PostMapping
     public Booking createBooking(@RequestBody BookingCreateRequest request) {
         return bService.createBooking(request);

@@ -49,7 +49,7 @@ public class VnpayController {
             vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
             vnp_Params.put("vnp_OrderInfo", vnp_OrderInfo);
             vnp_Params.put("vnp_OrderType", "other");
-            vnp_Params.put("vnp_ReturnUrl", vnp_ReturnUrl);
+            vnp_Params.put("vnp_ReturnUrl", vnp_ReturnUrl + "/" + vnp_TxnRef);
             vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
             vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
             vnp_Params.put("vnp_Locale", vnp_Locale);

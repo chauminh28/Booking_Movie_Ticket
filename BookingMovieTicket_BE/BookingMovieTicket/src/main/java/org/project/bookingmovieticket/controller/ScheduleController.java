@@ -9,8 +9,11 @@ import org.project.bookingmovieticket.entity.Schedule;
 import org.project.bookingmovieticket.service.ScheduleService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -28,8 +31,8 @@ public class ScheduleController {
     }
 
     @GetMapping
-    public Page<ScheduleResponse> getSchedules(@RequestParam(value = "search", required = false) String searchValue, Pageable pageable){
-        return scheduleService.getAllSchedules(searchValue, pageable);
+    public Page<ScheduleResponse> getSchedules(@RequestParam(value = "search", required = false) String searchValue, @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate scheduleDate, Pageable pageable){
+        return scheduleService.getAllSchedules(searchValue, scheduleDate, pageable);
     }
 
     @GetMapping("/{sheduleId}")

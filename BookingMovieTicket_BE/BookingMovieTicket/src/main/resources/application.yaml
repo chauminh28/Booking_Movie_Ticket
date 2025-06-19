@@ -29,7 +29,7 @@ vnpay:
   tmnCode: IP21AIAL
   hashSecret: L44APGGLO7H328N20SFLRY1ROX4YBBUR
   payUrl: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
-  returnUrl: http://localhost:5173/bookingSuccess
+  returnUrl: http://localhost:5173/profile/history/detail
 
 jwt:
   signerKey: "Vz8SbmcFpTpK4iDX65I2q469YpxP1pizxOKcze/SH9g5J+HRuFjkbfcswze5nvdr"

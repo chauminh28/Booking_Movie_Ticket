@@ -26,6 +26,7 @@ public class BookingResponse {
     private LocalTime startTime;
     private List<String> seatNumbers;
     private String roomName;
+    private int paymentStatus;
     private int ticketStatus;
     private Long totalMoney;
     private List<BookingServiceResponse> bookingServices;

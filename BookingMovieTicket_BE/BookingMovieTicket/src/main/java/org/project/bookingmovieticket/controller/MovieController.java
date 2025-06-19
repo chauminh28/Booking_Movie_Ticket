@@ -34,8 +34,8 @@ public class MovieController {
     }
 
     @GetMapping
-    public Page<MovieFullResponse> getAllMovies(@RequestParam(value = "search", required = false) String searchValue, Pageable pageable) {
-        return movieService.gettAllMovies(searchValue, pageable);
+    public Page<MovieFullResponse> getAllMovies(@RequestParam(value = "search", required = false) String searchValue,@RequestParam(value = "status", required = false) Integer status, Pageable pageable) {
+        return movieService.gettAllMovies(searchValue, status, pageable);
     }
 
     @GetMapping("{movieId}")

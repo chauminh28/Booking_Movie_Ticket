@@ -64,6 +64,8 @@ public class BookingServiceService {
                             .map(Seat::getSeatNumber)
                             .collect(Collectors.toList()))
                     .ticketStatus(booking.getTicketStatus())
+                    .paymentStatus(booking.getPaymentStatus())
+                    .totalMoney(booking.getTotalMoney())
                     .bookingServices(
                             booking.getBookingServices().stream()
                                     .map(bs -> BookingServiceResponse.builder()
@@ -94,6 +96,7 @@ public class BookingServiceService {
                         .map(Seat::getSeatNumber)
                         .collect(Collectors.toList()))
                 .ticketStatus(booking.getTicketStatus())
+                .paymentStatus(booking.getPaymentStatus())
                 .totalMoney(booking.getTotalMoney())
                 .bookingServices(
                         booking.getBookingServices().stream()
@@ -116,6 +119,11 @@ public class BookingServiceService {
         return bookingRepository.save(booking);
     }
 
+    public Booking updateBookingPaymentStatus(Long id, int paymentStatus) {
+        Booking booking = bookingRepository.findById(id).orElseThrow(() -> new RuntimeException("Booking not found"));
+        booking.setPaymentStatus(paymentStatus);
+        return bookingRepository.save(booking);
+    }
     public Booking createBooking(BookingCreateRequest request) {
 
         System.out.println("UserId: " + request.getUserId());

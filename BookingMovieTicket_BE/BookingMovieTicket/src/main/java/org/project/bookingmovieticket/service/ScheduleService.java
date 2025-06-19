@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,10 +52,13 @@ public class ScheduleService {
                 .build();
     }
 
-    public Page<ScheduleResponse> getAllSchedules(String searchValue, Pageable pageable) {
+    public Page<ScheduleResponse> getAllSchedules(String searchValue, LocalDate scheduleDate, Pageable pageable) {
         Page<Schedule> schedules;
-        if (searchValue == null || searchValue.isEmpty()) {
+        if ((searchValue == null || searchValue.isEmpty()) && scheduleDate == null) {
             schedules = scheduleRepository.findAll(pageable);
+        }
+        else if (searchValue == null || searchValue.isEmpty()) {
+            schedules = scheduleRepository.findByScheduleDate(scheduleDate, pageable);
         }
         else {
             schedules = scheduleRepository.findByMovie_movieNameContainingIgnoreCase(searchValue, pageable);

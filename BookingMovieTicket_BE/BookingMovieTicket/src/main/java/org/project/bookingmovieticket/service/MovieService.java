@@ -52,13 +52,16 @@ public class MovieService {
         return movieResponse;
     }
 
-    public Page<MovieFullResponse> gettAllMovies(String searchValue, Pageable pageable) {
+    public Page<MovieFullResponse> gettAllMovies(String searchValue,Integer status, Pageable pageable) {
         Page<Movie> movies;
-        if (searchValue == null || searchValue.isEmpty()) {
+        if ((searchValue == null || searchValue.isEmpty()) && status == null) {
             movies = movieRepository.findAll(pageable);
-        }
-        else {
+        } else if ((searchValue == null || searchValue.isEmpty())) {
+            movies = movieRepository.findByMovieStatus(status, pageable);
+        } else if (status == null) {
             movies = movieRepository.findByMovieNameContainingIgnoreCase(searchValue, pageable);
+        } else {
+            movies = movieRepository.findByMovieNameContainingIgnoreCaseAndMovieStatus(searchValue, status, pageable);
         }
         return movies.map(movie -> {
             MovieResponse movieResponse = new MovieResponse();
